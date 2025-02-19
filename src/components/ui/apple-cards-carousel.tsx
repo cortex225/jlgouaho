@@ -6,11 +6,7 @@ import React, {
   createContext,
   useContext,
 } from "react";
-import {
-  IconArrowNarrowLeft,
-  IconArrowNarrowRight,
-  IconX,
-} from "@tabler/icons-react";
+import { ArrowLeftIcon, ArrowRightIcon, XIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Image, { ImageProps } from "next/image";
@@ -88,26 +84,22 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
 
   return (
     <CarouselContext.Provider
-      value={{ onCardClose: handleCardClose, currentIndex }}
-    >
+      value={{ onCardClose: handleCardClose, currentIndex }}>
       <div className="relative w-full sm:max-w-[600px]">
         <div
           className="flex w-full overflow-x-scroll overscroll-x-auto py-9 scroll-smooth [scrollbar-width:none]"
           ref={carouselRef}
-          onScroll={checkScrollability}
-        >
+          onScroll={checkScrollability}>
           <div
             className={cn(
               "absolute right-0  z-[1000] h-auto  w-[5%] overflow-hidden bg-gradient-to-l"
-            )}
-          ></div>
+            )}></div>
 
           <div
             className={cn(
               "flex flex-row justify-start gap-4 pl-4",
               "max-w-7xl mx-auto" // remove max-w-4xl if you want the carousel to span the full width of its container
-            )}
-          >
+            )}>
             {items.map((item, index) => (
               <motion.div
                 initial={{
@@ -125,8 +117,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
                   },
                 }}
                 key={"card" + index}
-                className="last:pr-[5%] md:last:pr-[33%]  rounded-3xl"
-              >
+                className="last:pr-[5%] md:last:pr-[33%]  rounded-3xl">
                 {item}
               </motion.div>
             ))}
@@ -136,16 +127,14 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
           <button
             className="relative z-40 h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center disabled:opacity-50"
             onClick={scrollLeft}
-            disabled={!canScrollLeft}
-          >
-            <IconArrowNarrowLeft className="h-6 w-6 text-gray-500" />
+            disabled={!canScrollLeft}>
+            <ArrowLeftIcon className="h-6 w-6 text-gray-500" />
           </button>
           <button
             className="relative z-40 h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center disabled:opacity-50"
             onClick={scrollRight}
-            disabled={!canScrollRight}
-          >
-            <IconArrowNarrowRight className="h-6 w-6 text-gray-500" />
+            disabled={!canScrollRight}>
+            <ArrowRightIcon className="h-6 w-6 text-gray-500" />
           </button>
         </div>
       </div>
@@ -211,29 +200,23 @@ export const Card = ({
               exit={{ opacity: 0 }}
               ref={containerRef}
               layoutId={layout ? `card-${card.title}` : undefined}
-              className="max-w-5xl mx-auto bg-white dark:bg-neutral-900 h-full z-[60] my-10 p-4 md:p-10 rounded-3xl font-sans relative"
-            >
+              className="max-w-5xl mx-auto bg-white dark:bg-neutral-900 h-full z-[60] my-10 p-4 md:p-10 rounded-3xl font-sans relative">
               <button
                 className="sticky top-4 h-8 w-8 right-0 ml-auto bg-black dark:bg-white rounded-full flex items-center justify-center"
-                onClick={handleClose}
-              >
-                <IconX className="h-6 w-6 text-neutral-100 dark:text-neutral-900" />
+                onClick={handleClose}>
+                <XIcon className="h-6 w-6 text-neutral-100 dark:text-neutral-900" />
               </button>
               <motion.p
                 layoutId={layout ? `category-${card.title}` : undefined}
-                className="text-base font-medium text-black dark:text-white"
-              >
+                className="text-base font-medium text-black dark:text-white">
                 {card.category}
               </motion.p>
               <motion.p
                 layoutId={layout ? `title-${card.title}` : undefined}
-                className="text-2xl md:text-5xl font-semibold text-neutral-700 mt-4 dark:text-white"
-              >
+                className="text-2xl md:text-5xl font-semibold text-neutral-700 mt-4 dark:text-white">
                 {card.title}
               </motion.p>
-              <div className="py-10  h-[20rem] d-flex" >
-                {card.content}
-                </div>
+              <div className="py-10  h-[20rem] d-flex">{card.content}</div>
             </motion.div>
           </div>
         )}
@@ -241,8 +224,7 @@ export const Card = ({
       <motion.button
         layoutId={layout ? `card-${card.title}` : undefined}
         onClick={handleOpen}
-        className="rounded-3xl bg-gray-100 dark:bg-neutral-900  w-[15rem] h-[20rem] overflow-hidden flex flex-col items-start justify-start relative z-10"
-      >
+        className="rounded-3xl bg-gray-100 dark:bg-neutral-900  w-[15rem] h-[20rem] overflow-hidden flex flex-col items-start justify-start relative z-10">
         <div className="absolute h-full top-0 inset-x-0 bg-gradient-to-b from-black/50 via-transparent to-transparent z-30 pointer-events-none" />
         <div className="relative z-40 p-8">
           {/*<motion.p*/}
