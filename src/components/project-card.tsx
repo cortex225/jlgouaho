@@ -227,11 +227,20 @@ export function ProjectCard({
                             <h4 className="text-lg font-semibold mb-2">
                               Features
                             </h4>
-                            <ul className="list-disc list-inside space-y-1">
-                              {features.map((feature, index) => (
-                                <li key={index}>{feature}</li>
-                              ))}
-                            </ul>
+                            <div className="space-y-4">
+                              <h4 className="text-sm font-medium leading-none">
+                                Features
+                              </h4>
+                              <ul className="list-disc list-inside space-y-1">
+                                {Array.isArray(features) ? (
+                                  features.map((feature, index) => (
+                                    <li key={index}>{feature}</li>
+                                  ))
+                                ) : (
+                                  <li>{features}</li>
+                                )}
+                              </ul>
+                            </div>
                           </section>
                         )}
 
@@ -241,16 +250,20 @@ export function ProjectCard({
                               Challenges & Solutions
                             </h4>
                             <div className="space-y-4">
-                              {challenges.map((challenge, index) => (
-                                <div key={index} className="space-y-1">
-                                  <h5 className="font-medium">
-                                    {challenge.title}
-                                  </h5>
-                                  <p className="text-neutral-600 dark:text-neutral-400">
-                                    {challenge.description}
-                                  </p>
-                                </div>
-                              ))}
+                              {Array.isArray(challenges) ? (
+                                challenges.map((challenge, index) => (
+                                  <div key={index} className="space-y-1">
+                                    <h5 className="font-medium">
+                                      {challenge.title}
+                                    </h5>
+                                    <p className="text-neutral-600 dark:text-neutral-400">
+                                      {challenge.description}
+                                    </p>
+                                  </div>
+                                ))
+                              ) : (
+                                <p>No challenges available</p>
+                              )}
                             </div>
                           </section>
                         )}

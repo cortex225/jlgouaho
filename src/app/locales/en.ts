@@ -1,14 +1,84 @@
 // locales/en.ts
-export default {
+import type { Translations } from "./types";
+
+const translations: Translations = {
   hello: "Hello",
   hero: {
     greeting: "Hi, I'm",
+    title: "Full-Stack Developer | Automation & Cloud Specialist",
   },
   sections: {
-    about: "About",
-    work: "Work Experience",
-    education: "Education",
-    skills: "Skills",
+    about: {
+      title: "About me",
+      description:
+        "Full-stack developer with solid experience in .NET, Vue.js and Azure, as well as a strong appetite for cloud computing, DevOps and automation. I'm passionate about optimizing application performance and scalability. I've contributed to solutions that reduce cloud costs and improve deployment efficiency. Currently training for Microsoft AZ-900 and AI-900 certifications, I'm continuing to hone my skills to provide ever more innovative solutions tailored to market challenges.",
+    },
+    work: {
+      title: "Professional Experience",
+      tractionDK: {
+        description: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Development and optimization</strong> of a <strong>SaaS CRM</strong> for car dealers in <strong>Groovy</strong>.</li>
+            <li><strong>Improved customer communications</strong> (chat, calls) and UI redesign <strong>(Bootstrap, Vanilla JavaScript)</strong>.</li>
+            <li><strong>Implementation of Agile processes</strong> and <strong>CI/CD with Git</strong> and integration of <strong>DevOps</strong> best practices.</li>
+            <li><strong>Critical bug fixes</strong> and application performance improvements.</li>
+          </ul>
+        `,
+        start: "August 2024",
+        end: "January 2025",
+      },
+      royalBroker: {
+        description: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Lead developer of InstaHR CRM</strong>, platform for managing contracts, employees, and payments.</li>
+            <li><strong>Cloud migration to Azure</strong>, reducing costs from $600 to $135/month and accelerating deployments by 60%.</li>
+            <li><strong>Recruitment automation</strong>: creation of an <strong>ATS</strong> filtering <strong>4000+ resumes in seconds</strong> via Python script.</li>
+            <li><strong>Integration of automated follow-ups</strong> (email, WhatsApp) to increase candidate response rate.</li>
+            <li><strong>Cross-department collaboration</strong> (HR, accounting, management) to align solution with business needs.</li>
+          </ul>
+        `,
+        start: "August 2022",
+        end: "August 2024",
+      },
+      royalBrokerInternship: {
+        title: "Full-Stack Developer Intern",
+        description: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Development of credit value estimation websites using PHP and WordPress.</li>
+            <li>Practical learning and implementation of optimized solutions.</li>
+            <li>Hired following the internship due to demonstrated performance.</li>
+          </ul>
+        `,
+        start: "August 2022",
+        end: "May 2024",
+        badge: "Internship",
+      },
+      rogers: {
+        description: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Customer needs analysis</strong> and proposal of adapted solutions.</li>
+            <li><strong>Development of communication and negotiation skills.</strong></li>
+            <li><strong>Optimization of commercial strategies</strong> to achieve objectives.</li>
+          </ul>
+        `,
+      },
+    },
+    education: {
+      title: "Education",
+      description:
+        "Computer Science program focused on software development, algorithms, and modern web technologies.",
+    },
+    skills: {
+      title: "Skills",
+      languages: "Languages",
+      frameworks: "Frameworks",
+      databases: "Databases",
+      cloudDevops: "Cloud & DevOps",
+      tools: "Tools",
+      cms: "CMS",
+      marketing: "Marketing",
+      projectManagement: "Project Management",
+    },
     projects: {
       title: "My Projects",
       subtitle: "Check out my latest work",
@@ -67,11 +137,11 @@ export default {
         conclusion:
           "InstaHR allowed me to explore the integration of AI into the recruitment industry and provided valuable insights into building scalable, user-friendly platforms.",
       },
-      llmReport: {
+      playerConnect: {
         description:
           "An open-source logging and analytics platform for OpenAI: Log your ChatGPT API requests, analyze costs, and improve your prompts.",
         overview:
-          "llm.report helps developers optimize their usage of OpenAI's GPT models by providing detailed insights into API usage and costs.",
+          "playerConnect helps developers optimize their usage of OpenAI's GPT models by providing detailed insights into API usage and costs.",
         features: [
           "Detailed API request logging.",
           "Cost analysis and optimization suggestions.",
@@ -91,7 +161,7 @@ export default {
           },
         ],
         conclusion:
-          "llm.report provided a deep dive into building data analytics platforms and solving challenges around real-time data handling.",
+          "playerConnect provided a deep dive into building data analytics platforms and solving challenges around real-time data handling.",
       },
       automaticChat: {
         description:
@@ -120,13 +190,7 @@ export default {
           "Developing Automatic Chat taught me the intricacies of integrating AI solutions into real-world business processes.",
       },
     },
-    hackathons: {
-      title: "Hackathons",
-      subtitle: "I like building things",
-      description:
-        "During my time in university, I attended {count}+ hackathons. People from around the country would come together and build incredible things in 2-3 days. It was eye-opening to see the endless possibilities brought to life by a group of motivated and passionate individuals.",
-      badge: "Hackathons",
-    },
+
     contact: {
       title: "Contact",
       subtitle: "Get in Touch",
@@ -137,3 +201,5 @@ export default {
     },
   },
 } as const;
+
+export default translations;

@@ -1,16 +1,86 @@
 // locales/fr.ts
-export default {
+import type { Translations } from "./types";
+
+const translations: Translations = {
   hello: "Bonjour",
   hero: {
     greeting: "Bonjour, je suis",
+    title: "Développeur Full-Stack | Spécialiste en Cloud & Automatisation",
   },
   sections: {
-    about: "À propos",
-    work: "Expérience professionnelle",
-    education: "Formation",
-    skills: "Compétences",
+    about: {
+      title: "À propos de moi",
+      description:
+        "Développeur full-stack avec une solide expérience dans .NET, Vue.js et Azure, ainsi qu'une forte appétit pour le cloud computing, le DevOps et l'automatisation. Je suis passionné par l'optimisation des performances et de l'évolutivité des applications. J'ai contribué à des solutions qui réduisent les coûts cloud et améliorent l'efficacité des déploiements. Actuellement en formation pour les certifications Microsoft AZ-900 et AI-900, je continue de perfectionner mes compétences pour offrir des solutions de plus en plus innovantes adaptées aux défis du marché.",
+    },
+    work: {
+      title: "Expérience professionnelle",
+      tractionDK: {
+        description: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Développement et optimisation </strong>d'un <strong>CRM SaaS</strong> pour concessionnaires automobiles en <strong>Groovy</strong>.</li>
+            <li><strong>Amélioration des communications clients </strong>(chat, appels) et refonte de l'interface utilisateur <strong>(Bootstrap, JavaScript natif)</strong>.</li>
+            <li><strong>Mise en place de processus Agile </strong>et <strong>CI/CD avec Git</strong> et intégration des bonnes pratiques <strong>DevOps</strong>.</li>
+            <li><strong>Correction de bugs critiques </strong>et amélioration des performances applicatives.</li>
+          </ul>
+        `,
+        start: "Août 2024",
+        end: "Janvier 2025",
+      },
+      royalBroker: {
+        description: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Lead développeur du CRM InstaHR</strong>, plateforme de gestion des contrats, employés et paiements.</li>
+            <li><strong>Migration cloud sur Azure</strong>, réduisant les coûts de 600$ à 135$/mois et accélérant les déploiements de 60%.</li>
+            <li><strong>Automatisation du recrutement</strong> : création d'un <strong>ATS</strong> filtrant <strong>4000+ CV en quelques secondes</strong> via un script Python.</li>
+            <li><strong>Intégration de relances automatisées</strong> (email, WhatsApp) pour augmenter le taux de réponse des candidats.</li>
+            <li><strong>Collaboration interservices</strong> (RH, comptabilité, direction) pour aligner la solution aux besoins métiers.</li>
+          </ul>
+        `,
+        start: "Août 2022",
+        end: "Août 2024",
+      },
+      royalBrokerInternship: {
+        title: "Développeur Full-Stack Stagiaire",
+        description: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Développement de sites d'estimation de valeur-crédit en PHP et WordPress.</li>
+            <li>Apprentissage pratique et implémentation de solutions optimisées.</li>
+            <li>Embauché à la suite du stage grâce aux performances démontrées.</li>
+          </ul>
+        `,
+        start: "Août 2022",
+        end: "Mai 2024",
+        badge: "Stage",
+      },
+      rogers: {
+        description: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Analyse des besoins clients </strong>et proposition de solutions adaptées.</li>
+            <li><strong>Développement de compétences en communication et négociation.</strong></li>
+            <li><strong>Optimisation des stratégies commerciales </strong>pour atteindre les objectifs.</li>
+          </ul>
+        `,
+      },
+    },
+    education: {
+      title: "Formation",
+      description:
+        "Programme en informatique axé sur le développement logiciel, les algorithmes et les technologies web modernes.",
+    },
+    skills: {
+      title: "Compétences",
+      languages: "Langages",
+      frameworks: "Frameworks",
+      databases: "Bases de données",
+      cloudDevops: "Cloud & DevOps",
+      tools: "Outils",
+      cms: "CMS",
+      marketing: "Marketing",
+      projectManagement: "Gestion de projet",
+    },
     projects: {
-      title: "Mes Projets",
+      title: "Projets",
       subtitle: "Découvrez mes derniers travaux",
       description:
         "J'ai travaillé sur divers projets, des sites web simples aux applications web complexes. Voici quelques-uns de mes favoris.",
@@ -21,10 +91,10 @@ export default {
         overview:
           "MagicSearch est un moteur de recherche qui exploite la compréhension sémantique pour fournir des résultats plus précis et contextuels. Il est conçu pour les utilisateurs qui souhaitent des expériences de recherche plus rapides, plus intelligentes et plus significatives.",
         features: [
-          "Recherche sémantique alimentée par les embeddings OpenAI.",
-          "Compatibilité multiplateforme avec design responsive.",
-          "Algorithmes avancés de filtrage et de classement.",
-          "Support des requêtes multilingues.",
+          "Recherche sémantique alimentée par les embeddings OpenAI",
+          "Compatibilité multiplateforme avec design responsive",
+          "Algorithmes avancés de filtrage et de classement",
+          "Support des requêtes multilingues",
         ],
         challenges: [
           {
@@ -67,7 +137,7 @@ export default {
         conclusion:
           "InstaHR m'a permis d'explorer l'intégration de l'IA dans l'industrie du recrutement et m'a fourni des insights précieux sur la construction de plateformes évolutives et conviviales.",
       },
-      llmReport: {
+      playerConnect: {
         description:
           "Une plateforme open-source de journalisation et d'analyse pour OpenAI : Enregistrez vos requêtes API ChatGPT, analysez les coûts et améliorez vos prompts.",
         overview:
@@ -91,7 +161,7 @@ export default {
           },
         ],
         conclusion:
-          "llm.report m'a permis d'approfondir la construction de plateformes d'analyse de données et la résolution des défis liés à la gestion des données en temps réel.",
+          "playerConnect m'a permis d'approfondir la construction de plateformes d'analyse de données et la résolution des défis liés à la gestion des données en temps réel.",
       },
       automaticChat: {
         description:
@@ -120,21 +190,17 @@ export default {
           "Le développement d'Automatic Chat m'a appris les subtilités de l'intégration des solutions d'IA dans les processus métier réels.",
       },
     },
-    hackathons: {
-      title: "Hackathons",
-      subtitle: "J'aime construire des choses",
-      description:
-        "Pendant mes études, j'ai participé à {count}+ hackathons. Des personnes du monde entier se réunissaient pour créer des choses incroyables en 2-3 jours. C'était inspirant de voir les possibilités infinies réalisées par un groupe de personnes motivées et passionnées.",
-      badge: "Hackathons",
-    },
+
     contact: {
       title: "Contact",
+      badge: "Contact",
       subtitle: "Prenons contact",
       description_start:
         "Vous souhaitez discuter ? Envoyez-moi simplement un message",
       description_end: "et je vous répondrai dans les 24 heures.",
-      badge: "Contact",
-      linkedinText: "sur linkedin",
+      linkedinText: "sur LinkedIn",
     },
   },
 } as const;
+
+export default translations;

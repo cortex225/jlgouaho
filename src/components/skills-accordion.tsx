@@ -6,7 +6,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Image from "next/image";
-import { DATA } from "@/data/resume";
+import { getData } from "@/data/resume";
 import {
   motion,
   useTransform,
@@ -16,21 +16,32 @@ import {
 } from "framer-motion";
 import React, { useState } from "react";
 import { Badge } from "./ui/badge";
+import { useParams } from "next/navigation";
+
+type Skill = {
+  readonly name: string;
+  readonly type: string;
+  readonly icon: string;
+};
 
 export function SkillsAccordion() {
-  const groupSkillsByType = (
-    skills: { name: string; type: string; icon: string }[]
-  ) => {
+  const { locale = "fr" } = useParams<{ locale: "en" | "fr" }>();
+  const data = getData(locale);
+
+  const groupSkillsByType = (skills: Skill[]) => {
     return skills.reduce((acc, skill) => {
-      if (!acc[skill.type]) {
-        acc[skill.type] = [];
+      const type = skill.type.toString(); // Convertir en string si nécessaire
+      if (!acc[type]) {
+        acc[type] = [];
       }
-      acc[skill.type].push(skill);
+      acc[type].push({ name: skill.name, icon: skill.icon });
       return acc;
     }, {} as Record<string, { name: string; icon: string }[]>);
   };
 
-  const groupedSkills = groupSkillsByType([...DATA.skills]);
+  const groupedSkills = groupSkillsByType([
+    ...data.skills,
+  ] as unknown as Skill[]);
 
   return (
     <Accordion type="single" collapsible className="w-full">
