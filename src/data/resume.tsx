@@ -431,11 +431,11 @@ export const DATA = {
     { name: "Shopify", type: TRANSLATIONS.fr.skills.cms, icon: "/shopify.svg" },
 
     // Marketing digital
-    { name: "SEO", type: TRANSLATIONS.fr.skills.marketing, icon: "/seo.svg" },
+    { name: "SEO", type: TRANSLATIONS.fr.skills.marketing, icon: "" },
     {
       name: "Google Analytics",
       type: TRANSLATIONS.fr.skills.marketing,
-      icon: "/google-analytics.svg",
+      icon: "",
     },
 
     // Gestion de projet et business
@@ -452,7 +452,7 @@ export const DATA = {
     {
       name: "Sales",
       type: TRANSLATIONS.fr.skills.projectManagement,
-      icon: "/sales.svg",
+      icon: "",
     },
   ],
   navbar: [
