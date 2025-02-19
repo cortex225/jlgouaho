@@ -52,6 +52,13 @@ export type Translations = {
       subtitle: string;
       description: string;
       badge: string;
+      video: string | null;
+      images: string[];
+      links: {
+        type: string;
+        href: string;
+        icon: string;
+      }[];
       magicSearch: {
         description: string;
         overview: string;
@@ -66,6 +73,13 @@ export type Translations = {
         description: string;
         overview: string;
         features: string[];
+        video: string | null;
+        images: string[];
+        links: {
+          type: string;
+          href: string;
+          icon: string;
+        }[];
         challenges: Array<{
           title: string;
           description: string;
@@ -76,14 +90,28 @@ export type Translations = {
         description: string;
         overview: string;
         features: string[];
+        video: string | null;
+        images: string[];
+        links: {
+          type: string;
+          href: string;
+          icon: string;
+        }[];
         challenges: Array<{
           title: string;
           description: string;
         }>;
         conclusion: string;
       };
-      automaticChat: {
+      recruitEase: {
         description: string;
+        video: string | null;
+        images: string[];
+        links: {
+          type: string;
+          href: string;
+          icon: string;
+        }[];
         overview: string;
         features: string[];
         challenges: Array<{

@@ -43,6 +43,14 @@ type Project = {
     href: string;
     icon: JSX.Element;
   }>;
+  description: string;
+  overview: string;
+  features: string[];
+  challenges: Array<{
+    title: string;
+    description: string;
+  }>;
+  conclusion: string;
 };
 
 type ProjectsType =

@@ -94,7 +94,7 @@ export function ProjectCard({
           className
         )}
         onClick={() => setActive(true)}>
-        {video && (
+        {video ? (
           <video
             src={video}
             autoPlay
@@ -103,7 +103,15 @@ export function ProjectCard({
             playsInline
             className="pointer-events-none mx-auto h-40 w-full object-cover object-top"
           />
-        )}
+        ) : images?.[0] ? (
+          <Image
+            src={images[0]}
+            alt={title}
+            width={800}
+            height={400}
+            className="pointer-events-none mx-auto h-40 w-full object-cover object-top"
+          />
+        ) : null}
         <CardHeader className="px-2">
           <div className="space-y-1">
             <CardTitle className="mt-1 text-base">{title}</CardTitle>
@@ -158,7 +166,7 @@ export function ProjectCard({
                 <motion.div
                   ref={ref}
                   className="w-full sm:max-w-[600px] mx-auto h-[90vh] sm:h-fit sm:max-h-[90vh] flex flex-col bg-white dark:bg-neutral-900 rounded-2xl sm:rounded-3xl overflow-hidden">
-                  {video && (
+                  {video ? (
                     <video
                       src={video}
                       autoPlay
@@ -167,7 +175,13 @@ export function ProjectCard({
                       playsInline
                       className="pointer-events-none mx-auto h-48 sm:h-70 w-full object-cover object-top"
                     />
-                  )}
+                  ) : images && images.length > 0 ? (
+                    <img
+                      src={images[1]}
+                      alt={title}
+                      className="pointer-events-none mx-auto h-48 sm:h-70 w-full object-cover object-top"
+                    />
+                  ) : null}
                   <ScrollArea className="h-full sm:h-[55vh]">
                     <div className="p-4 sm:p-6">
                       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
