@@ -75,10 +75,15 @@ const SkillWithTooltip = ({
   };
 
   return (
-    <div className="relative flex justify-center">
-      <AnimatePresence mode="popLayout">
+    <div
+      className="relative flex justify-center"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onMouseMove={handleMouseMove}>
+      <AnimatePresence initial={false}>
         {isHovered && (
           <motion.div
+            key="tooltip"
             initial={{ opacity: 0, y: 10, scale: 0.6 }}
             animate={{
               opacity: 1,
@@ -88,7 +93,7 @@ const SkillWithTooltip = ({
             }}
             exit={{ opacity: 0, y: 10, scale: 0.6 }}
             style={{ translateX, rotate }}
-            className="absolute -top-10  transform -translate-x-1/2 flex flex-col items-center justify-center rounded-md bg-black z-50 shadow-xl px-4 py-2 max-w-[150px]">
+            className="absolute -top-10 transform -translate-x-1/2 flex flex-col items-center justify-center rounded-md bg-black z-50 shadow-xl px-4 py-2 max-w-[150px]">
             <div className="absolute inset-x-10 z-30 w-[20%] -bottom-px bg-gradient-to-r from-transparent via-emerald-500 to-transparent h-px" />
             <div className="absolute left-10 w-[40%] z-50 -bottom-px bg-gradient-to-r from-transparent via-sky-500 to-transparent h-px" />
             <div className="font-bold text-white relative z-30 text-sm text-center">
@@ -97,6 +102,7 @@ const SkillWithTooltip = ({
           </motion.div>
         )}
       </AnimatePresence>
+
       {skill.icon ? (
         <Image
           src={skill.icon}
@@ -104,16 +110,9 @@ const SkillWithTooltip = ({
           width={24}
           height={24}
           className="object-cover h-10 w-10 group-hover:scale-105 group-hover:z-30 transition duration-500 cursor-pointer"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          onMouseMove={handleMouseMove}
         />
       ) : (
-        <Badge
-          className="h-8 w-fit px-3 flex items-center justify-center dark:bg-gray-800 text-sm font-medium cursor-pointer transition duration-500 hover:scale-105"
-          onMouseEnter={() => setIsHovered(false)}
-          onMouseLeave={() => setIsHovered(false)}
-          onMouseMove={handleMouseMove}>
+        <Badge className="h-8 w-fit px-3 flex items-center justify-center dark:bg-gray-800 text-sm font-medium cursor-pointer transition duration-500 hover:scale-105">
           {skill.name}
         </Badge>
       )}

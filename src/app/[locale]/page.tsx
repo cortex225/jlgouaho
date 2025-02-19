@@ -1,22 +1,72 @@
+"use client";
+
 import { HackathonCard } from "@/components/hackathon-card";
 import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
 import { ProjectCard } from "@/components/project-card";
 import { ResumeCard } from "@/components/resume-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { DATA } from "@/data/resume";
+import { DATA, TRANSLATIONS } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
 
-import {SkillsAccordion} from "@/components/skills-accordion";
-
-
+import { SkillsAccordion } from "@/components/skills-accordion";
+import { useI18n, useScopedI18n } from "@/app/locales/client";
+import { LocaleSelect } from "@/components/locale-select";
 const BLUR_FADE_DELAY = 0.04;
 
-export default function Page() {
-  // @ts-ignore
+type Challenge = {
+  title: string;
+  description: string;
+};
+
+type ProjectTranslations = {
+  description: string;
+  overview: string;
+  features: string[];
+  challenges: {
+    [key: string]: Challenge;
+  };
+  conclusion: string;
+};
+
+type Project = {
+  title: string;
+  href: string;
+  dates: string;
+  active: boolean;
+  technologies: readonly string[];
+  images: readonly string[];
+  video?: string;
+  links: Array<{
+    type: string;
+    href: string;
+    icon: JSX.Element;
+  }>;
+};
+
+type TranslationsType = typeof TRANSLATIONS;
+type LocaleType = keyof TranslationsType;
+type ProjectsType = "magicSearch" | "instaHR" | "llmReport" | "automaticChat";
+
+const PROJECT_KEYS: Record<string, ProjectsType> = {
+  MagicSearch: "magicSearch",
+  InstaHR: "instaHR",
+  llmReport: "llmReport",
+  AutomaticChat: "automaticChat",
+};
+
+export default function Page({
+  params: { locale },
+}: {
+  params: { locale: LocaleType };
+}) {
+  const t = useI18n();
+  const sections = useScopedI18n("sections");
+
   return (
     <main className="flex flex-col min-h-[100dvh] space-y-10">
+    
       <section id="hero">
         <div className="mx-auto w-full max-w-5xl space-y-8">
           <div className="gap-2 flex justify-between">
@@ -25,7 +75,7 @@ export default function Page() {
                 delay={BLUR_FADE_DELAY}
                 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none"
                 yOffset={8}
-                text={`Hi, I'm ${DATA.name}`}
+                text={`${t("hero.greeting")} ${DATA.name}`}
               />
               <BlurFadeText
                 className="max-w-[600px] md:text-xl"
@@ -44,7 +94,7 @@ export default function Page() {
       </section>
       <section id="about">
         <BlurFade delay={BLUR_FADE_DELAY * 3}>
-          <h2 className="text-xl font-bold">About</h2>
+          <h2 className="text-xl font-bold">{sections("about")}</h2>
         </BlurFade>
         <BlurFade delay={BLUR_FADE_DELAY * 4}>
           <Markdown className="prose max-w-full text-pretty font-sans text-sm text-muted-foreground dark:prose-invert">
@@ -55,13 +105,12 @@ export default function Page() {
       <section id="work">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 5}>
-            <h2 className="text-xl font-bold">Work Experience</h2>
+            <h2 className="text-xl font-bold">{sections("work")}</h2>
           </BlurFade>
           {DATA.work.map((work, id) => (
             <BlurFade
               key={work.company}
-              delay={BLUR_FADE_DELAY * 6 + id * 0.05}
-            >
+              delay={BLUR_FADE_DELAY * 6 + id * 0.05}>
               <ResumeCard
                 key={work.company}
                 logoUrl={work.logoUrl}
@@ -80,13 +129,12 @@ export default function Page() {
       <section id="education">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 7}>
-            <h2 className="text-xl font-bold">Education</h2>
+            <h2 className="text-xl font-bold">{sections("education")}</h2>
           </BlurFade>
           {DATA.education.map((education, id) => (
             <BlurFade
               key={education.school}
-              delay={BLUR_FADE_DELAY * 8 + id * 0.05}
-            >
+              delay={BLUR_FADE_DELAY * 8 + id * 0.05}>
               <ResumeCard
                 key={education.school}
                 href={education.href}
@@ -103,7 +151,7 @@ export default function Page() {
       <section id="skills">
         <div className="flex min-h-0 flex-col gap-y-3 border-2 rounded p-4">
           <BlurFade delay={BLUR_FADE_DELAY * 9}>
-            <h2 className="text-xl font-bold">Skills</h2>
+            <h2 className="text-xl font-bold">{sections("skills")}</h2>
           </BlurFade>
           <div className="flex flex-wrap gap-1">
             <SkillsAccordion />
@@ -116,45 +164,55 @@ export default function Page() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
-                  My Projects
+                  {sections("projects.badge")}
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                  Check out my latest work
+                  {sections("projects.subtitle")}
                 </h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  I&apos;ve worked on a variety of projects, from simple
-                  websites to complex web applications. Here are a few of my
-                  favorites.
+                  {sections("projects.description")}
                 </p>
               </div>
             </div>
           </BlurFade>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
-            {DATA.projects.map((project, id) => (
+            {DATA.projects.map((project, id) => {
+              const projectKey = PROJECT_KEYS[project.title];
+              const projectTranslations =
+                TRANSLATIONS[locale].projects[projectKey];
 
+              if (!projectTranslations) {
+                console.warn(
+                  `No translations found for project: ${project.title} in locale: ${locale}`
+                );
+                return null;
+              }
+
+              return (
                 <ProjectCard
-                    key={project.title}
-                    title={project.title}
-                    href={project.href}
-                    description={project.description}
-                    dates={project.dates}
-                    tags={project.technologies} // Les technologies comme tags
-                    // image={project.images ? project.images[0] : undefined} // Si une image est présente
-                    video={project.video}
-                    links={project.links ? project.links.map(link => ({
-                        icon: link.icon,
-                        type: link.type,
-                        href: link.href
-                    })) : undefined} // Ensure links conform to expected type
-                    overview={project.overview}
-                    technologies={project.technologies ? [...project.technologies] : undefined} // Technologies
-                    features={project.features ? [...project.features] : undefined} // Fonctionnalités
-                    challenges={project.challenges ? [...project.challenges] : undefined} // Défis
-                    conclusion={project.conclusion} // Conclusion
-                    images={project.images ? [...project.images] : undefined}  // Toutes les images
+                  key={project.title}
+                  title={project.title}
+                  href={project.href}
+                  description={projectTranslations.description}
+                  dates={project.dates}
+                  tags={[...project.technologies]}
+                  video={project.video}
+                  links={project.links}
+                  overview={projectTranslations.overview}
+                  technologies={[...project.technologies]}
+                  features={projectTranslations.features}
+                  challenges={Object.entries(
+                    projectTranslations.challenges
+                  ).map(([_, challenge]) => ({
+                    title: challenge.title,
+                    description: challenge.description,
+                  }))}
+                  conclusion={projectTranslations.conclusion}
+                  images={[...project.images]}
                 />
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -206,26 +264,24 @@ export default function Page() {
           <BlurFade delay={BLUR_FADE_DELAY * 16}>
             <div className="space-y-3">
               <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
-                Contact
+                {sections("contact.badge")}
               </div>
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                Get in Touch
+                {sections("contact.subtitle")}
               </h2>
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Want to chat? Just shoot me a dm{" "}
+                {sections("contact.description_start")}{" "}
                 <Link
                   href={DATA.contact.social.LinkedIn.url}
-                  className="text-blue-500 hover:underline"
-                >
-                  with a direct question on linkedin
+                  className="text-blue-500 hover:underline">
+                  {sections("contact.linkedinText")}
                 </Link>{" "}
-                and I&apos;ll respond in less than 24 hours.
+                {sections("contact.description_end")}
               </p>
             </div>
           </BlurFade>
         </div>
       </section>
-
     </main>
   );
 }
