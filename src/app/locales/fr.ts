@@ -44,9 +44,9 @@ const translations: Translations = {
         title: "Développeur Full-Stack Stagiaire",
         description: `
           <ul class="list-disc pl-4 space-y-1">
-            <li>Développement de sites d'estimation de valeur-crédit en PHP et WordPress.</li>
-            <li>Apprentissage pratique et implémentation de solutions optimisées.</li>
-            <li>Embauché à la suite du stage grâce aux performances démontrées.</li>
+            <li><strong>Développement de sites d'estimation de valeur-crédit</strong> en PHP et WordPress.</li>
+            <li><strong>Apprentissage pratique</strong> et implémentation de solutions optimisées.</li>
+            <li><strong>Embauché</strong> à la suite du stage grâce aux performances démontrées.</li>
           </ul>
         `,
         start: "Août 2022",
@@ -85,32 +85,7 @@ const translations: Translations = {
       description:
         "J'ai travaillé sur divers projets, des sites web simples aux applications web complexes. Voici quelques-uns de mes favoris.",
       badge: "Mes Projets",
-      magicSearch: {
-        description:
-          "Un moteur de recherche hybride magnifiquement conçu qui améliore la précision des recherches en interrogeant des résultats sémantiquement liés.",
-        overview:
-          "MagicSearch est un moteur de recherche qui exploite la compréhension sémantique pour fournir des résultats plus précis et contextuels. Il est conçu pour les utilisateurs qui souhaitent des expériences de recherche plus rapides, plus intelligentes et plus significatives.",
-        features: [
-          "Recherche sémantique alimentée par les embeddings OpenAI",
-          "Compatibilité multiplateforme avec design responsive",
-          "Algorithmes avancés de filtrage et de classement",
-          "Support des requêtes multilingues",
-        ],
-        challenges: [
-          {
-            title: "Compatibilité cross-browser",
-            description:
-              "Problèmes rencontrés avec Safari en raison des différences de gestion CSS. Résolu en utilisant Autoprefixer et en testant sur des appareils réels.",
-          },
-          {
-            title: "Optimisation des performances",
-            description:
-              "Réduction du temps de réponse API en implémentant un indexage et une mise en cache efficaces de la base de données.",
-          },
-        ],
-        conclusion:
-          "La construction de MagicSearch a été une expérience enrichissante qui a amélioré ma compréhension des algorithmes de recherche et de l'optimisation frontend/backend. Cela m'a appris à équilibrer l'expérience utilisateur avec les performances.",
-      },
+
       instaHR: {
         description:
           "Une plateforme de recrutement intelligente conçue pour mettre en relation les candidats avec les opportunités d'emploi en utilisant des algorithmes alimentés par l'IA.",
@@ -134,6 +109,8 @@ const translations: Translations = {
               "Intégration de Stripe pour des paiements sécurisés tout en maintenant une expérience utilisateur fluide.",
           },
         ],
+        video:
+          "https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video/recruitease.mp4",
         conclusion:
           "InstaHR m'a permis d'explorer l'intégration de l'IA dans l'industrie du recrutement et m'a fourni des insights précieux sur la construction de plateformes évolutives et conviviales.",
       },
@@ -163,7 +140,7 @@ const translations: Translations = {
         conclusion:
           "playerConnect m'a permis d'approfondir la construction de plateformes d'analyse de données et la résolution des défis liés à la gestion des données en temps réel.",
       },
-      automaticChat: {
+      recruitEase: {
         description:
           "Un chatbot de support client alimenté par l'IA qui répond automatiquement aux tickets de support en utilisant les derniers modèles GPT.",
         overview:
@@ -188,6 +165,32 @@ const translations: Translations = {
         ],
         conclusion:
           "Le développement d'Automatic Chat m'a appris les subtilités de l'intégration des solutions d'IA dans les processus métier réels.",
+      },
+      magicSearch: {
+        description:
+          "Un moteur de recherche hybride magnifiquement conçu qui améliore la précision des recherches en interrogeant des résultats sémantiquement liés.",
+        overview:
+          "MagicSearch est un moteur de recherche qui exploite la compréhension sémantique pour fournir des résultats plus précis et contextuels. Il est conçu pour les utilisateurs qui souhaitent des expériences de recherche plus rapides, plus intelligentes et plus significatives.",
+        features: [
+          "Recherche sémantique alimentée par les embeddings OpenAI",
+          "Compatibilité multiplateforme avec design responsive",
+          "Algorithmes avancés de filtrage et de classement",
+          "Support des requêtes multilingues",
+        ],
+        challenges: [
+          {
+            title: "Compatibilité cross-browser",
+            description:
+              "Problèmes rencontrés avec Safari en raison des différences de gestion CSS. Résolu en utilisant Autoprefixer et en testant sur des appareils réels.",
+          },
+          {
+            title: "Optimisation des performances",
+            description:
+              "Réduction du temps de réponse API en implémentant un indexage et une mise en cache efficaces de la base de données.",
+          },
+        ],
+        conclusion:
+          "La construction de MagicSearch a été une expérience enrichissante qui a amélioré ma compréhension des algorithmes de recherche et de l'optimisation frontend/backend. Cela m'a appris à équilibrer l'expérience utilisateur avec les performances.",
       },
     },
 

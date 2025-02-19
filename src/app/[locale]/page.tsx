@@ -57,13 +57,13 @@ type ProjectsType =
   | "magicSearch"
   | "instaHR"
   | "playerConnect"
-  | "automaticChat";
+  | "recruitEase";
 
 const PROJECT_KEYS: Record<string, ProjectsType> = {
   MagicSearch: "magicSearch",
   InstaHR: "instaHR",
   PlayerConnect: "playerConnect",
-  AutomaticChat: "automaticChat",
+  RecruitEase: "recruitEase",
 };
 
 export default function Page({

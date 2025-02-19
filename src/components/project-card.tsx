@@ -183,9 +183,9 @@ export function ProjectCard({
                     />
                   ) : null}
                   <ScrollArea className="h-full sm:h-[55vh]">
-                    <div className="p-4 sm:p-6">
+                    <div className="p-4 sm:p-6 max-w-[600px] mx-auto">
                       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-                        <h2 className="text-xl sm:text-2xl font-medium text-neutral-700 dark:text-neutral-200">
+                        <h2 className="h2 sm:text-2xl font-medium text-neutral-700 dark:text-neutral-200 ">
                           {title}
                         </h2>
 
