@@ -87,35 +87,57 @@ const translations: Translations = {
       badge: "Mes Projets",
       instaHR: {
         description:
-          "Une plateforme de recrutement intelligente conçue pour mettre en relation les candidats avec les opportunités d'emploi en utilisant des algorithmes alimentés par l'IA.",
+          "Un CRM SaaS pour la gestion des ressources humaines lorsque j'ai commencé à travailler chez Royal Broker.",
         overview:
-          "InstaHR simplifie le processus de recrutement en utilisant le machine learning pour analyser les CV, les descriptions de poste et mettre en relation les candidats de manière efficace.",
+          "InstaHR est une plateforme de gestion des ressources humaines qui permet aux entreprises de centraliser le recrutement, la gestion des employés et l’administration RH dans un espace unique. Son objectif est de simplifier les processus RH grâce à une interface intuitive et des fonctionnalités automatisées.",
         features: `
           <ul class="list-disc pl-4 space-y-1">
-            <li>Analyse automatisée des CV et mise en relation avec les emplois</li>
-            <li>Intégration avec des API tierces pour des fonctionnalités améliorées</li>
-            <li>Système de paiement sécurisé pour les fonctionnalités premium</li>
-            <li>Notifications en temps réel pour les recruteurs et les candidats</li>
+            <li>Gestion complète du cycle de recrutement (offres d’emploi, candidatures, entretiens)</li>
+            <li>Suivi des performances et des évaluations des employés</li>
+            <li>Automatisation des tâches administratives RH</li>
+            <li>Notifications en temps réel pour les mises à jour importantes</li>
+            <li>Authentification sécurisée avec gestion des rôles</li>
+            <li>Intégration avec des services comptables et de paiement (Zoho API)</li>
           </ul>
         `,
         challenges: `
-          <div class="space-y-4">
-            <div class="space-y-1">
-              <h5 class="font-medium">Évolutivité</h5>
-              <p class="text-neutral-600 dark:text-neutral-400">
-                S'assurer que la plateforme puisse gérer un grand nombre d'utilisateurs simultanément. Implémentation de requêtes de base de données optimisées et d'équilibrage de charge.
-              </p>
-            </div>
-            <div class="space-y-1">
-              <h5 class="font-medium">Intégration des paiements</h5>
-              <p class="text-neutral-600 dark:text-neutral-400">
-                Intégration de Stripe pour des paiements sécurisés tout en maintenant une expérience utilisateur fluide.
-              </p>
-            </div>
+  <div class="space-y-6">
+    <!-- Intégration de PrimeVue -->
+    <div class="space-y-1">
+      <h5 class="font-semibold text-lg flex items-center gap-2">
+        🚀 Intégration de PrimeVue dans des vues Razor (.cshtml)
+      </h5>
+      <p class="text-neutral-700 dark:text-neutral-300">
+        <span class="font-semibold">Problème :</span> Difficulté à utiliser les composants de PrimeVue directement dans les fichiers .cshtml d’ASP.NET.<br>
+        <span class="font-semibold">Solution :</span> Mise en place d’un serveur <span class="font-semibold text-blue-500">Vite ⚡</span> pour charger Vue comme un microfrontend, permettant une compatibilité optimale avec Razor.
+      </p>
+    </div>
+
+    <!-- Intégration des paiements -->
+    <div class="space-y-1">
+      <h5 class="font-semibold text-lg flex items-center gap-2">
+        💳 Intégration des paiements avec Stripe et Zoho
+      </h5>
+      <p class="text-neutral-700 dark:text-neutral-300">
+        <span class="font-semibold">Problème :</span> Besoin d’une solution sécurisée et évolutive pour gérer les paiements des employés.<br>
+        <span class="font-semibold">Solution :</span> Initialement intégré avec Stripe, puis migration vers <span class="font-semibold text-blue-500">Zoho API</span>, en développant un service dédié pour gérer le <span class="italic">token refreshing</span>.
+      </p>
+    </div>
+
+    <!-- Réduction des coûts cloud -->
+    <div class="space-y-1">
+      <h5 class="font-semibold text-lg flex items-center gap-2">
+        ☁️ Optimisation des coûts cloud
+      </h5>
+      <p class="text-neutral-700 dark:text-neutral-300">
+        <span class="font-semibold">Problème :</span> Coûts élevés sur le cloud avec une incertitude sur le service optimal (Azure, AWS, GCP).<br>
+        <span class="font-semibold">Solution :</span> Analyse comparative des offres et mise en place d'une <span class="font-semibold text-green-500">approche serverless</span> pour réduire les dépenses.
+      </p>
+    </div>
           </div>
         `,
         conclusion:
-          "InstaHR m'a permis d'explorer l'intégration de l'IA dans l'industrie du recrutement et m'a fourni des insights précieux sur la construction de plateformes évolutives et conviviales.",
+          "InstaHR m’a permis d’acquérir une meilleure expertise en conception d’architecture logicielle et en optimisation d’interface utilisateur. Ce projet m’a aidé à comprendre comment équilibrer la complexité fonctionnelle avec la simplicité d’utilisation.",
       },
       playerConnect: {
         description:

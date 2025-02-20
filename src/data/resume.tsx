@@ -305,6 +305,8 @@ export function getData(locale: "en" | "fr" = "fr") {
           "Vite",
           "PrimeVue",
           "Zoho API",
+          "Azure",
+  
         ],
         images: [
           "/projects/instaHR/dash.png",
@@ -315,12 +317,12 @@ export function getData(locale: "en" | "fr" = "fr") {
         links: [
           {
             type: "Website",
-            href: "https://magic-search-psi.vercel.app",
+            href: "https://myinstahr.ca",
             icon: <Icons.globe className="size-3" />,
           },
           {
             type: "Github",
-            href: "https://github.com/cryptotrends/cryptotrends",
+            href: "https://github.com/cortex225/instaHR",
             icon: <Icons.github className="h-4 w-4" />,
           },
         ],
@@ -332,7 +334,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         features: t.sections.projects.playerConnect.features,
         challenges: t.sections.projects.playerConnect.challenges,
         conclusion: t.sections.projects.playerConnect.conclusion,
-        href: "https://llm.report",
+        href: "#",
         dates: "April 2023 - September 2023",
         active: true,
         technologies: [

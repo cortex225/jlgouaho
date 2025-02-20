@@ -119,32 +119,54 @@ const translations: Translations = {
       },
       instaHR: {
         description:
-          "An intelligent recruitment platform designed to match candidates with job opportunities using AI-powered algorithms.",
+          "A SaaS CRM for human resources management when I started working at Royal Broker.",
         overview:
           "InstaHR streamlines the recruitment process by leveraging machine learning to analyze resumes, job descriptions, and match candidates efficiently.",
         features: `
-          <ul class="list-disc pl-4 space-y-1">
-            <li>Automated resume analysis and job matching</li>
-            <li>Integration with third-party APIs for enhanced functionality</li>
-            <li>Secure payment system for premium features</li>
-            <li>Real-time notifications for recruiters and candidates</li>
+         <ul class="list-disc pl-4 space-y-1">
+            <li>Complete recruitment cycle management (job postings, applications, interviews)</li>
+            <li>Performance tracking and employee evaluations</li>
+            <li>Automation of HR administrative tasks</li>
+            <li>Real-time notifications for important updates</li>
+            <li>Secure authentication with role management</li>
+            <li>Integration with accounting and payment services (Zoho API)</li>
           </ul>
         `,
         challenges: `
-          <div class="space-y-4">
-            <div class="space-y-1">
-              <h5 class="font-medium">Scalability</h5>
-              <p class="text-neutral-600 dark:text-neutral-400">
-                Ensuring the platform could handle a large number of users simultaneously. Implemented optimized database queries and load balancing.
-              </p>
+            <div class="space-y-6">
+                <!-- PrimeVue Integration -->
+                <div class="space-y-1">
+                <h5 class="font-semibold text-lg flex items-center gap-2">
+                    🚀 Integrating PrimeVue into Razor Views (.cshtml)
+                </h5>
+                <p class="text-neutral-700 dark:text-neutral-300">
+                    <span class="font-semibold">Problem:</span> Difficulty using PrimeVue components directly in .cshtml files of ASP.NET.<br>
+                    <span class="font-semibold">Solution:</span> Implemented a <span class="font-semibold text-blue-500">Vite ⚡</span> server to load Vue as a microfrontend, ensuring optimal compatibility with Razor.
+                </p>
+                </div>
+
+                <!-- Payment Integration -->
+                <div class="space-y-1">
+                <h5 class="font-semibold text-lg flex items-center gap-2">
+                    💳 Payment Integration with Stripe and Zoho
+                </h5>
+                <p class="text-neutral-700 dark:text-neutral-300">
+                    <span class="font-semibold">Problem:</span> Need for a secure and scalable solution to manage employee payments.<br>
+                    <span class="font-semibold">Solution:</span> Initially integrated with Stripe, then migrated to <span class="font-semibold text-blue-500">Zoho API</span>, developing a dedicated service to handle <span class="italic">token refreshing</span>.
+                </p>
+                </div>
+
+                <!-- Cloud Cost Optimization -->
+                <div class="space-y-1">
+                <h5 class="font-semibold text-lg flex items-center gap-2">
+                    ☁️ Cloud Cost Optimization
+                </h5>
+                <p class="text-neutral-700 dark:text-neutral-300">
+                    <span class="font-semibold">Problem:</span> High cloud costs with uncertainty about the best service (Azure, AWS, GCP).<br>
+                    <span class="font-semibold">Solution:</span> Conducted a comparative analysis of cloud providers and implemented a <span class="font-semibold text-green-500">serverless approach</span> to reduce expenses.
+                </p>
+                </div>
             </div>
-            <div class="space-y-1">
-              <h5 class="font-medium">Payment integration</h5>
-              <p class="text-neutral-600 dark:text-neutral-400">
-                Integrating Stripe for secure payments while maintaining a seamless user experience.
-              </p>
-            </div>
-          </div>
         `,
         conclusion:
           "InstaHR allowed me to explore the integration of AI into the recruitment industry and provided valuable insights into building scalable, user-friendly platforms.",

@@ -234,10 +234,7 @@ export function ProjectCard({
                       </div>
 
                       <div className="mt-4 space-y-6">
-                        <p className="text-neutral-600 dark:text-neutral-400 text-base">
-                          {description}
-                        </p>
-
+                       
                         {overview && (
                           <section>
                             <h4 className="text-lg font-semibold mb-2">
