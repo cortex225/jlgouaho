@@ -85,32 +85,35 @@ const translations: Translations = {
       description:
         "J'ai travaillé sur divers projets, des sites web simples aux applications web complexes. Voici quelques-uns de mes favoris.",
       badge: "Mes Projets",
-
       instaHR: {
         description:
           "Une plateforme de recrutement intelligente conçue pour mettre en relation les candidats avec les opportunités d'emploi en utilisant des algorithmes alimentés par l'IA.",
         overview:
           "InstaHR simplifie le processus de recrutement en utilisant le machine learning pour analyser les CV, les descriptions de poste et mettre en relation les candidats de manière efficace.",
-        features: [
-          "Analyse automatisée des CV et mise en relation avec les emplois.",
-          "Intégration avec des API tierces pour des fonctionnalités améliorées.",
-          "Système de paiement sécurisé pour les fonctionnalités premium.",
-          "Notifications en temps réel pour les recruteurs et les candidats.",
-        ],
-        challenges: [
-          {
-            title: "Évolutivité",
-            description:
-              "S'assurer que la plateforme puisse gérer un grand nombre d'utilisateurs simultanément. Implémentation de requêtes de base de données optimisées et d'équilibrage de charge.",
-          },
-          {
-            title: "Intégration des paiements",
-            description:
-              "Intégration de Stripe pour des paiements sécurisés tout en maintenant une expérience utilisateur fluide.",
-          },
-        ],
-        video:
-          "https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video/recruitease.mp4",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Analyse automatisée des CV et mise en relation avec les emplois</li>
+            <li>Intégration avec des API tierces pour des fonctionnalités améliorées</li>
+            <li>Système de paiement sécurisé pour les fonctionnalités premium</li>
+            <li>Notifications en temps réel pour les recruteurs et les candidats</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">Évolutivité</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                S'assurer que la plateforme puisse gérer un grand nombre d'utilisateurs simultanément. Implémentation de requêtes de base de données optimisées et d'équilibrage de charge.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">Intégration des paiements</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                Intégration de Stripe pour des paiements sécurisés tout en maintenant une expérience utilisateur fluide.
+              </p>
+            </div>
+          </div>
+        `,
         conclusion:
           "InstaHR m'a permis d'explorer l'intégration de l'IA dans l'industrie du recrutement et m'a fourni des insights précieux sur la construction de plateformes évolutives et conviviales.",
       },
@@ -119,76 +122,94 @@ const translations: Translations = {
           "Une plateforme open-source de journalisation et d'analyse pour OpenAI : Enregistrez vos requêtes API ChatGPT, analysez les coûts et améliorez vos prompts.",
         overview:
           "llm.report aide les développeurs à optimiser leur utilisation des modèles GPT d'OpenAI en fournissant des insights détaillés sur l'utilisation de l'API et les coûts.",
-        features: [
-          "Journalisation détaillée des requêtes API.",
-          "Analyse des coûts et suggestions d'optimisation.",
-          "Suivi des performances des prompts.",
-          "Tableaux de bord de visualisation des données en temps réel.",
-        ],
-        challenges: [
-          {
-            title: "Confidentialité des données",
-            description:
-              "Assurer la sécurité des données utilisateur tout en fournissant des analyses détaillées. Implémentation de techniques de chiffrement et d'anonymisation.",
-          },
-          {
-            title: "Mises à jour en temps réel",
-            description:
-              "Intégration du support WebSocket pour les mises à jour en direct sans surcharger le backend.",
-          },
-        ],
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Journalisation détaillée des requêtes API</li>
+            <li>Analyse des coûts et suggestions d'optimisation</li>
+            <li>Suivi des performances des prompts</li>
+            <li>Tableaux de bord de visualisation des données en temps réel</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">Confidentialité des données</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                Assurer la sécurité des données utilisateur tout en fournissant des analyses détaillées. Implémentation de techniques de chiffrement et d'anonymisation.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">Mises à jour en temps réel</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                Intégration du support WebSocket pour les mises à jour en direct sans surcharger le backend.
+              </p>
+            </div>
+          </div>
+        `,
         conclusion:
           "playerConnect m'a permis d'approfondir la construction de plateformes d'analyse de données et la résolution des défis liés à la gestion des données en temps réel.",
       },
       recruitEase: {
         description:
-          "Un chatbot de support client alimenté par l'IA qui répond automatiquement aux tickets de support en utilisant les derniers modèles GPT.",
+          "Une plateforme de recrutement innovante qui utilise l'IA pour automatiser et optimiser le processus de recrutement.",
         overview:
-          "Automatic Chat vise à réduire la charge de travail du support client en fournissant des réponses instantanées générées par l'IA pour les problèmes courants.",
-        features: [
-          "Réponses alimentées par l'IA pour les tickets de support client.",
-          "Intégration facile avec les plateformes de support client existantes.",
-          "Support multilingue pour les utilisateurs internationaux.",
-          "Analyses avancées pour suivre les performances du chatbot.",
-        ],
-        challenges: [
-          {
-            title: "Fine-tuning GPT",
-            description:
-              "Personnalisation des modèles GPT pour les connaissances spécifiques au domaine tout en maintenant la précision des réponses.",
-          },
-          {
-            title: "Complexité d'intégration",
-            description:
-              "Assurer une intégration transparente avec des outils tiers comme Zendesk et Freshdesk.",
-          },
-        ],
+          "RecruitEase simplifie le recrutement en automatisant l'analyse des CV, la présélection des candidats et la gestion des entretiens.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Analyse automatique des CV avec l'IA</li>
+            <li>Matching intelligent candidat-poste</li>
+            <li>Gestion automatisée des entretiens</li>
+            <li>Tableaux de bord analytiques avancés</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">Précision de l'IA</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                Optimisation des algorithmes de matching pour garantir des correspondances pertinentes.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">Expérience utilisateur</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                Création d'une interface intuitive pour les recruteurs et les candidats.
+              </p>
+            </div>
+          </div>
+        `,
         conclusion:
-          "Le développement d'Automatic Chat m'a appris les subtilités de l'intégration des solutions d'IA dans les processus métier réels.",
+          "RecruitEase démontre comment l'IA peut transformer le recrutement en le rendant plus efficace et objectif.",
       },
       magicSearch: {
         description:
           "Un moteur de recherche hybride magnifiquement conçu qui améliore la précision des recherches en interrogeant des résultats sémantiquement liés.",
         overview:
           "MagicSearch est un moteur de recherche qui exploite la compréhension sémantique pour fournir des résultats plus précis et contextuels. Il est conçu pour les utilisateurs qui souhaitent des expériences de recherche plus rapides, plus intelligentes et plus significatives.",
-        features: [
-          "Recherche sémantique alimentée par les embeddings OpenAI",
-          "Compatibilité multiplateforme avec design responsive",
-          "Algorithmes avancés de filtrage et de classement",
-          "Support des requêtes multilingues",
-        ],
-        challenges: [
-          {
-            title: "Compatibilité cross-browser",
-            description:
-              "Problèmes rencontrés avec Safari en raison des différences de gestion CSS. Résolu en utilisant Autoprefixer et en testant sur des appareils réels.",
-          },
-          {
-            title: "Optimisation des performances",
-            description:
-              "Réduction du temps de réponse API en implémentant un indexage et une mise en cache efficaces de la base de données.",
-          },
-        ],
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Recherche sémantique alimentée par les embeddings OpenAI</li>
+            <li>Compatibilité multiplateforme avec design responsive</li>
+            <li>Algorithmes avancés de filtrage et de classement</li>
+            <li>Support des requêtes multilingues</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">Compatibilité cross-browser</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                Problèmes rencontrés avec Safari en raison des différences de gestion CSS. Résolu en utilisant Autoprefixer et en testant sur des appareils réels.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">Optimisation des performances</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                Réduction du temps de réponse API en implémentant un indexage et une mise en cache efficaces de la base de données.
+              </p>
+            </div>
+          </div>
+        `,
         conclusion:
           "La construction de MagicSearch a été une expérience enrichissante qui a amélioré ma compréhension des algorithmes de recherche et de l'optimisation frontend/backend. Cela m'a appris à équilibrer l'expérience utilisateur avec les performances.",
       },

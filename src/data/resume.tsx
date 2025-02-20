@@ -249,7 +249,50 @@ export function getData(locale: "en" | "fr" = "fr") {
     ],
     projects: [
       {
+        title: "MagicSearch",
+        description: t.sections.projects.magicSearch.description,
+        overview: t.sections.projects.magicSearch.overview,
+        features: t.sections.projects.magicSearch.features,
+        challenges: t.sections.projects.magicSearch.challenges,
+        conclusion: t.sections.projects.magicSearch.conclusion,
+        href: "https://magic-search-psi.vercel.app",
+        dates: "Jan 2024 - Feb 2024",
+        active: true,
+        technologies: [
+          "Next.js",
+          "Typescript",
+          "PostgreSQL",
+          "Drizzle",
+          "TailwindCSS",
+          "Shadcn UI",
+          "OpenAI",
+        ],
+        images: [
+          "/projects/magic-search/magic-1.png",
+          "/projects/magic-search/magic-2.png",
+        ],
+        video:
+          "https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video/magic-search.mp4",
+        links: [
+          {
+            type: "Website",
+            href: "https://magic-search-psi.vercel.app",
+            icon: <Icons.globe className="size-3" />,
+          },
+          {
+            type: "Github",
+            href: "https://github.com/cryptotrends/cryptotrends",
+            icon: <Icons.github className="h-4 w-4" />,
+          },
+        ],
+      },
+      {
         title: "InstaHR",
+        description: t.sections.projects.instaHR.description,
+        overview: t.sections.projects.instaHR.overview,
+        features: t.sections.projects.instaHR.features,
+        challenges: t.sections.projects.instaHR.challenges,
+        conclusion: t.sections.projects.instaHR.conclusion,
         href: "https://myinstahr.ca",
         dates: "June 2023 - Present",
         active: true,
@@ -284,6 +327,11 @@ export function getData(locale: "en" | "fr" = "fr") {
       },
       {
         title: "PlayerConnect",
+        description: t.sections.projects.playerConnect.description,
+        overview: t.sections.projects.playerConnect.overview,
+        features: t.sections.projects.playerConnect.features,
+        challenges: t.sections.projects.playerConnect.challenges,
+        conclusion: t.sections.projects.playerConnect.conclusion,
         href: "https://llm.report",
         dates: "April 2023 - September 2023",
         active: true,
@@ -297,9 +345,12 @@ export function getData(locale: "en" | "fr" = "fr") {
           "Magic UI",
           "Stripe",
         ],
-        images: ["/llm-dashboard.png", "/llm-analytics.png"],
+        images: [
+          "/projects/playerConnect/player.png",
+          "/projects/playerConnect/recruiter.png",
+        ],
         video:
-          "https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video/yeye.mp4?t=2025-01-14T19%3A20%3A58.076Z",
+          "https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video//playerConnect1.mp4",
         links: [
           {
             type: "Website",
@@ -314,7 +365,12 @@ export function getData(locale: "en" | "fr" = "fr") {
         ],
       },
       {
-        title: "recruitEase",
+        title: "RecruitEase",
+        description: t.sections.projects.recruitEase.description,
+        overview: t.sections.projects.recruitEase.overview,
+        features: t.sections.projects.recruitEase.features,
+        challenges: t.sections.projects.recruitEase.challenges,
+        conclusion: t.sections.projects.recruitEase.conclusion,
         href: "",
         dates: "April 2023 - March 2024",
         active: true,
@@ -338,44 +394,6 @@ export function getData(locale: "en" | "fr" = "fr") {
         ],
         video:
           "https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video//recruitease.mp4",
-        links: [
-          {
-            type: "Website",
-            href: "https://magic-search-psi.vercel.app",
-            icon: <Icons.globe className="size-3" />,
-          },
-          {
-            type: "Github",
-            href: "https://github.com/cryptotrends/cryptotrends",
-            icon: <Icons.github className="h-4 w-4" />,
-          },
-        ],
-      },
-      {
-        title: "MagicSearch",
-        href: "https://magic-search-psi.vercel.app",
-        dates: "Jan 2024 - Feb 2024",
-        active: true,
-        description: t.sections.projects.magicSearch.description,
-        overview: t.sections.projects.magicSearch.overview,
-        features: t.sections.projects.magicSearch.features,
-        challenges: t.sections.projects.magicSearch.challenges,
-        conclusion: t.sections.projects.magicSearch.conclusion,
-        technologies: [
-          "Next.js",
-          "Typescript",
-          "PostgreSQL",
-          "Drizzle",
-          "TailwindCSS",
-          "Shadcn UI",
-          "OpenAI",
-        ],
-        images: [
-          "/projects/magic-search/magic-1.png",
-          "/projects/magic-search/magic-2.png",
-        ],
-        video:
-          "https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video/magic-search.mp4",
         links: [
           {
             type: "Website",

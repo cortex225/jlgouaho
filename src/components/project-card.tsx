@@ -36,11 +36,13 @@ interface Props {
   }[];
   overview?: string;
   technologies?: string[];
-  features?: string[];
-  challenges?: {
-    title: string;
-    description: string;
-  }[];
+  features?: string;
+  challenges?:
+    | string
+    | Array<{
+        title: string;
+        description: string;
+      }>;
   conclusion?: string;
   images?: string[];
   className?: string;
@@ -85,6 +87,32 @@ export function ProjectCard({
   }, [active]);
 
   useOutsideClick(ref, () => setActive(false));
+
+  const renderChallenges = () => {
+    if (!challenges) return null;
+
+    if (typeof challenges === "string") {
+      return (
+        <div
+          className="challenges"
+          dangerouslySetInnerHTML={{ __html: challenges }}
+        />
+      );
+    }
+
+    return (
+      <div className="space-y-4">
+        {challenges.map((challenge, index) => (
+          <div key={index} className="space-y-1">
+            <h5 className="font-medium">{challenge.title}</h5>
+            <p className="text-neutral-600 dark:text-neutral-400">
+              {challenge.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <>
@@ -173,13 +201,13 @@ export function ProjectCard({
                       loop
                       muted
                       playsInline
-                      className="pointer-events-none mx-auto h-48 sm:h-70 w-full object-cover object-top"
+                      className="pointer-events-none mx-autoh-[40vh]sm:h-[40vh] w-full object-cover object-top"
                     />
                   ) : images && images.length > 0 ? (
                     <img
                       src={images[1]}
                       alt={title}
-                      className="pointer-events-none mx-auto h-48 sm:h-70 w-full object-cover object-top"
+                      className="pointer-events-none mx-auto h-[40vh]sm:h-[40vh] w-full object-cover object-top"
                     />
                   ) : null}
                   <ScrollArea className="h-full sm:h-[55vh]">
@@ -241,20 +269,10 @@ export function ProjectCard({
                             <h4 className="text-lg font-semibold mb-2">
                               Features
                             </h4>
-                            <div className="space-y-4">
-                              <h4 className="text-sm font-medium leading-none">
-                                Features
-                              </h4>
-                              <ul className="list-disc list-inside space-y-1">
-                                {Array.isArray(features) ? (
-                                  features.map((feature, index) => (
-                                    <li key={index}>{feature}</li>
-                                  ))
-                                ) : (
-                                  <li>{features}</li>
-                                )}
-                              </ul>
-                            </div>
+                            <div
+                              className="space-y-4"
+                              dangerouslySetInnerHTML={{ __html: features }}
+                            />
                           </section>
                         )}
 
@@ -263,22 +281,7 @@ export function ProjectCard({
                             <h4 className="text-lg font-semibold mb-2">
                               Challenges & Solutions
                             </h4>
-                            <div className="space-y-4">
-                              {Array.isArray(challenges) ? (
-                                challenges.map((challenge, index) => (
-                                  <div key={index} className="space-y-1">
-                                    <h5 className="font-medium">
-                                      {challenge.title}
-                                    </h5>
-                                    <p className="text-neutral-600 dark:text-neutral-400">
-                                      {challenge.description}
-                                    </p>
-                                  </div>
-                                ))
-                              ) : (
-                                <p>No challenges available</p>
-                              )}
-                            </div>
+                            {renderChallenges()}
                           </section>
                         )}
 

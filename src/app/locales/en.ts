@@ -90,24 +90,30 @@ const translations: Translations = {
           "A beautifully designed, hybrid search engine that enhances search accuracy by querying semantically related results.",
         overview:
           "MagicSearch is a search engine that leverages semantic understanding to deliver more accurate and context-aware results. It is designed for users who want faster, smarter, and more meaningful search experiences.",
-        features: [
-          "Semantic search powered by OpenAI embeddings.",
-          "Cross-platform compatibility with responsive design.",
-          "Advanced filtering and ranking algorithms.",
-          "Support for multi-language queries.",
-        ],
-        challenges: [
-          {
-            title: "Cross-browser compatibility",
-            description:
-              "Faced issues with Safari due to differences in CSS handling. Solved using Autoprefixer and testing on real devices.",
-          },
-          {
-            title: "Performance optimization",
-            description:
-              "Reduced API response time by implementing efficient database indexing and caching.",
-          },
-        ],
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Semantic search powered by OpenAI embeddings</li>
+            <li>Cross-platform compatibility with responsive design</li>
+            <li>Advanced filtering and ranking algorithms</li>
+            <li>Support for multi-language queries</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">Cross-browser compatibility</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                Faced issues with Safari due to differences in CSS handling. Solved using Autoprefixer and testing on real devices.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">Performance optimization</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                Reduced API response time by implementing efficient database indexing and caching.
+              </p>
+            </div>
+          </div>
+        `,
         conclusion:
           "Building MagicSearch was a rewarding experience that enhanced my understanding of search algorithms and frontend/backend optimization. It taught me how to balance user experience with performance.",
       },
@@ -116,24 +122,30 @@ const translations: Translations = {
           "An intelligent recruitment platform designed to match candidates with job opportunities using AI-powered algorithms.",
         overview:
           "InstaHR streamlines the recruitment process by leveraging machine learning to analyze resumes, job descriptions, and match candidates efficiently.",
-        features: [
-          "Automated resume analysis and job matching.",
-          "Integration with third-party APIs for enhanced functionality.",
-          "Secure payment system for premium features.",
-          "Real-time notifications for recruiters and candidates.",
-        ],
-        challenges: [
-          {
-            title: "Scalability",
-            description:
-              "Ensuring the platform could handle a large number of users simultaneously. Implemented optimized database queries and load balancing.",
-          },
-          {
-            title: "Payment integration",
-            description:
-              "Integrating Stripe for secure payments while maintaining a seamless user experience.",
-          },
-        ],
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Automated resume analysis and job matching</li>
+            <li>Integration with third-party APIs for enhanced functionality</li>
+            <li>Secure payment system for premium features</li>
+            <li>Real-time notifications for recruiters and candidates</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">Scalability</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                Ensuring the platform could handle a large number of users simultaneously. Implemented optimized database queries and load balancing.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">Payment integration</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                Integrating Stripe for secure payments while maintaining a seamless user experience.
+              </p>
+            </div>
+          </div>
+        `,
         conclusion:
           "InstaHR allowed me to explore the integration of AI into the recruitment industry and provided valuable insights into building scalable, user-friendly platforms.",
       },
@@ -142,52 +154,64 @@ const translations: Translations = {
           "An open-source logging and analytics platform for OpenAI: Log your ChatGPT API requests, analyze costs, and improve your prompts.",
         overview:
           "playerConnect helps developers optimize their usage of OpenAI's GPT models by providing detailed insights into API usage and costs.",
-        features: [
-          "Detailed API request logging.",
-          "Cost analysis and optimization suggestions.",
-          "Prompt performance tracking.",
-          "Real-time data visualization dashboards.",
-        ],
-        challenges: [
-          {
-            title: "Data privacy",
-            description:
-              "Ensuring user data remains secure while providing detailed analytics. Implemented encryption and anonymization techniques.",
-          },
-          {
-            title: "Real-time updates",
-            description:
-              "Integrating WebSocket support for live updates without overloading the backend.",
-          },
-        ],
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Detailed API request logging</li>
+            <li>Cost analysis and optimization suggestions</li>
+            <li>Prompt performance tracking</li>
+            <li>Real-time data visualization dashboards</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">Data privacy</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                Ensuring user data remains secure while providing detailed analytics. Implemented encryption and anonymization techniques.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">Real-time updates</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                Integrating WebSocket support for live updates without overloading the backend.
+              </p>
+            </div>
+          </div>
+        `,
         conclusion:
           "playerConnect provided a deep dive into building data analytics platforms and solving challenges around real-time data handling.",
       },
-      automaticChat: {
+      recruitEase: {
         description:
-          "An AI Customer Support Chatbot which automatically responds to customer support tickets using the latest GPT models.",
+          "An innovative recruitment platform that uses AI to automate and optimize the hiring process.",
         overview:
-          "Automatic Chat aims to reduce customer support workload by providing instant, AI-generated responses for common issues.",
-        features: [
-          "AI-powered responses for customer support tickets.",
-          "Easy integration with existing customer support platforms.",
-          "Multi-language support for global users.",
-          "Advanced analytics to track chatbot performance.",
-        ],
-        challenges: [
-          {
-            title: "GPT fine-tuning",
-            description:
-              "Customizing GPT models for domain-specific knowledge while maintaining response accuracy.",
-          },
-          {
-            title: "Integration complexity",
-            description:
-              "Ensuring seamless integration with third-party tools like Zendesk and Freshdesk.",
-          },
-        ],
+          "RecruitEase simplifies recruitment by automating resume analysis, candidate screening, and interview management.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>AI-powered resume analysis</li>
+            <li>Intelligent candidate-job matching</li>
+            <li>Automated interview management</li>
+            <li>Advanced analytics dashboards</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">AI Accuracy</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                Optimizing matching algorithms to ensure relevant matches.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">User Experience</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                Creating an intuitive interface for both recruiters and candidates.
+              </p>
+            </div>
+          </div>
+        `,
         conclusion:
-          "Developing Automatic Chat taught me the intricacies of integrating AI solutions into real-world business processes.",
+          "RecruitEase demonstrates how AI can transform recruitment by making it more efficient and objective.",
       },
     },
 

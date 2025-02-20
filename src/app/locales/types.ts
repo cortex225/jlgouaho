@@ -54,70 +54,38 @@ export type Translations = {
       badge: string;
       video: string | null;
       images: string[];
-      links: {
+      links: Array<{
         type: string;
         href: string;
         icon: string;
-      }[];
+      }>;
       magicSearch: {
         description: string;
         overview: string;
-        features: string[];
-        challenges: Array<{
-          title: string;
-          description: string;
-        }>;
+        features: string;
+        challenges: string;
         conclusion: string;
       };
       instaHR: {
         description: string;
         overview: string;
-        features: string[];
-        video: string | null;
-        images: string[];
-        links: {
-          type: string;
-          href: string;
-          icon: string;
-        }[];
-        challenges: Array<{
-          title: string;
-          description: string;
-        }>;
+        features: string;
+        challenges: string;
         conclusion: string;
       };
       playerConnect: {
         description: string;
         overview: string;
-        features: string[];
-        video: string | null;
-        images: string[];
-        links: {
-          type: string;
-          href: string;
-          icon: string;
-        }[];
-        challenges: Array<{
-          title: string;
-          description: string;
-        }>;
+        features: string;
+        challenges: string;
         conclusion: string;
       };
       recruitEase: {
         description: string;
-        video: string | null;
-        images: string[];
-        links: {
-          type: string;
-          href: string;
-          icon: string;
-        }[];
         overview: string;
-        features: string[];
-        challenges: Array<{
-          title: string;
-          description: string;
-        }>;
+        features: string;
+        challenges: string;
+        conclusion: string;
       };
     };
     contact: {

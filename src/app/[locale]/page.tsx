@@ -1,6 +1,5 @@
 "use client";
 
-import { HackathonCard } from "@/components/hackathon-card";
 import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
 import { ProjectCard } from "@/components/project-card";
@@ -10,7 +9,8 @@ import { getData } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
 import { SkillsAccordion } from "@/components/skills-accordion";
-import { useI18n, useScopedI18n } from "@/app/locales/client";
+import { useI18n } from "@/app/locales/client";
+import type { Translations } from "@/app/locales/types";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -22,42 +22,12 @@ type Challenge = {
 type ProjectTranslation = {
   description: string;
   overview: string;
-  features: string[];
-  challenges: Array<{
-    title: string;
-    description: string;
-  }>;
+  features: string;
+  challenges: Challenge[] | string;
   conclusion: string;
 };
 
-type Project = {
-  title: string;
-  href: string;
-  dates: string;
-  active: boolean;
-  technologies: readonly string[];
-  images: readonly string[];
-  video?: string;
-  links: Array<{
-    type: string;
-    href: string;
-    icon: JSX.Element;
-  }>;
-  description: string;
-  overview: string;
-  features: string[];
-  challenges: Array<{
-    title: string;
-    description: string;
-  }>;
-  conclusion: string;
-};
-
-type ProjectsType =
-  | "magicSearch"
-  | "instaHR"
-  | "playerConnect"
-  | "recruitEase";
+type ProjectsType = keyof Translations["sections"]["projects"];
 
 const PROJECT_KEYS: Record<string, ProjectsType> = {
   MagicSearch: "magicSearch",
@@ -72,29 +42,59 @@ export default function Page({
   params: { locale: "en" | "fr" };
 }) {
   const t = useI18n();
-  const sections = useScopedI18n("sections");
   const data = getData(locale);
 
   // Accès aux traductions des sections
-  const greeting = sections("hero.greeting");
-  const about = sections("about.title");
-  const aboutDescription = sections("about.description");
-  const work = sections("work.title");
-  const education = sections("education.title");
-  const skills = sections("skills.title");
-  const projects = sections("projects");
-  const contact = sections("contact");
+  const greetingText = t("hero.greeting");
+  const aboutTitle = t("sections.about.title");
+  const aboutDesc = t("sections.about.description");
+  const workTitle = t("sections.work.title");
+  const educationTitle = t("sections.education.title");
+  const skillsTitle = t("sections.skills.title");
+  const projectsTitle = t("sections.projects.title");
+  const contactTitle = t("sections.contact.title");
 
   // Accès aux traductions des projets
-  const getProjectTranslations = (key: ProjectsType): ProjectTranslation => {
-    const projectPath = `sections.projects.${key}`;
+  const getProjectTranslations = (
+    key: ProjectsType
+  ): ProjectTranslation | null => {
+    if (!key) {
+      console.error("Project key is undefined for title:", key);
+      return null;
+    }
+
     return {
-      description: t(`${projectPath}.description`),
-      overview: t(`${projectPath}.overview`),
-      features: t(`${projectPath}.features`),
-      challenges: t(`${projectPath}.challenges`),
-      conclusion: t(`${projectPath}.conclusion`),
+      description: t(`sections.projects.${key}.description`),
+      overview: t(`sections.projects.${key}.overview`),
+      features: t(`sections.projects.${key}.features`),
+      challenges: t(`sections.projects.${key}.challenges`),
+      conclusion: t(`sections.projects.${key}.conclusion`),
     };
+  };
+
+  const renderChallenges = (challenges: any) => {
+    if (Array.isArray(challenges)) {
+      return (
+        <div className="space-y-4">
+          {challenges.map((challenge, index) => (
+            <div key={index} className="space-y-1">
+              <h5 className="font-medium">{challenge.title}</h5>
+              <p className="text-neutral-600 dark:text-neutral-400">
+                {challenge.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    // Si ce n'est pas un tableau, on suppose que c'est une chaîne HTML
+    return (
+      <div
+        className="challenges"
+        dangerouslySetInnerHTML={{ __html: challenges }}
+      />
+    );
   };
 
   return (
@@ -107,7 +107,7 @@ export default function Page({
                 delay={BLUR_FADE_DELAY}
                 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none"
                 yOffset={8}
-                text={`${t("hero.greeting")} ${data.name}`}
+                text={`${greetingText} ${data.name}`}
               />
               <BlurFadeText
                 className="max-w-[600px] md:text-xl"
@@ -126,25 +126,25 @@ export default function Page({
       </section>
       <section id="about">
         <BlurFade delay={BLUR_FADE_DELAY * 3}>
-          <h2 className="text-xl font-bold">{about}</h2>
+          <h2 className="text-xl font-bold">{aboutTitle}</h2>
         </BlurFade>
         <BlurFade delay={BLUR_FADE_DELAY * 4}>
           <Markdown className="prose max-w-full text-pretty font-sans text-sm text-muted-foreground dark:prose-invert">
-            {aboutDescription}
+            {aboutDesc}
           </Markdown>
         </BlurFade>
       </section>
       <section id="work">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 5}>
-            <h2 className="text-xl font-bold">{work}</h2>
+            <h2 className="text-xl font-bold">{workTitle}</h2>
           </BlurFade>
           {data.work.map((work, id) => (
             <BlurFade
-              key={work.company}
+              key={`${work.company}-${id}`}
               delay={BLUR_FADE_DELAY * 6 + id * 0.05}>
               <ResumeCard
-                key={work.company}
+                key={`${work.company}-${id}`}
                 logoUrl={work.logoUrl}
                 altText={work.company}
                 title={work.company}
@@ -161,14 +161,14 @@ export default function Page({
       <section id="education">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 7}>
-            <h2 className="text-xl font-bold">{education}</h2>
+            <h2 className="text-xl font-bold">{educationTitle}</h2>
           </BlurFade>
           {data.education.map((education, id) => (
             <BlurFade
-              key={education.school}
+              key={`${education.school}-${id}`}
               delay={BLUR_FADE_DELAY * 8 + id * 0.05}>
               <ResumeCard
-                key={education.school}
+                key={`${education.school}-${id}`}
                 href={education.href}
                 logoUrl={education.logoUrl}
                 altText={education.school}
@@ -183,7 +183,7 @@ export default function Page({
       <section id="skills">
         <div className="flex min-h-0 flex-col gap-y-3 border-2 rounded p-4">
           <BlurFade delay={BLUR_FADE_DELAY * 9}>
-            <h2 className="text-xl font-bold">{skills}</h2>
+            <h2 className="text-xl font-bold">{skillsTitle}</h2>
           </BlurFade>
           <div className="flex flex-wrap gap-1">
             <SkillsAccordion />
@@ -196,13 +196,13 @@ export default function Page({
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
-                  {sections("projects.badge")}
+                  {t("sections.projects.badge")}
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                  {sections("projects.subtitle")}
+                  {t("sections.projects.subtitle")}
                 </h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  {sections("projects.description")}
+                  {t("sections.projects.description")}
                 </p>
               </div>
             </div>
@@ -248,19 +248,19 @@ export default function Page({
           <BlurFade delay={BLUR_FADE_DELAY * 16}>
             <div className="space-y-3">
               <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
-                {sections("contact.badge")}
+                {t("sections.contact.badge")}
               </div>
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                {sections("contact.subtitle")}
+                {t("sections.contact.subtitle")}
               </h2>
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                {sections("contact.description_start")}{" "}
+                {t("sections.contact.description_start")}{" "}
                 <Link
                   href={data.contact.social.LinkedIn.url}
                   className="text-blue-500 hover:underline">
-                  {sections("contact.linkedinText")}
+                  {t("sections.contact.linkedinText")}
                 </Link>{" "}
-                {sections("contact.description_end")}
+                {t("sections.contact.description_end")}
               </p>
             </div>
           </BlurFade>
