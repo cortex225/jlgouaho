@@ -173,35 +173,45 @@ const translations: Translations = {
       },
       playerConnect: {
         description:
-          "An open-source logging and analytics platform for OpenAI: Log your ChatGPT API requests, analyze costs, and improve your prompts.",
+          "The platform that connects basketball players with recruiters and coaches. 📊🏀",
         overview:
-          "playerConnect helps developers optimize their usage of OpenAI's GPT models by providing detailed insights into API usage and costs.",
+          "PlayerConnect is a platform that connects basketball players with recruiters and coaches. It allows players to showcase their performance, recruiters to access detailed profiles, and coaches to efficiently manage team tracking.",
         features: `
-          <ul class="list-disc pl-4 space-y-1">
-            <li>Detailed API request logging</li>
-            <li>Cost analysis and optimization suggestions</li>
-            <li>Prompt performance tracking</li>
-            <li>Real-time data visualization dashboards</li>
-          </ul>
-        `,
+    <ul class="list-disc pl-4 space-y-1">
+      <li>Detailed player profiles with stats and videos 📊🎥</li>
+      <li>Matchmaking system between recruiters and players 🏀🔍</li>
+      <li>Interactive match and event calendar 📅</li>
+      <li>Real-time notifications for recruiters and players 📢</li>
+      <li>Built-in messaging system for seamless communication 💬</li>
+    </ul>
+  `,
         challenges: `
-          <div class="space-y-4">
-            <div class="space-y-1">
-              <h5 class="font-medium">Data privacy</h5>
-              <p class="text-neutral-600 dark:text-neutral-400">
-                Ensuring user data remains secure while providing detailed analytics. Implemented encryption and anonymization techniques.
-              </p>
-            </div>
-            <div class="space-y-1">
-              <h5 class="font-medium">Real-time updates</h5>
-              <p class="text-neutral-600 dark:text-neutral-400">
-                Integrating WebSocket support for live updates without overloading the backend.
-              </p>
-            </div>
-          </div>
-        `,
+    <div class="space-y-4">
+      <div class="space-y-1">
+        <h5 class="font-medium">🔹 Automated Performance Analysis</h5>
+        <p class="text-neutral-600 dark:text-neutral-400">
+          <span class="font-semibold">Problem:</span> Turning match videos into actionable insights.<br>
+          <span class="font-semibold">Solution:</span> Integrated AI with OpenAI API to extract key statistics from videos.
+        </p>
+      </div>
+      <div class="space-y-1">
+        <h5 class="font-medium">🔹 Player Engagement and Visibility</h5>
+        <p class="text-neutral-600 dark:text-neutral-400">
+          <span class="font-semibold">Problem:</span> Helping players maximize their exposure to recruiters.<br>
+          <span class="font-semibold">Solution:</span> Implemented an optimized profile system with performance-based recommendations and an advanced matchmaking algorithm.
+        </p>
+      </div>
+      <div class="space-y-1">
+        <h5 class="font-medium">🔹 User Experience and Performance</h5>
+        <p class="text-neutral-600 dark:text-neutral-400">
+          <span class="font-semibold">Problem:</span> Ensuring smooth navigation despite the use of real-time data and videos.<br>
+          <span class="font-semibold">Solution:</span> Optimized the frontend with Next.js, implemented WebSockets for real-time communication, and hosted efficiently on Vercel and Firebase.
+        </p>
+      </div>
+    </div>
+  `,
         conclusion:
-          "playerConnect provided a deep dive into building data analytics platforms and solving challenges around real-time data handling.",
+          "PlayerConnect is an innovative platform that revolutionizes sports recruitment by directly connecting players with recruiters and coaches. With artificial intelligence and performance analysis, it provides a unique opportunity for talents to stand out and access new career prospects.",
       },
       recruitEase: {
         description:

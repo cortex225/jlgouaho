@@ -141,35 +141,45 @@ const translations: Translations = {
       },
       playerConnect: {
         description:
-          "Une plateforme open-source de journalisation et d'analyse pour OpenAI : Enregistrez vos requêtes API ChatGPT, analysez les coûts et améliorez vos prompts.",
+          "La plateforme qui connecte les joueurs de basketball avec les recruteurs et entraîneurs. 📊🏀",
         overview:
-          "llm.report aide les développeurs à optimiser leur utilisation des modèles GPT d'OpenAI en fournissant des insights détaillés sur l'utilisation de l'API et les coûts.",
+          "PlayerConnect est une plateforme qui connecte les joueurs de basketball avec les recruteurs et les entraîneurs. Elle permet aux joueurs de mettre en avant leurs performances, aux recruteurs d’accéder à des profils détaillés, et aux entraîneurs d’organiser plus efficacement le suivi de leurs équipes.",
         features: `
           <ul class="list-disc pl-4 space-y-1">
-            <li>Journalisation détaillée des requêtes API</li>
-            <li>Analyse des coûts et suggestions d'optimisation</li>
-            <li>Suivi des performances des prompts</li>
-            <li>Tableaux de bord de visualisation des données en temps réel</li>
+            <li>Profils de joueurs détaillés avec statistiques et vidéos 📊🎥</li>
+            <li>Système de matchmaking entre recruteurs et joueurs 🏀🔍</li>
+            <li>Calendrier interactif des matchs et événements 📅</li>
+            <li>Notifications en temps réel pour les recruteurs et joueurs 📢</li>
+            <li>Système de messagerie intégrée pour faciliter les échanges 💬</li>
           </ul>
         `,
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">Confidentialité des données</h5>
+              <h5 class="font-medium">🔹Analyse automatique des performances</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
-                Assurer la sécurité des données utilisateur tout en fournissant des analyses détaillées. Implémentation de techniques de chiffrement et d'anonymisation.
+                <span class="font-semibold">Problème :</span> Transformer des vidéos de matchs en insights exploitables.<br>
+                <span class="font-semibold">Solution :</span> Intégration de l’IA avec OpenAI API pour extraire des statistiques clés à partir des vidéos.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">Mises à jour en temps réel</h5>
+              <h5 class="font-medium">🔹 Engagement et visibilité des joueurs</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
-                Intégration du support WebSocket pour les mises à jour en direct sans surcharger le backend.
+               <span class="font-semibold"> Problème :</span> Aider les joueurs à maximiser leur exposition aux recruteurs.<br>
+                <span class="font-semibold">Solution :</span> Mise en place d’un système de profil optimisé, avec des recommandations basées sur les performances et un algorithme de matchmaking avancé.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">🔹Expérience utilisateur et performance</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+               <span class="font-semibold">  Problème :</span> Garantir une navigation fluide malgré l’utilisation de vidéos et de données en temps réel.<br>
+                <span class="font-semibold">Solution :</span> Optimisation du frontend avec Next.js, utilisation de WebSockets pour la communication en temps réel, et hébergement optimisé sur Vercel et Firebase.
               </p>
             </div>
           </div>
         `,
         conclusion:
-          "playerConnect m'a permis d'approfondir la construction de plateformes d'analyse de données et la résolution des défis liés à la gestion des données en temps réel.",
+          "PlayerConnect est une plateforme innovante qui révolutionne le recrutement sportif en connectant directement les joueurs avec les recruteurs et entraîneurs. Grâce à l’intelligence artificielle et à l’analyse de performances, elle offre une opportunité unique aux talents de se démarquer et d’accéder à de nouvelles opportunités.",
       },
       recruitEase: {
         description:

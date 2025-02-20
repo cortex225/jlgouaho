@@ -306,7 +306,6 @@ export function getData(locale: "en" | "fr" = "fr") {
           "PrimeVue",
           "Zoho API",
           "Azure",
-  
         ],
         images: [
           "/projects/instaHR/dash.png",
@@ -344,8 +343,10 @@ export function getData(locale: "en" | "fr" = "fr") {
           "Prisma",
           "TailwindCSS",
           "Shadcn UI",
-          "Magic UI",
           "Stripe",
+          "WebSockets",
+          "Supabase",
+          "OpenAI",
         ],
         images: [
           "/projects/playerConnect/player.png",
@@ -354,14 +355,14 @@ export function getData(locale: "en" | "fr" = "fr") {
         video:
           "https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video//playerConnect1.mp4",
         links: [
-          {
-            type: "Website",
-            href: "https://magic-search-psi.vercel.app",
-            icon: <Icons.globe className="size-3" />,
-          },
+          // {
+          //   type: "Website",
+          //   href: "#",
+          //   icon: <Icons.globe className="size-3" />,
+          // },
           {
             type: "Github",
-            href: "https://github.com/cryptotrends/cryptotrends",
+            href: "https://github.com/cortex225/playerConnect",
             icon: <Icons.github className="h-4 w-4" />,
           },
         ],
