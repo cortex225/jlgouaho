@@ -398,16 +398,16 @@ export function getData(locale: "en" | "fr" = "fr") {
         video:
           "https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video//recruitease.mp4",
         links: [
-          {
-            type: "Website",
-            href: "https://magic-search-psi.vercel.app",
-            icon: <Icons.globe className="size-3" />,
-          },
-          {
-            type: "Github",
-            href: "https://github.com/cryptotrends/cryptotrends",
-            icon: <Icons.github className="h-4 w-4" />,
-          },
+          // {
+          //   type: "Website",
+          //   href: "https://magic-search-psi.vercel.app",
+          //   icon: <Icons.globe className="size-3" />,
+          // },
+          // {
+          //   type: "Github",
+          //   href: "https://github.com/cryptotrends/cryptotrends",
+          //   icon: <Icons.github className="h-4 w-4" />,
+          // },
         ],
       },
     ],
