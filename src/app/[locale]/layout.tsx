@@ -89,8 +89,8 @@ export default function RootLayout({
                 "inset-x-0 inset-y-[-30%] h-[100vh] skew-y-12"
               )}
             />
+            <Analytics />
           </Providers>
-          <Analytics />
         </ThemeProvider>
       </body>
     </html>
