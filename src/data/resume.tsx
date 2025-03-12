@@ -32,7 +32,7 @@ export function getData(locale: "en" | "fr" = "fr") {
       {
         name: "JavaScript",
         type: t.sections.skills.languages,
-        icon: "/javascript.svg",
+        icon: "/javaScript.svg",
       },
       {
         name: "TypeScript",
