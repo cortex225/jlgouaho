@@ -390,10 +390,10 @@ export function getData(locale: "en" | "fr" = "fr") {
           "Stripe",
         ],
         images: [
-          "/projects/recruitEase/landing2.gif",
-          "/projects/recruitEase/jobs.png",
-          "/projects/recruitEase/landing.png",
-          "/projects/recruitEase/recommendations.png",
+          "/projects/recruit-ease/landing2.gif",
+          "/projects/recruit-ease/jobs.png",
+          "/projects/recruit-ease/landing.png",
+          "/projects/recruit-ease/recommendations.png",
         ],
         video:
           "https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video//recruitease.mp4",
