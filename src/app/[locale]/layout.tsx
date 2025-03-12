@@ -8,6 +8,7 @@ import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import AnimatedGridPattern from "@/components/ui/animated-grid-pattern";
 import { Providers } from "./providers";
+import { Analytics } from "@vercel/analytics/react";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -89,6 +90,7 @@ export default function RootLayout({
               )}
             />
           </Providers>
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>
