@@ -27,10 +27,10 @@ export const generateMetadata = ({
       default: data.name,
       template: `%s | ${data.name}`,
     },
-    description: data.description,
+    description: data.description.description,
     openGraph: {
       title: `${data.name}`,
-      description: data.description,
+      description: data.description.description,
       url: data.url,
       siteName: `${data.name}`,
       locale: locale === "fr" ? "fr_FR" : "en_US",
@@ -72,7 +72,7 @@ export default function RootLayout({
           "min-h-screen bg-background font-sans antialiased",
           fontSans.variable
         )}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Providers locale={locale}>
             <TooltipProvider delayDuration={0}>
               {children}

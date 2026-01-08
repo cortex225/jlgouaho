@@ -52,13 +52,7 @@ export type Translations = {
       subtitle: string;
       description: string;
       badge: string;
-      video: string | null;
-      images: string[];
-      links: Array<{
-        type: string;
-        href: string;
-        icon: string;
-      }>;
+
       magicSearch: {
         description: string;
         overview: string;

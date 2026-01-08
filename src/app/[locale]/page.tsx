@@ -2,30 +2,16 @@
 
 import React, { useState } from 'react';
 import { 
-    Mail, Calendar, Globe, Linkedin, Github, Download, 
-    Share2, QrCode, X, Languages, Wallet, Lightbulb, 
-    ShoppingBag, Code, TrendingUp, Headphones, Cpu, CheckCircle,
-    Twitter, MapPin, ExternalLink, GraduationCap, Briefcase,
+    Mail, Linkedin, Github, Share2, QrCode, X, Languages, Lightbulb, 
+    Code, Briefcase, MapPin, ExternalLink, GraduationCap, ArrowRight,
     ChevronDown, ChevronUp
 } from 'lucide-react';
-import { ActionButton } from '@/components/ui/action-button';
 import { SocialIcon } from '@/components/ui/social-icon';
+import { WorkCard } from '@/components/ui/work-card';
 import { getData } from '@/data/resume';
 import Link from 'next/link';
+import { ModeToggle } from '@/components/mode-toggle';
 import Image from 'next/image';
-
-// Helper to get Icon component
-const getIcon = (iconName: string) => {
-    switch(iconName) {
-        case 'Globe': return <Globe size={24} />;
-        case 'ShoppingBag': return <ShoppingBag size={24} />;
-        case 'Code': return <Code size={24} />;
-        case 'TrendingUp': return <TrendingUp size={24} />;
-        case 'Headphones': return <Headphones size={24} />;
-        case 'Cpu': return <Cpu size={24} />;
-        default: return <Lightbulb size={24} />;
-    }
-};
 
 export default function Page({ params: { locale } }: { params: { locale: string } }) {
     const DATA = getData(locale as 'en' | 'fr');
@@ -49,56 +35,11 @@ export default function Page({ params: { locale } }: { params: { locale: string 
         }
     };
 
-    const downloadVCard = () => {
-        const vCardContent = `BEGIN:VCARD
-VERSION:3.0
-FN:${DATA.name}
-N:${DATA.name.split(' ')[1]};${DATA.name.split(' ')[0]};;;
-TITLE:${DATA.summary.title}
-EMAIL;type=INTERNET;type=WORK:${DATA.contact.email}
-TEL;type=CELL:${DATA.contact.tel}
-URL:${DATA.url}
-ADR;type=WORK:;;;${DATA.location};;;
-END:VCARD`;
-        
-        const blob = new Blob([vCardContent], { type: "text/vcard" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", "contact.vcf");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-    };
-
-    const handleGoogleWallet = async () => {
-        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(window.location.href)}&color=000000&bgcolor=ffffff&format=png&margin=20`;
-        
-        try {
-            const response = await fetch(qrUrl);
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = "Wallet-QR.png";
-            document.body.appendChild(link);
-            link.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(link);
-            
-            setTimeout(() => {
-                alert("QR Code downloaded!");
-            }, 500);
-
-        } catch (error) {
-            console.error('Error downloading QR', error);
-            window.open(qrUrl, '_blank');
-        }
-    };
-
+    // Show only first 2 work items initially
     const visibleWork = isWorkExpanded ? DATA.work : DATA.work.slice(0, 2);
+    
+    // Show only first 3 projects
+    const visibleProjects = DATA.projects.slice(0, 3);
 
     return (
         <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 font-sans relative selection:bg-indigo-100 selection:text-indigo-900">
@@ -125,6 +66,7 @@ END:VCARD`;
                             >
                                 <Share2 size={18} />
                             </button>
+                            <ModeToggle />
                         </div>
 
                         {/* Status Badge */}
@@ -156,10 +98,11 @@ END:VCARD`;
                             <p className="text-slate-500 dark:text-slate-400 text-sm font-medium px-4">{DATA.summary.title}</p>
                         </div>
 
-                        {/* Tech Stack (Tags) */}
+                        {/* Tech Stack (Tags) - Expanded */}
                         <div className="mb-8">
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest text-center mb-4">Tech Stack</p>
                             <div className="flex flex-wrap justify-center gap-2">
-                                {DATA.skills.slice(0, 8).map((tech, index) => (
+                                {DATA.skills.map((tech, index) => (
                                     <span key={index} className="px-3 py-1 bg-slate-100/50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 rounded-lg text-[11px] font-semibold border border-slate-200/50 dark:border-slate-700/50">
                                         {tech.name}
                                     </span>
@@ -167,8 +110,8 @@ END:VCARD`;
                             </div>
                         </div>
 
-                        {/* Primary Actions */}
-                        <div className="grid grid-cols-2 gap-3 mb-6">
+                        {/* Actions - Simplified */}
+                        <div className="grid grid-cols-2 gap-3 mb-8">
                             <button 
                                 onClick={() => window.location.href = `mailto:${DATA.contact.email}`}
                                 className="bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-200 dark:text-slate-900 text-white py-4 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-xl shadow-slate-900/10 group"
@@ -185,34 +128,11 @@ END:VCARD`;
                             </button>
                         </div>
 
-                        {/* Secondary Actions */}
-                        <div className="space-y-3 mb-8">
-                            <ActionButton 
-                                onClick={handleGoogleWallet} 
-                                icon={<Wallet size={18} />} 
-                                text="Add to Wallet" 
-                                subtext="Always at hand"
-                            />
-                            <ActionButton 
-                                onClick={downloadVCard} 
-                                icon={<Download size={18} />} 
-                                text="Save Contact" 
-                                subtext=".vcf"
-                            />
-                             <ActionButton 
-                                onClick={() => window.open(DATA.url, '_blank', 'noopener,noreferrer')}
-                                icon={<Globe size={18} />} 
-                                text="Visit Website"
-                                subtext={DATA.url.replace('https://', '')}
-                                highlight
-                            />
-                        </div>
-
                         {/* Social Footer */}
                         <div className="pt-6 border-t border-slate-200/50 dark:border-slate-700/50 flex justify-center gap-6">
                             <SocialIcon href={DATA.contact.social.LinkedIn.url} icon={<Linkedin size={22} />} />
                             <SocialIcon href={DATA.contact.social.GitHub.url} icon={<Github size={22} />} />
-                            <SocialIcon href={DATA.contact.social.X.url} icon={<Twitter size={22} />} />
+                            <SocialIcon href={DATA.contact.social.X.url} icon={<X size={22} />} />
                             <button 
                                 onClick={() => setShowQR(true)} 
                                 className="text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors p-2 hover:scale-110"
@@ -245,38 +165,7 @@ END:VCARD`;
                         </h2>
                         <div className="space-y-4">
                             {visibleWork.map((job, i) => (
-                                <div key={i} className="group bg-white dark:bg-slate-900 rounded-[2rem] p-6 md:p-8 border border-white dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300">
-                                    <div className="flex flex-col md:flex-row gap-6 md:items-start">
-                                        <div className="shrink-0">
-                                            <div className="w-16 h-16 rounded-2xl overflow-hidden bg-white shadow-sm border border-slate-100 dark:border-slate-800 relative">
-                                                <Image src={job.logoUrl} alt={job.company} fill className="object-cover" />
-                                            </div>
-                                        </div>
-                                        <div className="flex-1">
-                                            <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
-                                                <div>
-                                                    <h3 className="text-xl font-bold text-slate-900 dark:text-white">{job.company}</h3>
-                                                    <p className="text-indigo-600 dark:text-indigo-400 font-medium">{job.title}</p>
-                                                </div>
-                                                <span className="text-sm font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full mt-2 md:mt-0 w-fit">
-                                                    {job.start} - {job.end}
-                                                </span>
-                                            </div>
-                                            <div 
-                                                className="text-slate-600 dark:text-slate-300 leading-relaxed mb-4 prose dark:prose-invert max-w-none text-sm"
-                                                dangerouslySetInnerHTML={{ __html: job.description }}
-                                            />
-                                            <div className="flex flex-wrap gap-2">
-                                                {job.badges.map((badge, j) => (
-                                                     <span key={j} className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold border border-emerald-100 dark:border-emerald-800">
-                                                        <CheckCircle size={12} />
-                                                        {badge}
-                                                    </span>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <WorkCard key={i} job={job} />
                             ))}
                         </div>
                         
@@ -303,7 +192,7 @@ END:VCARD`;
                             Featured Projects
                         </h2>
                         <div className="grid grid-cols-1 gap-6">
-                            {DATA.projects.map((project, i) => (
+                            {visibleProjects.map((project, i) => (
                                 <div key={i} className="group bg-white dark:bg-slate-900 rounded-[2rem] p-6 md:p-8 border border-white dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300 overflow-hidden relative">
                                     
                                     <div className="flex justify-between items-start mb-4">
@@ -340,6 +229,15 @@ END:VCARD`;
                                     )}
                                 </div>
                             ))}
+                        </div>
+
+                         <div className="flex justify-center mt-8">
+                             <Link
+                                href={`/${locale}/projects`}
+                                className="group flex items-center gap-2 px-8 py-4 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold hover:scale-105 transition-transform shadow-xl shadow-slate-900/10"
+                            >
+                                View All Projects <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                            </Link>
                         </div>
                     </section>
 
