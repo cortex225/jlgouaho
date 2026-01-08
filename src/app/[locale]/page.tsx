@@ -27,7 +27,6 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                 await navigator.share({
                     title: DATA.name,
                     text: `${DATA.summary.title} - ${DATA.name}`,
-                    text: `${DATA.summary.title} - ${DATA.name}`,
                     url: DATA.businessUrl || window.location.href,
                 });
             } catch (err) {
