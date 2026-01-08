@@ -175,6 +175,13 @@ export function getData(locale: "en" | "fr" = "fr") {
 
           navbar: true,
         },
+        Instagram: {
+          name: "Instagram",
+          url: "https://www.instagram.com/jlgouaho/",
+          icon: Icons.instagram,
+
+          navbar: true,
+        },
         // Youtube: {
         //   name: "Youtube",
         //   url: "https://dub.sh/dillion-youtube",
@@ -183,7 +190,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         // },
         email: {
           name: "Send Email",
-          url: "#",
+          url: "mailto:jlgouaho@gmail.com",
           icon: Icons.email,
 
           navbar: false,
@@ -235,6 +242,23 @@ export function getData(locale: "en" | "fr" = "fr") {
         start: "January 2019",
         end: "April 2019",
         description: t.sections.work.rogers.description,
+      },
+    ],
+    certifications: [
+      {
+        name: "Microsoft AZ-900",
+        logoUrl: "/certifications/microsoft-900.png", 
+        href: "https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/",
+        date: null,
+        description: t.sections.certifications.inProgress,
+        
+      },
+      {
+        name: "Microsoft AI-900",
+        logoUrl: "/certifications/AI-900.png",
+        href: "https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-fundamentals/",
+        date: null,
+        description: t.sections.certifications.inProgress,
       },
     ],
     education: [

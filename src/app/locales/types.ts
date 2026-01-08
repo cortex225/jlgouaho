@@ -36,6 +36,10 @@ export type Translations = {
       title: string;
       description: string;
     };
+    certifications: {
+      title: string;
+      inProgress: string;
+    };
     skills: {
       title: string;
       languages: string;

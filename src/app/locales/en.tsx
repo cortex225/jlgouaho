@@ -63,6 +63,10 @@ const translations: Translations = {
         `,
       },
     },
+    certifications: {
+      title: "Certifications",
+      inProgress: "In Progress",
+    },
     education: {
       title: "Education",
       description:

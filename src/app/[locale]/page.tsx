@@ -4,7 +4,10 @@ import React, { useState } from 'react';
 import { 
     Mail, Linkedin, Github, Share2, QrCode, X, Languages, Lightbulb, 
     Code, Briefcase, MapPin, ExternalLink, GraduationCap, ArrowRight,
-    ChevronDown, ChevronUp
+    ChevronDown, ChevronUp, NotebookIcon,
+    Twitter,
+    Instagram,
+    Award
 } from 'lucide-react';
 import { SocialIcon } from '@/components/ui/social-icon';
 import { WorkCard } from '@/components/ui/work-card';
@@ -36,7 +39,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
     };
 
     // Show only first 2 work items initially
-    const visibleWork = isWorkExpanded ? DATA.work : DATA.work.slice(0, 2);
+    const visibleWork = isWorkExpanded ? DATA.work : DATA.work.slice(0, 3);
     
     // Show only first 3 projects
     const visibleProjects = DATA.projects.slice(0, 3);
@@ -132,7 +135,8 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                         <div className="pt-6 border-t border-slate-200/50 dark:border-slate-700/50 flex justify-center gap-6">
                             <SocialIcon href={DATA.contact.social.LinkedIn.url} icon={<Linkedin size={22} />} />
                             <SocialIcon href={DATA.contact.social.GitHub.url} icon={<Github size={22} />} />
-                            <SocialIcon href={DATA.contact.social.X.url} icon={<X size={22} />} />
+                            <SocialIcon href={DATA.contact.social.X.url} icon={<Twitter size={22} />} />
+                            <SocialIcon href={DATA.contact.social.Instagram.url} icon={<Instagram size={22} />} />
                             <button 
                                 onClick={() => setShowQR(true)} 
                                 className="text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors p-2 hover:scale-110"
@@ -156,7 +160,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                             {DATA.summary.description}
                         </p>
                     </section>
-
+                    
                     {/* Work Experience */}
                     <section>
                         <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-8 ml-4 flex items-center gap-3">
@@ -257,6 +261,42 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                     <h3 className="font-bold text-lg text-white mb-2">{edu.school}</h3>
                                     <p className="text-slate-300 font-medium mb-1">{edu.degree}</p>
                                     <p className="text-slate-400 text-sm leading-relaxed">{edu.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
+                    {/* Certifications */}
+                     <section className="bg-slate-900 dark:bg-slate-950 text-slate-100 rounded-[2.5rem] p-8 md:p-12 overflow-hidden relative">
+                         <div className="absolute top-0 left-0 w-64 h-64 bg-emerald-500 rounded-full blur-[100px] opacity-10 pointer-events-none"></div>
+                         
+                        <h2 className="text-2xl font-bold text-white mb-10 relative z-10 flex items-center gap-3">
+                            <span className="bg-white/10 p-2 rounded-xl"><Award size={24} /></span>
+                            {DATA.certifications.length > 0 ? "Certifications" : "Certifications"}
+                        </h2>
+                        <div className="grid grid-cols-1 gap-8 relative z-10">
+                            {DATA.certifications.map((cert, i) => (
+                                <div key={i} className="relative pl-8 border-l-2 border-slate-700">
+                                    <span className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-emerald-500 ring-4 ring-slate-900 dark:ring-slate-950"></span>
+                                    <span className="text-emerald-400 font-mono text-xs font-bold tracking-widest mb-2 block uppercase">{cert.date ?? cert.description}</span>
+                                    
+                                    <div className="flex items-center gap-4">
+                                        {cert.logoUrl && (
+                                            <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-white shrink-0">
+                                                <Image 
+                                                    src={cert.logoUrl} 
+                                                    alt={cert.name} 
+                                                    fill 
+                                                    className="object-contain p-1"
+                                                />
+                                            </div>
+                                        )}
+                                        <h3 className="font-bold text-lg text-white mb-1">
+                                            <a href={cert.href} target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">
+                                                {cert.name}
+                                            </a>
+                                        </h3>
+                                    </div>
                                 </div>
                             ))}
                         </div>
