@@ -21,8 +21,8 @@ export default function Navbar() {
 
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 mx-auto mb-4 flex origin-bottom h-full max-h-14 mt-25">
-      <div className="fixed bottom-0 inset-x-0 h-16 w-full bg-background to-transparent backdrop-blur-lg [-webkit-mask-image:linear-gradient(to_top,black,transparent)] dark:bg-background"></div>
-      <Dock className="z-50 pointer-events-auto w-[400px] mx-auto justify-center relative flex min-h-full h-full items-center px-1 bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] ">
+      <div className="fixed bottom-0 inset-x-0 h-16 w-full bg-gradient-to-t from-background to-transparent backdrop-blur-lg [-webkit-mask-image:linear-gradient(to_top,black,transparent)]"></div>
+      <Dock className="z-50 pointer-events-auto w-[420px] mx-auto justify-center relative flex min-h-full h-full items-center px-2 bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl border border-white/80 dark:border-slate-700/50 shadow-2xl shadow-slate-900/10 dark:shadow-black/20 transform-gpu rounded-2xl">
         {data.navbar.map((item) => (
           <DockIcon key={item.href}>
             <Tooltip>

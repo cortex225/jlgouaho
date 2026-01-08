@@ -58,12 +58,19 @@ const config = {
   			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'
+  			},
+  			success: {
+  				DEFAULT: 'hsl(var(--success))',
+  				foreground: 'hsl(var(--success-foreground))'
   			}
   		},
   		borderRadius: {
+  			'3xl': 'var(--radius-2xl)',
+  			'2xl': 'var(--radius-xl)',
+  			xl: 'var(--radius-lg)',
   			lg: 'var(--radius)',
-  			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
+  			md: 'calc(var(--radius) - 4px)',
+  			sm: 'calc(var(--radius) - 8px)'
   		},
   		keyframes: {
   			'accordion-down': {
