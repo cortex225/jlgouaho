@@ -23,9 +23,23 @@ const translations: Translations = {
             <li><strong>Implementation of Agile processes</strong> and <strong>CI/CD with Git</strong> and integration of <strong>DevOps</strong> best practices.</li>
             <li><strong>Critical bug fixes</strong> and application performance improvements.</li>
           </ul>
+          </ul>
         `,
         start: "August 2024",
         end: "January 2025",
+      },
+      evnia: {
+        description: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Low-code application development</strong>: Improving and customizing the application with <strong>Caspio</strong> using <strong>JavaScript, HTML, CSS</strong>, and <strong>Rest API</strong> integration to optimize <strong>Power Automate</strong> features for automation.</li>
+            <li><strong>Collaboration and problem solving</strong>: Working as a team to analyze needs, identify and implement appropriate and innovative solutions.</li>
+            <li><strong>Sustainable strategy</strong>: Proposing ideas and getting involved in defining social and environmental goals aimed at reducing the company's impact.</li>
+          </ul>
+        `,
+        start: "March 2025",
+        end: "Present",
+        company: "Evnia, firm-conseil en écofiscalité",
+        title: "Application Developer",
       },
       royalBroker: {
         description: `

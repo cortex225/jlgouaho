@@ -27,7 +27,8 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                 await navigator.share({
                     title: DATA.name,
                     text: `${DATA.summary.title} - ${DATA.name}`,
-                    url: window.location.href,
+                    text: `${DATA.summary.title} - ${DATA.name}`,
+                    url: DATA.businessUrl || window.location.href,
                 });
             } catch (err) {
                 console.log('Error sharing:', err);
@@ -339,7 +340,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
 
                         <div className="bg-slate-50 dark:bg-white p-4 rounded-xl inline-block mb-4 border border-slate-100 dark:border-slate-200">
                             <img 
-                                src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(window.location.href)}&color=1e293b&bgcolor=f8fafc`}
+                                src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(DATA.businessUrl || window.location.href)}&color=1e293b&bgcolor=f8fafc`}
                                 alt="QR Code" 
                                 className="w-48 h-48 mix-blend-multiply"
                                 loading="lazy"

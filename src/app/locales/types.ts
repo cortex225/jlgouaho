@@ -16,6 +16,13 @@ export type Translations = {
         start: string;
         end: string;
       };
+      evnia: {
+        description: string;
+        start: string;
+        end: string;
+        company: string;
+        title: string;
+      };
       royalBroker: {
         description: string;
         start: string;

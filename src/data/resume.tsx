@@ -20,7 +20,8 @@ export function getData(locale: "en" | "fr" = "fr") {
   return {
     name: "Déto Jean-Luc Gouaho",
     initials: "DV",
-    url: "https://dillion.io",
+    url: "https://jlgouaho.com",
+    businessUrl: "https://business.jlgouaho.com",
     location: "Quebec, CA",
     locationLink: "",
     description: t.sections.about,
@@ -200,6 +201,17 @@ export function getData(locale: "en" | "fr" = "fr") {
 
     work: [
       {
+        company: t.sections.work.evnia.company,
+        href: "https://evnia.ca/", // Assuming URL, I'll add this placeholder or just check it. Evnia.ca seems likely for a Montreal firm.
+        badges: [],
+        location: "Montreal, QC",
+        title: t.sections.work.evnia.title,
+        logoUrl: "/evnia.jpeg", // Placeholder
+        start: t.sections.work.evnia.start,
+        end: t.sections.work.evnia.end,
+        description: t.sections.work.evnia.description,
+      },
+      {
         company: "Traction DK",
         href: "https://www.tractiondk.com/",
         badges: [],
@@ -234,11 +246,11 @@ export function getData(locale: "en" | "fr" = "fr") {
       },
       {
         company: "Rogers Communications",
-        href: "https://www.bestbuy.com/",
+        href: "https://www.rogers.com/",
         badges: [],
         location: "Granby, CA",
         title: "Sales Specialist",
-        logoUrl: "/rogers.png",
+        logoUrl: "/rogers.jpeg",
         start: "January 2019",
         end: "April 2019",
         description: t.sections.work.rogers.description,

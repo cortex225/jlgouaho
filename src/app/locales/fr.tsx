@@ -27,6 +27,19 @@ const translations: Translations = {
         start: "Août 2024",
         end: "Janvier 2025",
       },
+      evnia: {
+        description: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Développement d'applications Low-code</strong> : Amélioration et personnalisation de l'application avec <strong>Caspio</strong> en utilisant <strong>JavaScript, HTML, CSS</strong> et l'intégration d'<strong>API Rest</strong> pour optimiser les fonctionnalités de <strong>Power Automate</strong> pour l'automatisation.</li>
+            <li><strong>Collaboration et résolution de problèmes</strong> : Travail en équipe pour analyser les besoins, identifier et mettre en œuvre des solutions appropriées et innovantes.</li>
+            <li><strong>Stratégie durable</strong> : Proposition d'idées et implication dans la définition d'objectifs sociaux et environnementaux visant à réduire l'impact de l'entreprise.</li>
+          </ul>
+        `,
+        start: "Mars 2025",
+        end: "Présent",
+        company: "Evnia, firme-conseil en écofiscalité",
+        title: "Développeur d'applications",
+      },
       royalBroker: {
         description: `
           <ul class="list-disc pl-4 space-y-1">
