@@ -154,14 +154,16 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                 <main className="flex-1 w-full space-y-12 lg:space-y-20 lg:pt-8 pb-12">
                     
                     {/* About Section */}
-                    <section className="bg-white/40 dark:bg-slate-900/40 backdrop-blur-sm rounded-[2rem] p-6 md:p-10 border border-white dark:border-slate-800 shadow-sm">
+                    <section className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-[2rem] p-6 md:p-10 border border-white dark:border-slate-800 shadow-sm">
                         <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-3">
                             <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-2 rounded-xl"><Lightbulb size={24} /></span>
                             {DATA.summary.title}
                         </h2>
-                        <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-lg">
-                            {DATA.summary.description}
-                        </p>
+                        <div className="text-slate-600 dark:text-slate-300 leading-relaxed text-lg space-y-4">
+                            {DATA.summary.description.split('\n\n').map((paragraph, index) => (
+                                <p key={index}>{paragraph}</p>
+                            ))}
+                        </div>
                     </section>
                     
                     {/* Work Experience */}

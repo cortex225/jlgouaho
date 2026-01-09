@@ -11,7 +11,7 @@ const translations: Translations = {
     about: {
       title: "À propos de moi",
       description:
-        "Développeur full-stack avec une solide expérience dans .NET, Vue.js et Azure, ainsi qu'une forte appétit pour le cloud computing, le DevOps et l'automatisation. Je suis passionné par l'optimisation des performances et de l'évolutivité des applications. J'ai contribué à des solutions qui réduisent les coûts cloud et améliorent l'efficacité des déploiements. Actuellement en formation pour les certifications Microsoft AZ-900 et AI-900, je continue de perfectionner mes compétences pour offrir des solutions de plus en plus innovantes adaptées aux défis du marché.",
+        "Développeur Full-Stack avec une solide expérience en .NET, Vue.js et Azure, et une forte appétence pour le cloud computing, DevOps et l'automatisation. Engagé dans l'optimisation des performances et la scalabilité des applications, j'ai contribué à des solutions permettant de réduire les coûts cloud et d'améliorer l'efficacité des déploiements.\n\nActuellement en formation pour des certifications Microsoft (AZ-900 et AI-900), je continue d'affiner mes compétences afin d'apporter des solutions toujours plus innovantes et adaptées aux enjeux du marché.",
     },
     work: {
       title: "Expérience professionnelle",

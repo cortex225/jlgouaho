@@ -11,7 +11,7 @@ const translations: Translations = {
     about: {
       title: "About me",
       description:
-        "Full-stack developer with solid experience in .NET, Vue.js and Azure, as well as a strong appetite for cloud computing, DevOps and automation. I'm passionate about optimizing application performance and scalability. I've contributed to solutions that reduce cloud costs and improve deployment efficiency. Currently training for Microsoft AZ-900 and AI-900 certifications, I'm continuing to hone my skills to provide ever more innovative solutions tailored to market challenges.",
+        "Full-Stack Developer with solid experience in .NET, Vue.js, and Azure, and a strong appetite for cloud computing, DevOps, and automation. Committed to optimizing application performance and scalability, I have contributed to solutions that reduce cloud costs and improve deployment efficiency.\n\nCurrently training for Microsoft certifications (AZ-900 and AI-900), I continue to refine my skills in order to deliver increasingly innovative solutions tailored to market challenges.",
     },
     work: {
       title: "Professional Experience",
