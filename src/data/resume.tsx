@@ -322,6 +322,44 @@ export function getData(locale: "en" | "fr" = "fr") {
           },
         ],
       },
+        {
+        title: "RecruitEase",
+        description: t.sections.projects.recruitEase.description,
+        overview: t.sections.projects.recruitEase.overview,
+        features: t.sections.projects.recruitEase.features,
+        challenges: t.sections.projects.recruitEase.challenges,
+        conclusion: t.sections.projects.recruitEase.conclusion,
+        href: "",
+        dates: "April 2023 - March 2024",
+        active: true,
+        technologies: [
+          "Next.js",
+          "C#",
+          "ASP.NET",
+          "OpenAI API",
+          "Redis",
+          "Upstash",
+          "Typescript",
+          "PostgreSQL",
+          "TailwindCSS",
+          "Stripe",
+        ],
+        images: [
+          "/projects/recruit-ease/landing2.gif",
+          "/projects/recruit-ease/jobs.png",
+          "/projects/recruit-ease/landing.png",
+          "/projects/recruit-ease/recommendations.png",
+        ],
+        video:
+          "https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video//recruitease.mp4",
+        links: [
+          {
+            type: "Website",
+            href: "https://recruiteasy.ca",
+            icon: <Icons.globe className="size-3" />,
+          }
+        ],
+      },
       {
         title: "InstaHR",
         description: t.sections.projects.instaHR.description,
@@ -403,49 +441,7 @@ export function getData(locale: "en" | "fr" = "fr") {
           },
         ],
       },
-      {
-        title: "RecruitEase",
-        description: t.sections.projects.recruitEase.description,
-        overview: t.sections.projects.recruitEase.overview,
-        features: t.sections.projects.recruitEase.features,
-        challenges: t.sections.projects.recruitEase.challenges,
-        conclusion: t.sections.projects.recruitEase.conclusion,
-        href: "",
-        dates: "April 2023 - March 2024",
-        active: true,
-        technologies: [
-          "Next.js",
-          "C#",
-          "ASP.NET",
-          "OpenAI API",
-          "Redis",
-          "Upstash",
-          "Typescript",
-          "PostgreSQL",
-          "TailwindCSS",
-          "Stripe",
-        ],
-        images: [
-          "/projects/recruit-ease/landing2.gif",
-          "/projects/recruit-ease/jobs.png",
-          "/projects/recruit-ease/landing.png",
-          "/projects/recruit-ease/recommendations.png",
-        ],
-        video:
-          "https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video//recruitease.mp4",
-        links: [
-          // {
-          //   type: "Website",
-          //   href: "https://magic-search-psi.vercel.app",
-          //   icon: <Icons.globe className="size-3" />,
-          // },
-          // {
-          //   type: "Github",
-          //   href: "https://github.com/cryptotrends/cryptotrends",
-          //   icon: <Icons.github className="h-4 w-4" />,
-          // },
-        ],
-      },
+    
     ],
   } as const;
 }

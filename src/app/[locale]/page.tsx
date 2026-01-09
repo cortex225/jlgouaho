@@ -16,10 +16,13 @@ import Link from 'next/link';
 import { ModeToggle } from '@/components/mode-toggle';
 import Image from 'next/image';
 
+import { ProjectModal } from '@/components/project-modal';
+
 export default function Page({ params: { locale } }: { params: { locale: string } }) {
     const DATA = getData(locale as 'en' | 'fr');
     const [showQR, setShowQR] = useState(false);
     const [isWorkExpanded, setIsWorkExpanded] = useState(false);
+    const [selectedProject, setSelectedProject] = useState<any>(null);
 
     const handleShare = async () => {
         if (typeof navigator !== 'undefined' && navigator.share) {
@@ -164,7 +167,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                     {/* Work Experience */}
                     <section>
                         <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-8 ml-4 flex items-center gap-3">
-                             <span className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 p-2 rounded-xl"><Briefcase size={24} /></span>
+                             <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-2 rounded-xl"><Briefcase size={24} /></span>
                             Work Experience
                         </h2>
                         <div className="space-y-4">
@@ -197,15 +200,21 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                         </h2>
                         <div className="grid grid-cols-1 gap-6">
                             {visibleProjects.map((project, i) => (
-                                <div key={i} className="group bg-white dark:bg-slate-900 rounded-[2rem] p-6 md:p-8 border border-white dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300 overflow-hidden relative">
+                                <div 
+                                    key={i} 
+                                    onClick={() => setSelectedProject(project)}
+                                    className="group bg-white dark:bg-slate-900 rounded-[2rem] p-6 md:p-8 border border-white dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300 overflow-hidden relative cursor-pointer"
+                                >
                                     
                                     <div className="flex justify-between items-start mb-4">
-                                        <h3 className="text-xl font-bold text-slate-900 dark:text-white">{project.title}</h3>
+                                        <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{project.title}</h3>
                                         <div className="flex gap-2">
                                             {project.links.map((link, k) => (
-                                                <a key={k} href={link.href} target="_blank" rel="noopener noreferrer" className="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-400 hover:bg-indigo-100 hover:text-indigo-600 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-400 transition-colors">
-                                                    <ExternalLink size={16} />
-                                                </a>
+                                                <div key={k} onClick={(e) => e.stopPropagation()} className="contents">
+                                                    <a href={link.href} target="_blank" rel="noopener noreferrer" className="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-400 hover:bg-indigo-100 hover:text-indigo-600 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-400 transition-colors">
+                                                        {link.type.includes("Github") ? <Github size={16} /> : <ExternalLink size={16} />}
+                                                    </a>
+                                                </div>
                                             ))}
                                         </div>
                                     </div>
@@ -355,6 +364,11 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                     </div>
                 </div>
             )}
+            <ProjectModal 
+                project={selectedProject} 
+                open={!!selectedProject} 
+                onClose={() => setSelectedProject(null)} 
+            />
         </div>
     );
 }

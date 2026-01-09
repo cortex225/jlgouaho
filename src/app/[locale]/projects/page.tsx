@@ -9,9 +9,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ModeToggle } from '@/components/mode-toggle';
 
+import { ProjectModal } from '@/components/project-modal';
+
 export default function ProjectsPage({ params: { locale } }: { params: { locale: string } }) {
     const DATA = getData(locale as 'en' | 'fr');
-    const [activeCategory, setActiveCategory] = React.useState('All');
+    const [selectedCategories, setSelectedCategories] = React.useState<string[]>(['All']);
+    const [selectedProject, setSelectedProject] = React.useState<any>(null);
 
     const categories = React.useMemo(() => {
         const techs = new Set<string>();
@@ -21,10 +24,36 @@ export default function ProjectsPage({ params: { locale } }: { params: { locale:
         return ['All', ...Array.from(techs)].sort();
     }, [DATA.projects]);
 
+    const toggleCategory = (category: string) => {
+        setSelectedCategories(prev => {
+            if (category === 'All') return ['All'];
+            
+            // If currently All, clicking a category switches to just that category
+            if (prev.includes('All')) return [category];
+
+            const isSelected = prev.includes(category);
+            let newCategories;
+
+            if (isSelected) {
+                newCategories = prev.filter(c => c !== category);
+                // If nothing left, default back to All
+                if (newCategories.length === 0) return ['All'];
+            } else {
+                newCategories = [...prev, category];
+            }
+            
+            return newCategories;
+        });
+    };
+
     const filteredProjects = React.useMemo(() => {
-        if (activeCategory === 'All') return DATA.projects;
-        return DATA.projects.filter(project => (project.technologies as readonly string[]).includes(activeCategory));
-    }, [DATA.projects, activeCategory]);
+        if (selectedCategories.includes('All')) return DATA.projects;
+        
+        // AND logic: Project must contain ALL selected categories
+        return DATA.projects.filter(project => 
+            selectedCategories.every(cat => (project.technologies as readonly string[]).includes(cat))
+        );
+    }, [DATA.projects, selectedCategories]);
 
     return (
         <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 font-sans relative selection:bg-indigo-100 selection:text-indigo-900">
@@ -60,9 +89,9 @@ export default function ProjectsPage({ params: { locale } }: { params: { locale:
                     {categories.map((category) => (
                         <button
                             key={category}
-                            onClick={() => setActiveCategory(category)}
+                            onClick={() => toggleCategory(category)}
                             className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 border ${
-                                activeCategory === category
+                                selectedCategories.includes(category)
                                     ? 'bg-indigo-600 text-white border-indigo-600 shadow-lg shadow-indigo-500/30 scale-105'
                                     : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
                             }`}
@@ -75,7 +104,12 @@ export default function ProjectsPage({ params: { locale } }: { params: { locale:
                 {/* Projects Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     {filteredProjects.map((project, i) => (
-                        <div key={i} className="group bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-white dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300 flex flex-col h-full animate-in fade-in zoom-in duration-500 fill-mode-both" style={{ animationDelay: `${i * 100}ms` }}>
+                        <div 
+                            key={i} 
+                            onClick={() => setSelectedProject(project)}
+                            className="group bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-white dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300 flex flex-col h-full animate-in fade-in zoom-in duration-500 fill-mode-both cursor-pointer" 
+                            style={{ animationDelay: `${i * 100}ms` }}
+                        >
                             
                             {project.images && project.images.length > 0 ? (
                                     <div className="rounded-xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800 mb-6 group-hover:scale-[1.02] transition-transform duration-500 h-48 relative">
@@ -96,14 +130,16 @@ export default function ProjectsPage({ params: { locale } }: { params: { locale:
                                 <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{project.title}</h3>
                                 <div className="flex gap-2">
                                     {project.links.map((link, k) => (
-                                        <a key={k} href={link.href} target="_blank" rel="noopener noreferrer" className="p-2 bg-slate-50 dark:bg-slate-800 rounded-full text-slate-400 hover:bg-indigo-100 hover:text-indigo-600 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-400 transition-colors">
-                                            {link.type.includes('Github') ? <Github size={16} /> : <ExternalLink size={16} />}
-                                        </a>
+                                        <div key={k} onClick={(e) => e.stopPropagation()} className="contents">
+                                            <a href={link.href} target="_blank" rel="noopener noreferrer" className="p-2 bg-slate-50 dark:bg-slate-800 rounded-full text-slate-400 hover:bg-indigo-100 hover:text-indigo-600 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-400 transition-colors">
+                                                {link.type.includes('Github') ? <Github size={16} /> : <ExternalLink size={16} />}
+                                            </a>
+                                        </div>
                                     ))}
                                 </div>
                             </div>
 
-                            <p className="text-slate-600 dark:text-slate-300 text-sm mb-6 flex-1 leading-relaxed">{project.description}</p>
+                            <p className="text-slate-600 dark:text-slate-300 text-sm mb-6 flex-1 leading-relaxed line-clamp-3">{project.description}</p>
                             
                             <div className="flex flex-wrap gap-2 mt-auto">
                                 {project.technologies.slice(0, 4).map((tech, j) => (
@@ -131,6 +167,12 @@ export default function ProjectsPage({ params: { locale } }: { params: { locale:
                         Let&apos;s Discuss
                     </button>
                 </div>
+
+                <ProjectModal 
+                    project={selectedProject} 
+                    open={!!selectedProject} 
+                    onClose={() => setSelectedProject(null)} 
+                />
 
             </div>
         </div>
