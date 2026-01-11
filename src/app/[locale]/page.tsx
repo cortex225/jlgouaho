@@ -15,10 +15,12 @@ import { getData } from '@/data/resume';
 import Link from 'next/link';
 import { ModeToggle } from '@/components/mode-toggle';
 import Image from 'next/image';
+import { useI18n } from '@/app/locales/client';
 
 import { ProjectModal } from '@/components/project-modal';
 
 export default function Page({ params: { locale } }: { params: { locale: string } }) {
+    const t = useI18n();
     const DATA = getData(locale as 'en' | 'fr');
     const [showQR, setShowQR] = useState(false);
     const [isWorkExpanded, setIsWorkExpanded] = useState(false);
@@ -82,7 +84,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                                 </span>
-                                <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 tracking-wide uppercase">Open to Work</span>
+                                <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 tracking-wide uppercase">{t('hero.status')}</span>
                             </div>
                         </div>
 
@@ -106,7 +108,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
 
                         {/* Tech Stack (Tags) - Expanded */}
                         <div className="mb-8">
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest text-center mb-4">Tech Stack</p>
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest text-center mb-4">{t('hero.techStack')}</p>
                             <div className="flex flex-wrap justify-center gap-2">
                                 {DATA.skills.map((tech, index) => (
                                     <span key={index} className="px-3 py-1 bg-slate-100/50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 rounded-lg text-[11px] font-semibold border border-slate-200/50 dark:border-slate-700/50">
@@ -123,14 +125,14 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                 className="bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-200 dark:text-slate-900 text-white py-4 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-xl shadow-slate-900/10 group"
                             >
                                 <Mail size={18} className="group-hover:-translate-y-0.5 transition-transform" />
-                                <span className="text-sm font-bold">Email</span>
+                                <span className="text-sm font-bold">{t('common.email')}</span>
                             </button>
                             <button 
                                 onClick={() => window.open(DATA.contact.social.LinkedIn.url, '_blank', 'noopener,noreferrer')}
                                 className="bg-indigo-600 hover:bg-indigo-500 text-white py-4 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-xl shadow-indigo-600/20 group"
                             >
                                 <Linkedin size={18} className="group-hover:-translate-y-0.5 transition-transform" />
-                                <span className="text-sm font-bold">Connect</span>
+                                <span className="text-sm font-bold">{t('common.connect')}</span>
                             </button>
                         </div>
 
@@ -170,7 +172,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                     <section>
                         <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-8 ml-4 flex items-center gap-3">
                              <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-2 rounded-xl"><Briefcase size={24} /></span>
-                            Work Experience
+                            {t('sections.work.title')}
                         </h2>
                         <div className="space-y-4">
                             {visibleWork.map((job, i) => (
@@ -198,7 +200,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                     <section>
                         <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-8 ml-4 flex items-center gap-3">
                              <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-2 rounded-xl"><Code size={24} /></span>
-                            Featured Projects
+                            {t('sections.projects.title')}
                         </h2>
                         <div className="grid grid-cols-1 gap-6">
                             {visibleProjects.map((project, i) => (
@@ -251,7 +253,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                 href={`/${locale}/projects`}
                                 className="group flex items-center gap-2 px-8 py-4 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold hover:scale-105 transition-transform shadow-xl shadow-slate-900/10"
                             >
-                                View All Projects <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                                {t('common.viewAllProjects')} <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </div>
                     </section>
@@ -262,7 +264,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                          
                         <h2 className="text-2xl font-bold text-white mb-10 relative z-10 flex items-center gap-3">
                             <span className="bg-white/10 p-2 rounded-xl"><GraduationCap size={24} /></span>
-                            Education
+                            {t('sections.education.title')}
                         </h2>
                         <div className="grid grid-cols-1 gap-8 relative z-10">
                             {DATA.education.map((edu, i) => (
@@ -283,7 +285,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                          
                         <h2 className="text-2xl font-bold text-white mb-10 relative z-10 flex items-center gap-3">
                             <span className="bg-white/10 p-2 rounded-xl"><Award size={24} /></span>
-                            {DATA.certifications.length > 0 ? "Certifications" : "Certifications"}
+                            {t('sections.certifications.title')}
                         </h2>
                         <div className="grid grid-cols-1 gap-8 relative z-10">
                             {DATA.certifications.map((cert, i) => (
@@ -320,9 +322,9 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                             onClick={() => window.open(`mailto:${DATA.contact.email}`)}
                             className="bg-indigo-600 hover:bg-indigo-500 text-white text-lg font-bold py-5 px-10 rounded-full shadow-2xl shadow-indigo-500/30 hover:shadow-indigo-500/40 hover:-translate-y-1 transition-all"
                         >
-                            Get in Touch
+                            {t('common.getInTouch')}
                         </button>
-                        <p className="mt-4 text-slate-500 dark:text-slate-400 text-sm">© {new Date().getFullYear()} {DATA.name}. All rights reserved.</p>
+                        <p className="mt-4 text-slate-500 dark:text-slate-400 text-sm">© {new Date().getFullYear()} {DATA.name}. {t('common.allRightsReserved')}</p>
                     </div>
 
                 </main>
@@ -344,7 +346,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                             <div className="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto text-indigo-600 dark:text-indigo-400 mb-3">
                                 <QrCode size={24} />
                             </div>
-                            <h3 className="font-bold text-slate-800 dark:text-white text-lg">Scan to contact</h3>
+                            <h3 className="font-bold text-slate-800 dark:text-white text-lg">{t('common.scanToContact')}</h3>
                             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{DATA.name}</p>
                         </div>
 
@@ -361,7 +363,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                             onClick={() => setShowQR(false)}
                             className="w-full py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold text-sm hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                         >
-                            Close
+                            {t('common.close')}
                         </button>
                     </div>
                 </div>

@@ -6,6 +6,42 @@ const translations: Translations = {
   hero: {
     greeting: "Bonjour, je suis",
     title: "Développeur Full-Stack | Spécialiste en Cloud & Automatisation",
+    status: "À l'écoute d'opportunités",
+    techStack: "Stack Technique",
+  },
+  common: {
+    overview: "Aperçu",
+    features: "Fonctionnalités Clés",
+    challenges: "Défis & Solutions",
+    conclusion: "Conclusion",
+    gallery: "Galerie",
+    noLinks: "Aucun lien externe disponible.",
+    technologies: "Technologies",
+    email: "Courriel",
+    connect: "Connecter",
+    viewAllProjects: "Voir Tous les Projets",
+    getInTouch: "Me Contacter",
+    allRightsReserved: "Tous droits réservés.",
+    scanToContact: "Scanner pour me contacter",
+    close: "Fermer",
+    backToProfile: "Retour au Profil",
+    inProgress: "En cours",
+  },
+  theme: {
+    toggle: "Changer le thème",
+    light: "Clair",
+    dark: "Sombre",
+    system: "Système",
+  },
+  blog: {
+    title: "Blogue",
+    description: "Mes réflexions sur le développement logiciel, la vie et plus encore.",
+  },
+  projectsPage: {
+    allProjects: "Tous les Projets",
+    description: "Une collection complète de mes travaux, expérimentations et contributions open source.",
+    haveIdea: "Vous avez une idée de projet ?",
+    letsDiscuss: "Discutons-en",
   },
   sections: {
     about: {
@@ -261,6 +297,226 @@ const translations: Translations = {
         `,
         conclusion:
           "La construction de MagicSearch a été une expérience enrichissante qui a amélioré ma compréhension des algorithmes de recherche et de l'optimisation frontend/backend. Cela m'a appris à équilibrer l'expérience utilisateur avec les performances.",
+      },
+      leadMapper: {
+        description:
+          "Un outil de génération de leads qui extrait les contacts d'entreprises depuis Google Maps - créé pour les freelances afin de trouver des clients gratuitement.",
+        overview:
+          "LeadMapper est né de mon expérience en tant que freelance ayant besoin de trouver des clients potentiels sans payer pour des services de génération de leads coûteux. Cette application permet de rechercher et d'extraire des informations d'entreprises (restaurants, cliniques, hôtels, etc.) directement depuis Google Maps, fournissant des courriels et numéros de téléphone prêts pour la prospection.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Recherche d'entreprises par catégorie et localisation sur Google Maps</li>
+            <li>Extraction des informations de contact : courriels, téléphones, adresses</li>
+            <li>Export des leads en CSV pour import CRM facile</li>
+            <li>Filtrage des résultats par type d'entreprise et note</li>
+            <li>Extraction en masse avec pagination intelligente</li>
+            <li>Alternative gratuite aux outils de génération de leads payants</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">🔹 Analyse DOM Dynamique</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Google Maps utilise un chargement de contenu dynamique avec des structures imbriquées complexes.<br>
+                <span class="font-semibold">Solution :</span> Implémentation de MutationObserver pour détecter les changements DOM et des sélecteurs robustes pour gérer les mises à jour fréquentes de l'interface Google.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">🔹 Précision de l'Extraction</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Toutes les entreprises n'affichent pas leurs coordonnées complètes.<br>
+                <span class="font-semibold">Solution :</span> Implémentation d'un scraping intelligent qui navigue vers les pages de détails pour trouver les courriels et contacts cachés.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">🔹 Expérience Utilisateur</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Rendre l'outil intuitif pour les freelances non-techniques.<br>
+                <span class="font-semibold">Solution :</span> Conception d'une interface épurée avec des indicateurs de progression clairs et une fonctionnalité d'export en un clic.
+              </p>
+            </div>
+          </div>
+        `,
+        conclusion:
+          "LeadMapper résout un vrai problème que j'ai rencontré en tant que freelance - trouver des clients sans payer pour des services de leads coûteux. Ce projet m'a appris la valeur de créer des outils qui résolvent d'abord vos propres problèmes.",
+      },
+      portfolio: {
+        description:
+          "Mon site portfolio personnel construit avec Next.js 14, avec support i18n et un design moderne et responsive.",
+        overview:
+          "Ce portfolio présente mes projets, compétences et expérience professionnelle. Construit avec des technologies modernes, il offre une internationalisation complète (anglais/français), un mode sombre et des animations fluides pour une expérience utilisateur engageante.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Support bilingue (EN/FR) avec changement de langue fluide</li>
+            <li>Mode sombre/clair avec détection des préférences système</li>
+            <li>Design responsive optimisé pour tous les appareils</li>
+            <li>Vitrine de projets avec vues modales détaillées</li>
+            <li>Animations fluides avec Framer Motion</li>
+            <li>Optimisé SEO avec métadonnées dynamiques</li>
+            <li>Performance rapide avec Next.js App Router</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">🌐 Architecture d'Internationalisation</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Gérer les traductions tout en maintenant la sécurité des types et une bonne DX.<br>
+                <span class="font-semibold">Solution :</span> Création d'un système de traduction typé avec TypeScript assurant la validation à la compilation de toutes les clés de traduction.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">🎨 Cohérence du Design System</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Maintenir la cohérence visuelle entre les modes clair/sombre.<br>
+                <span class="font-semibold">Solution :</span> Utilisation de Tailwind CSS avec des variables CSS personnalisées et des composants Shadcn UI pour un design system cohérent.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">⚡ Optimisation des Performances</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Équilibrer les animations riches avec des temps de chargement rapides.<br>
+                <span class="font-semibold">Solution :</span> Implémentation du lazy loading, optimisation des images et utilisation du réseau edge de Vercel pour une livraison optimale.
+              </p>
+            </div>
+          </div>
+        `,
+        conclusion:
+          "Construire ce portfolio a été l'occasion de montrer mes capacités full-stack tout en expérimentant les dernières fonctionnalités de Next.js. Il sert à la fois de vitrine professionnelle et de témoignage de mon attention aux détails et ma sensibilité au design.",
+      },
+      budgetBuddy: {
+        description:
+          "Une application intelligente de gestion de finances personnelles qui aide les utilisateurs à suivre leurs dépenses, définir des budgets et atteindre leurs objectifs financiers.",
+        overview:
+          "Budget Buddy est une application complète de finances personnelles conçue pour aider les utilisateurs à prendre le contrôle de leur argent. Elle offre un suivi intuitif des dépenses, la création de budgets et des analyses perspicaces pour promouvoir de meilleures habitudes financières.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Suivi des dépenses avec classification par catégorie</li>
+            <li>Création et suivi de budgets mensuels</li>
+            <li>Analyses visuelles avec graphiques</li>
+            <li>Gestion des transactions récurrentes</li>
+            <li>Définition d'objectifs financiers et suivi de progression</li>
+            <li>Export de rapports en formats PDF/CSV</li>
+            <li>Support multi-devises</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">💰 Calculs de Budget en Temps Réel</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Assurer un suivi précis du budget avec des mises à jour en temps réel entre les catégories.<br>
+                <span class="font-semibold">Solution :</span> Implémentation d'une gestion d'état réactive avec mises à jour optimistes et synchronisation en arrière-plan.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">📊 Visualisation des Données</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Présenter des données financières complexes de manière compréhensible.<br>
+                <span class="font-semibold">Solution :</span> Création de composants graphiques personnalisés avec infobulles interactives et capacités d'exploration détaillée.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">🔒 Sécurité des Données</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Protéger les informations financières sensibles.<br>
+                <span class="font-semibold">Solution :</span> Implémentation du chiffrement de bout en bout et authentification sécurisée avec support multi-facteurs.
+              </p>
+            </div>
+          </div>
+        `,
+        conclusion:
+          "Budget Buddy m'a appris l'importance du design centré utilisateur dans les applications fintech. Ce projet a renforcé mes compétences en visualisation de données, gestion d'état et création d'applications sécurisées manipulant des données utilisateur sensibles.",
+      },
+      hvd: {
+        description:
+          "Une refonte moderne du site web d'une clinique vétérinaire - offrant une interface professionnelle et conviviale pour une meilleure expérience client.",
+        overview:
+          "HVD est un projet de refonte de site web réalisé pour un client propriétaire d'une clinique vétérinaire. L'objectif était de moderniser leur présence en ligne avec un design épuré et professionnel qui reflète la qualité des soins qu'ils offrent aux animaux et à leurs propriétaires.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Design moderne et responsive adapté à tous les appareils</li>
+            <li>Présentation des services vétérinaires offerts</li>
+            <li>Section équipe avec profils des vétérinaires</li>
+            <li>Intégration de formulaire de contact et prise de rendez-vous</li>
+            <li>Galerie photos des installations</li>
+            <li>Section actualités et conseils pour les propriétaires d'animaux</li>
+            <li>Optimisation SEO pour le référencement local</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">🎨 Identité Visuelle</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Créer un design qui inspire confiance tout en restant chaleureux et accueillant.<br>
+                <span class="font-semibold">Solution :</span> Utilisation d'une palette de couleurs apaisantes et d'images professionnelles mettant en valeur le soin apporté aux animaux.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">📱 Expérience Mobile</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Assurer une navigation fluide sur mobile pour les clients pressés.<br>
+                <span class="font-semibold">Solution :</span> Design mobile-first avec boutons d'appel à l'action clairs et formulaire de contact accessible.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">⚡ Performance & SEO</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Améliorer la visibilité locale de la clinique sur les moteurs de recherche.<br>
+                <span class="font-semibold">Solution :</span> Optimisation des images, métadonnées structurées et contenu optimisé pour le référencement local.
+              </p>
+            </div>
+          </div>
+        `,
+        conclusion:
+          "Ce projet client m'a permis de mettre en pratique mes compétences en design UI/UX pour créer une présence web professionnelle qui répond aux besoins spécifiques d'une clinique vétérinaire. La satisfaction du client confirme l'importance d'écouter et comprendre les besoins métier.",
+      },
+      virtualCardPro: {
+        description:
+          "Une application de carte de visite numérique et portfolio professionnel - connectant le réseautage physique et digital avec des fonctionnalités intelligentes.",
+        overview:
+          "Virtual Card Pro est une application de carte de visite numérique haute performance et entièrement responsive, construite avec les dernières technologies web. Elle permet aux professionnels de partager leurs informations de contact de manière moderne et élégante, tout en offrant des fonctionnalités avancées comme l'export vCard et l'intégration Google Wallet.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Design moderne et entièrement responsive</li>
+            <li>Téléchargement vCard pour import direct dans les contacts</li>
+            <li>Intégration Google Wallet pour ajouter la carte au téléphone</li>
+            <li>Support multilingue (EN/FR/ES)</li>
+            <li>Liens vers réseaux sociaux et portfolio</li>
+            <li>Animations fluides et interface élégante</li>
+            <li>Performance optimisée avec React 19 et Vite</li>
+            <li>QR Code pour partage rapide</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">📱 Compatibilité Cross-platform</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Assurer que la carte s'affiche parfaitement sur tous les appareils et navigateurs.<br>
+                <span class="font-semibold">Solution :</span> Utilisation de Tailwind CSS avec une approche mobile-first et tests extensifs sur différents appareils.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">📇 Génération vCard</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Créer des fichiers vCard compatibles avec tous les gestionnaires de contacts.<br>
+                <span class="font-semibold">Solution :</span> Implémentation du standard vCard 3.0 avec encodage UTF-8 pour supporter les caractères spéciaux.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">🌐 Internationalisation</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Supporter plusieurs langues tout en maintenant une UX fluide.<br>
+                <span class="font-semibold">Solution :</span> Système de traduction dynamique avec détection automatique de la langue du navigateur.
+              </p>
+            </div>
+          </div>
+        `,
+        conclusion:
+          "Virtual Card Pro démontre comment une simple carte de visite peut être transformée en une expérience digitale riche et moderne. Ce projet m'a permis d'explorer les dernières fonctionnalités de React 19 et de créer une solution pratique pour le réseautage professionnel.",
       },
     },
 

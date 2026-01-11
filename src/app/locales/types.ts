@@ -3,6 +3,42 @@ export type Translations = {
   hero: {
     greeting: string;
     title: string;
+    status: string;
+    techStack: string;
+  };
+  common: {
+    overview: string;
+    features: string;
+    challenges: string;
+    conclusion: string;
+    gallery: string;
+    noLinks: string;
+    technologies: string;
+    email: string;
+    connect: string;
+    viewAllProjects: string;
+    getInTouch: string;
+    allRightsReserved: string;
+    scanToContact: string;
+    close: string;
+    backToProfile: string;
+    inProgress: string;
+  };
+  theme: {
+    toggle: string;
+    light: string;
+    dark: string;
+    system: string;
+  };
+  blog: {
+    title: string;
+    description: string;
+  };
+  projectsPage: {
+    allProjects: string;
+    description: string;
+    haveIdea: string;
+    letsDiscuss: string;
   };
   sections: {
     about: {
@@ -86,6 +122,41 @@ export type Translations = {
         conclusion: string;
       };
       recruitEase: {
+        description: string;
+        overview: string;
+        features: string;
+        challenges: string;
+        conclusion: string;
+      };
+      leadMapper: {
+        description: string;
+        overview: string;
+        features: string;
+        challenges: string;
+        conclusion: string;
+      };
+      portfolio: {
+        description: string;
+        overview: string;
+        features: string;
+        challenges: string;
+        conclusion: string;
+      };
+      budgetBuddy: {
+        description: string;
+        overview: string;
+        features: string;
+        challenges: string;
+        conclusion: string;
+      };
+      hvd: {
+        description: string;
+        overview: string;
+        features: string;
+        challenges: string;
+        conclusion: string;
+      };
+      virtualCardPro: {
         description: string;
         overview: string;
         features: string;

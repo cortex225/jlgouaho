@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ExternalLink, Github, Calendar, Layers } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useI18n } from '@/app/locales/client';
 
 interface ProjectModalProps {
     project: any;
@@ -13,7 +14,7 @@ interface ProjectModalProps {
 }
 
 export const ProjectModal: React.FC<ProjectModalProps> = ({ project, open, onClose }) => {
-    
+    const t = useI18n();
     const [activeImageIndex, setActiveImageIndex] = React.useState<number | null>(null);
 
     // Lock body scroll when modal is open
@@ -144,7 +145,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, open, onClo
                                             <section>
                                                 <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
                                                     <span className="w-8 h-1 bg-indigo-600 rounded-full"></span> 
-                                                    Overview
+                                                    {t('common.overview')}
                                                 </h3>
                                                 <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-lg">
                                                     {project.overview}
@@ -157,7 +158,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, open, onClo
                                             <section>
                                                 <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
                                                     <span className="w-8 h-1 bg-emerald-500 rounded-full"></span>
-                                                    Key Features
+                                                    {t('common.features')}
                                                 </h3>
                                                 <div 
                                                     className="prose dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 leading-relaxed [&>ul]:list-disc [&>ul]:pl-5 [&>ul>li]:mb-2"
@@ -171,7 +172,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, open, onClo
                                             <section>
                                                 <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
                                                     <span className="w-8 h-1 bg-amber-500 rounded-full"></span>
-                                                    Challenges & Solutions
+                                                    {t('common.challenges')}
                                                 </h3>
                                                 <div 
                                                     className="prose dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 leading-relaxed"
@@ -183,7 +184,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, open, onClo
                                         {/* Conclusion */}
                                         {project.conclusion && (
                                             <section className="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-2xl border border-slate-100 dark:border-slate-800">
-                                                <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Conclusion</h3>
+                                                <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">{t('common.conclusion')}</h3>
                                                 <p className="text-slate-700 dark:text-slate-300 italic">
                                                     "{project.conclusion}"
                                                 </p>
@@ -209,7 +210,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, open, onClo
                                             ))}
                                             {(!project.links || project.links.length === 0) && (
                                                 <div className="p-4 bg-slate-100 dark:bg-slate-900 rounded-xl text-center text-sm text-slate-500">
-                                                    No external links available.
+                                                    {t('common.noLinks')}
                                                 </div>
                                             )}
                                         </div>
@@ -217,7 +218,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, open, onClo
                                         {/* Extra Images Grid */}
                                         {project.images && project.images.length > 1 && (
                                             <div className="space-y-4">
-                                                <h4 className="font-bold text-slate-900 dark:text-white">Gallery</h4>
+                                                <h4 className="font-bold text-slate-900 dark:text-white">{t('common.gallery')}</h4>
                                                 <div className="grid grid-cols-1 gap-4">
                                                     {project.images.slice(1).map((img: string, i: number) => (
                                                         <div 

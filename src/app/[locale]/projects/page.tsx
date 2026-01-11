@@ -8,10 +8,12 @@ import { getData } from '@/data/resume';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ModeToggle } from '@/components/mode-toggle';
+import { useI18n } from '@/app/locales/client';
 
 import { ProjectModal } from '@/components/project-modal';
 
 export default function ProjectsPage({ params: { locale } }: { params: { locale: string } }) {
+    const t = useI18n();
     const DATA = getData(locale as 'en' | 'fr');
     const [selectedCategories, setSelectedCategories] = React.useState<string[]>(['All']);
     const [selectedProject, setSelectedProject] = React.useState<any>(null);

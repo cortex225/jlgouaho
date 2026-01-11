@@ -6,6 +6,42 @@ const translations: Translations = {
   hero: {
     greeting: "Hi, I'm",
     title: "Full-Stack Developer | Automation & Cloud Specialist",
+    status: "Open to Work",
+    techStack: "Tech Stack",
+  },
+  common: {
+    overview: "Overview",
+    features: "Key Features",
+    challenges: "Challenges & Solutions",
+    conclusion: "Conclusion",
+    gallery: "Gallery",
+    noLinks: "No external links available.",
+    technologies: "Technologies",
+    email: "Email",
+    connect: "Connect",
+    viewAllProjects: "View All Projects",
+    getInTouch: "Get in Touch",
+    allRightsReserved: "All rights reserved.",
+    scanToContact: "Scan to contact",
+    close: "Close",
+    backToProfile: "Back to Profile",
+    inProgress: "In Progress",
+  },
+  theme: {
+    toggle: "Toggle theme",
+    light: "Light",
+    dark: "Dark",
+    system: "System",
+  },
+  blog: {
+    title: "Blog",
+    description: "My thoughts on software development, life, and more.",
+  },
+  projectsPage: {
+    allProjects: "All Projects",
+    description: "A complete collection of my work, experiments, and open source contributions.",
+    haveIdea: "Have an idea for a project?",
+    letsDiscuss: "Let's Discuss",
   },
   sections: {
     about: {
@@ -262,6 +298,225 @@ const translations: Translations = {
         `,
         conclusion:
           "RecruitEase demonstrates how AI can transform recruitment by making it more efficient and objective.",
+      },
+      leadMapper: {
+        description:
+          "A lead generation tool that extracts business contacts from Google Maps - built for freelancers to find clients for free.",
+        overview:
+          "LeadMapper was born from my experience as a freelancer needing to find potential clients without expensive lead generation services. This application allows users to search and extract business information (restaurants, clinics, hotels, etc.) directly from Google Maps, providing emails and phone numbers ready for outreach.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Search businesses by category and location on Google Maps</li>
+            <li>Extract contact information: emails, phone numbers, addresses</li>
+            <li>Export leads to CSV for easy CRM import</li>
+            <li>Filter results by business type and rating</li>
+            <li>Bulk extraction with smart pagination</li>
+            <li>Free alternative to expensive lead generation tools</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">🔹 Dynamic DOM Parsing</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> Google Maps uses dynamic content loading with complex nested structures.<br>
+                <span class="font-semibold">Solution:</span> Implemented MutationObserver to detect DOM changes and robust selectors to handle Google's frequent UI updates.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">🔹 Data Extraction Accuracy</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> Not all businesses have complete contact information displayed.<br>
+                <span class="font-semibold">Solution:</span> Implemented intelligent scraping that navigates to business detail pages to find hidden emails and contact details.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">🔹 User Experience</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> Making the tool intuitive for non-technical freelancers.<br>
+                <span class="font-semibold">Solution:</span> Designed a clean, simple interface with clear progress indicators and one-click export functionality.
+              </p>
+            </div>
+          </div>
+        `,
+        conclusion:
+          "LeadMapper solves a real problem I faced as a freelancer - finding clients without paying for expensive lead services. This project taught me the value of building tools that solve your own problems first.",
+      },
+      portfolio: {
+        description:
+          "My personal portfolio website built with Next.js 14, featuring i18n support and a modern, responsive design.",
+        overview:
+          "This portfolio showcases my projects, skills, and professional experience. Built with modern technologies, it features full internationalization (English/French), dark mode support, and smooth animations to create an engaging user experience.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Bilingual support (EN/FR) with seamless language switching</li>
+            <li>Dark/Light mode with system preference detection</li>
+            <li>Responsive design optimized for all devices</li>
+            <li>Project showcase with detailed modal views</li>
+            <li>Smooth animations with Framer Motion</li>
+            <li>SEO optimized with dynamic metadata</li>
+            <li>Fast performance with Next.js App Router</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">🌐 Internationalization Architecture</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> Managing translations while maintaining type safety and good DX.<br>
+                <span class="font-semibold">Solution:</span> Created a typed translation system with TypeScript ensuring compile-time validation of all translation keys.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">🎨 Design System Consistency</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> Maintaining visual consistency across light/dark modes.<br>
+                <span class="font-semibold">Solution:</span> Leveraged Tailwind CSS with custom CSS variables and Shadcn UI components for a cohesive design system.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">⚡ Performance Optimization</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> Balancing rich animations with fast load times.<br>
+                <span class="font-semibold">Solution:</span> Implemented lazy loading, optimized images, and used Vercel's edge network for optimal delivery.
+              </p>
+            </div>
+          </div>
+        `,
+        conclusion:
+          "Building this portfolio was an opportunity to showcase my full-stack capabilities while experimenting with the latest Next.js features. It serves as both a professional showcase and a testament to my attention to detail and design sensibility.",
+      },
+      budgetBuddy: {
+        description:
+          "A smart personal finance management app that helps users track expenses, set budgets, and achieve financial goals.",
+        overview:
+          "Budget Buddy is a comprehensive personal finance application designed to help users take control of their money. It provides intuitive expense tracking, budget creation, and insightful analytics to promote better financial habits.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Expense tracking with category classification</li>
+            <li>Monthly budget creation and monitoring</li>
+            <li>Visual analytics with charts and graphs</li>
+            <li>Recurring transaction management</li>
+            <li>Financial goal setting and progress tracking</li>
+            <li>Export reports in PDF/CSV formats</li>
+            <li>Multi-currency support</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">💰 Real-time Budget Calculations</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> Ensuring accurate budget tracking with real-time updates across categories.<br>
+                <span class="font-semibold">Solution:</span> Implemented reactive state management with optimistic updates and background sync.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">📊 Data Visualization</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> Presenting complex financial data in an understandable way.<br>
+                <span class="font-semibold">Solution:</span> Created custom chart components with interactive tooltips and drill-down capabilities.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">🔒 Data Security</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> Protecting sensitive financial information.<br>
+                <span class="font-semibold">Solution:</span> Implemented end-to-end encryption and secure authentication with multi-factor support.
+              </p>
+            </div>
+          </div>
+        `,
+        conclusion:
+          "Budget Buddy taught me the importance of user-centric design in fintech applications. The project reinforced my skills in data visualization, state management, and building secure applications that handle sensitive user data.",
+      },
+      hvd: {
+        description:
+          "A modern veterinary clinic website redesign - delivering a fresh, professional UI for better client experience.",
+        overview:
+          "HVD (Hôpital Vétérinaire) is a website redesign project for a veterinary clinic client. The goal was to modernize their online presence with a clean, professional design that better reflects the quality of care they provide to pets and their owners.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Modern, clean UI design with professional aesthetics</li>
+            <li>Fully responsive layout for all devices</li>
+            <li>Service showcase with clear descriptions</li>
+            <li>Team presentation section</li>
+            <li>Easy-to-find contact information and location</li>
+            <li>Fast loading and SEO optimized</li>
+            <li>Accessible design following best practices</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">🎨 Client Vision Translation</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> Understanding and translating the client's vision into a cohesive design.<br>
+                <span class="font-semibold">Solution:</span> Conducted thorough discovery sessions and created multiple mockups to align on the desired aesthetic.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">📱 Mobile-First Approach</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> Most pet owners browse on mobile when looking for vet services.<br>
+                <span class="font-semibold">Solution:</span> Designed mobile-first with touch-friendly navigation and quick-access contact buttons.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">⚡ Performance Optimization</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> Ensuring fast load times despite high-quality imagery.<br>
+                <span class="font-semibold">Solution:</span> Implemented image optimization, lazy loading, and efficient caching strategies.
+              </p>
+            </div>
+          </div>
+        `,
+        conclusion:
+          "This freelance project reinforced my skills in client communication and translating business needs into effective web design. It demonstrated the impact a modern website can have on a local business's professional image.",
+      },
+      virtualCardPro: {
+        description:
+          "A digital business card and professional portfolio app - bridging physical and digital networking with smart features.",
+        overview:
+          "Virtual Business Card Pro is a high-performance, fully responsive digital business card designed to convert visitors into clients. It serves as a central hub for professional identity, bridging the physical and digital worlds with smart features like QR codes, vCard downloads, and Google Wallet integration.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>📱 Fully responsive design: mobile app-like interface & desktop split-view</li>
+            <li>🌍 Multi-language support: instant FR/EN toggling</li>
+            <li>💼 Rich content sections: About, Services, Process, Testimonials</li>
+            <li>📇 vCard download: one-click contact saving (.vcf)</li>
+            <li>📲 Google Wallet integration: QR code for mobile wallet</li>
+            <li>⚡ One-tap contact: direct links for Email, Calendly, LinkedIn</li>
+            <li>🎨 Modern UI: glassmorphism effects, smooth animations</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">📱 Responsive Design Excellence</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> Creating a seamless experience across mobile (compact interface) and desktop (split-view layout).<br>
+                <span class="font-semibold">Solution:</span> Implemented adaptive layouts with Tailwind CSS breakpoints and sticky positioning for optimal viewing.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">📲 Wallet Integration</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> Enabling users to save contact info directly to their phone's wallet.<br>
+                <span class="font-semibold">Solution:</span> Implemented Google Wallet API with dynamic QR code generation for instant card saving.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">🌍 Internationalization</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> Supporting both French and English with instant switching.<br>
+                <span class="font-semibold">Solution:</span> Built a lightweight i18n system with React context for seamless language toggling.
+              </p>
+            </div>
+          </div>
+        `,
+        conclusion:
+          "Virtual Business Card Pro showcases modern React 19 development with Vite, demonstrating my ability to create polished, professional applications with cutting-edge UI/UX and practical business utility.",
       },
     },
 
