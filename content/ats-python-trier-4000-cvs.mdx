@@ -1,0 +1,282 @@
+---
+title: "Développer un ATS maison en Python : trier 4000+ CVs en quelques secondes"
+publishedAt: "2025-03-10"
+summary: "Comment j'ai construit un système de tri de CVs automatisé pour Royal Broker, permettant de filtrer 4000+ candidatures en quelques secondes avec une précision surprenante — sans LLM coûteux."
+image: "/blog/ats-python.png"
+---
+
+En 2023, Royal Broker publie une offre d'emploi pour des conseillers commerciaux. En 48h : **4 200 candidatures** dans la boîte mail.
+
+L'équipe RH avait littéralement abandonné. Trier ça manuellement aurait pris des semaines.
+
+Ma réponse : un ATS (Applicant Tracking System) maison en Python. Voici comment ça marche.
+
+---
+
+## Le problème concret
+
+Le processus de recrutement chez Royal Broker ressemblait à ça :
+
+1. Candidat envoie CV par email à `recrutement@royalbroker.ca`
+2. Une personne RH ouvre chaque email, télécharge le PDF, le lit
+3. Elle décide : Entretien / Rejet / Liste d'attente
+
+Avec 200 CVs par jour, c'est **impossible à tenir**. Et les bons profils passaient à travers les mailles.
+
+---
+
+## L'architecture du système
+
+Le système est composé de 4 modules indépendants :
+
+```
+Boîte Email (IMAP)
+       ↓
+[Module 1] Extraction des CVs (PDF → Texte)
+       ↓
+[Module 2] Analyse & Scoring NLP
+       ↓
+[Module 3] Classification & Ranking
+       ↓
+[Module 4] Dashboard + Actions automatiques
+```
+
+### Module 1 : Extraction des CVs
+
+```python
+import imaplib
+import email
+import pdfplumber
+from pathlib import Path
+
+def fetch_cvs_from_email(host, user, password, folder="INBOX"):
+    """Récupère tous les CVs PDF depuis la boîte mail."""
+    mail = imaplib.IMAP4_SSL(host)
+    mail.login(user, password)
+    mail.select(folder)
+
+    _, message_ids = mail.search(None, 'UNSEEN')
+    cvs = []
+
+    for msg_id in message_ids[0].split():
+        _, msg_data = mail.fetch(msg_id, '(RFC822)')
+        msg = email.message_from_bytes(msg_data[0][1])
+
+        for part in msg.walk():
+            if part.get_content_type() == 'application/pdf':
+                pdf_bytes = part.get_payload(decode=True)
+                text = extract_text_from_pdf(pdf_bytes)
+                cvs.append({
+                    'sender': msg['From'],
+                    'subject': msg['Subject'],
+                    'text': text,
+                    'raw_pdf': pdf_bytes,
+                })
+
+    return cvs
+
+def extract_text_from_pdf(pdf_bytes: bytes) -> str:
+    """Extrait le texte d'un PDF en bytes."""
+    import io
+    with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
+        return "\n".join(
+            page.extract_text() or ""
+            for page in pdf.pages
+        )
+```
+
+**Pourquoi pdfplumber plutôt que PyPDF2 ?** Meilleure gestion des tableaux et colonnes, fréquents dans les CVs modernes.
+
+### Module 2 : Scoring NLP
+
+Le coeur du système. J'ai opté pour une approche **TF-IDF + correspondance de critères** plutôt que des LLMs — plus rapide, plus prévisible, et gratuit.
+
+```python
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import spacy
+import re
+
+nlp = spacy.load("fr_core_news_sm")
+
+CRITERIA = {
+    "experience_years": {
+        "pattern": r"(\d+)\s*(an|ans|année|années)\s*(d'expérience|experience)",
+        "weight": 3.0,
+    },
+    "hard_skills": {
+        "keywords": ["excel", "crm", "salesforce", "communication", "vente", "négociation"],
+        "weight": 2.0,
+    },
+    "education": {
+        "keywords": ["bac", "baccalauréat", "dec", "diplôme", "université", "college"],
+        "weight": 1.5,
+    },
+    "languages": {
+        "keywords": ["français", "anglais", "bilingue", "bilingual"],
+        "weight": 1.0,
+    },
+}
+
+def score_cv(cv_text: str, job_description: str) -> dict:
+    """Calcule un score global pour un CV par rapport à l'offre d'emploi."""
+    cv_text_lower = cv_text.lower()
+    scores = {}
+    total_weight = 0
+
+    # Score par critère
+    for criterion, config in CRITERIA.items():
+        weight = config["weight"]
+        total_weight += weight
+
+        if "pattern" in config:
+            match = re.search(config["pattern"], cv_text_lower)
+            if match:
+                years = int(match.group(1))
+                scores[criterion] = min(years / 5, 1.0) * weight  # cap à 5 ans = 100%
+            else:
+                scores[criterion] = 0
+
+        elif "keywords" in config:
+            found = sum(1 for kw in config["keywords"] if kw in cv_text_lower)
+            scores[criterion] = (found / len(config["keywords"])) * weight
+
+    # Score de similarité sémantique avec la description du poste
+    vectorizer = TfidfVectorizer(stop_words=None)
+    try:
+        tfidf_matrix = vectorizer.fit_transform([cv_text, job_description])
+        similarity = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:2])[0][0]
+        scores["semantic_similarity"] = similarity * 2.0  # poids 2x
+        total_weight += 2.0
+    except Exception:
+        scores["semantic_similarity"] = 0
+
+    # Score final normalisé sur 100
+    raw_score = sum(scores.values())
+    final_score = (raw_score / total_weight) * 100
+
+    return {
+        "total": round(final_score, 1),
+        "breakdown": scores,
+    }
+```
+
+### Module 3 : Classification automatique
+
+```python
+THRESHOLDS = {
+    "entretien": 65,      # Score > 65 → Entretien
+    "liste_attente": 45,  # Score 45-65 → Liste d'attente
+    "rejet": 0,           # Score < 45 → Rejet automatique
+}
+
+def classify_candidate(score: float) -> str:
+    if score >= THRESHOLDS["entretien"]:
+        return "entretien"
+    elif score >= THRESHOLDS["liste_attente"]:
+        return "liste_attente"
+    return "rejet"
+
+def process_batch(cvs: list, job_description: str) -> list:
+    """Traite un batch de CVs et retourne les résultats triés."""
+    results = []
+    for cv in cvs:
+        score_data = score_cv(cv["text"], job_description)
+        results.append({
+            **cv,
+            "score": score_data["total"],
+            "breakdown": score_data["breakdown"],
+            "classification": classify_candidate(score_data["total"]),
+        })
+
+    return sorted(results, key=lambda x: x["score"], reverse=True)
+```
+
+### Module 4 : Actions automatiques
+
+Pour les rejets clairs (score < 30), envoi automatique d'un email de rejet poli :
+
+```python
+import smtplib
+from email.mime.text import MIMEText
+
+def send_rejection_email(to_email: str, candidate_name: str):
+    template = f"""
+Bonjour {candidate_name},
+
+Nous vous remercions de l'intérêt que vous portez à Royal Broker Solutions
+et du temps consacré à votre candidature.
+
+Après étude attentive de votre dossier, nous n'avons pas retenu
+votre candidature pour ce poste.
+
+Nous vous souhaitons bonne chance dans vos recherches.
+
+L'équipe RH Royal Broker
+    """
+    msg = MIMEText(template)
+    msg["Subject"] = "Votre candidature chez Royal Broker"
+    msg["From"] = "recrutement@royalbroker.ca"
+    msg["To"] = to_email
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        server.login(SMTP_USER, SMTP_PASS)
+        server.send_message(msg)
+```
+
+---
+
+## Les résultats
+
+Sur les **4 200 CVs** reçus :
+
+| Classification | Nombre | % |
+|---|---|---|
+| Entretien (score > 65) | 187 | 4.5% |
+| Liste d'attente (45-65) | 630 | 15% |
+| Rejet auto (< 45) | 3 383 | 80.5% |
+| **Total traité** | **4 200** | **100%** |
+
+Temps de traitement : **~8 minutes** pour les 4 200 CVs sur un laptop standard.
+
+L'équipe RH a ensuite eu à traiter **seulement 817 dossiers** au lieu de 4 200 — soit **5x moins de travail**.
+
+### Validation de la précision
+
+J'ai validé le système sur un échantillon de 200 CVs évalués manuellement au préalable. Résultats :
+
+- **Précision sur "entretien"** : 88% (peu de faux positifs)
+- **Rappel sur "entretien"** : 82% (quelques bons profils dans "liste d'attente")
+- **Erreurs critiques** (bon profil dans "rejet") : < 3%
+
+Le seuil de 3% d'erreurs critiques était acceptable pour ce contexte (volume très élevé, poste commercial junior).
+
+---
+
+## Ce que j'aurais fait différemment
+
+**1. Gestion des CVs en formats variés**
+
+Les CVs modernes viennent en PDF, Word, parfois même en images. J'ai géré le PDF, mais des `python-docx` + `pytesseract` (OCR) auraient évité quelques rejets injustes.
+
+**2. Feedback loop**
+
+Je n'ai pas implémenté de mécanisme pour que les RH signalent les erreurs du système, ce qui aurait permis d'améliorer les seuils dans le temps.
+
+**3. Biais potentiels**
+
+Le système TF-IDF favorise les CVs avec beaucoup de texte et les candidats qui "parlent le même langage" que la description de poste. Un candidat atypique (reconversion, parcours non-linéaire) peut être pénalisé injustement.
+
+---
+
+## Conclusion
+
+Un ATS maison n'est pas aussi complexe qu'on le croit. Avec Python et quelques bibliothèques open source, vous pouvez construire quelque chose de fonctionnel en moins d'une semaine.
+
+La vraie valeur n'est pas dans la sophistication technique, mais dans la **fiabilité et la transparence** du système — l'équipe RH doit pouvoir comprendre pourquoi un candidat a été classé d'une certaine façon.
+
+Le code complet est disponible dans le projet [InstaHR](/fr/projects) — la partie ATS est le composant `RecruitmentEngine`.
+
+---
+
+*Une question sur l'implémentation ? Contactez-moi directement, je suis ouvert à en discuter.*

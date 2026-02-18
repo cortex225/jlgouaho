@@ -26,6 +26,8 @@ const translations: Translations = {
     close: "Close",
     backToProfile: "Back to Profile",
     inProgress: "In Progress",
+    showMore: "Show More",
+    showLess: "Show Less",
   },
   theme: {
     toggle: "Toggle theme",
@@ -42,8 +44,38 @@ const translations: Translations = {
     description: "A complete collection of my work, experiments, and open source contributions.",
     haveIdea: "Have an idea for a project?",
     letsDiscuss: "Let's Discuss",
+    backToProfile: "Back to Profile",
+    filterAll: "All",
   },
   sections: {
+    availability: {
+      title: "Availability",
+      availableNow: "Available now",
+      typeLabel: "Position type",
+      modeLabel: "Work mode",
+      languagesLabel: "Languages",
+      types: "Full-time · Contract",
+      modes: "Remote · Hybrid",
+      languages: "French (native) · English (advanced)",
+    },
+    testimonials: {
+      title: "Recommendations",
+    },
+    currently: {
+      title: "Right Now",
+      certificationLabel: "Certifications in progress",
+      buildingLabel: "What I'm building",
+      readingLabel: "What I'm reading",
+    },
+    contactForm: {
+      title: "Let's Work Together",
+      subtitle: "Describe your project or opportunity — I reply within 24h.",
+      namePlaceholder: "Your name",
+      emailPlaceholder: "your@email.com",
+      messagePlaceholder: "Hi Jean-Luc, I'm reaching out about...",
+      send: "Send message",
+      success: "Message sent! I'll reply within 24h.",
+    },
     about: {
       title: "About me",
       description:

@@ -71,7 +71,7 @@ export default function ProjectsPage({ params: { locale } }: { params: { locale:
                         className="group flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors bg-white/40 dark:bg-slate-900/40 backdrop-blur-sm px-4 py-2 rounded-xl border border-white dark:border-slate-800 shadow-sm"
                     >
                         <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-                        <span className="font-bold">Back to Profile</span>
+                        <span className="font-bold">{t('projectsPage.backToProfile')}</span>
                     </Link>
                     <ModeToggle />
                 </div>
@@ -80,9 +80,9 @@ export default function ProjectsPage({ params: { locale } }: { params: { locale:
                      <div className="inline-flex items-center justify-center w-16 h-16 rounded-3xl bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 mb-6 shadow-lg shadow-indigo-500/20">
                         <Code size={32} />
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">All Projects</h1>
+                    <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">{t('projectsPage.allProjects')}</h1>
                     <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-                        A complete collection of my work, experiments, and open source contributions.
+                        {t('projectsPage.description')}
                     </p>
                 </div>
 
@@ -98,7 +98,7 @@ export default function ProjectsPage({ params: { locale } }: { params: { locale:
                                     : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
                             }`}
                         >
-                            {category}
+                            {category === 'All' ? t('projectsPage.filterAll') : category}
                         </button>
                     ))}
                 </div>
@@ -161,12 +161,12 @@ export default function ProjectsPage({ params: { locale } }: { params: { locale:
 
                 {/* Footer CTA */}
                 <div className="mt-20 text-center">
-                    <p className="text-slate-500 dark:text-slate-400 mb-6">Have an idea for a project?</p>
-                     <button 
+                    <p className="text-slate-500 dark:text-slate-400 mb-6">{t('projectsPage.haveIdea')}</p>
+                     <button
                         onClick={() => window.open(`mailto:${DATA.contact.email}`)}
                         className="bg-indigo-600 hover:bg-indigo-500 text-white text-lg font-bold py-4 px-8 rounded-full shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/30 hover:-translate-y-1 transition-all"
                     >
-                        Let&apos;s Discuss
+                        {t('projectsPage.letsDiscuss')}
                     </button>
                 </div>
 
