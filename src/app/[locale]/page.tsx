@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { 
-    Mail, Linkedin, Github, Share2, QrCode, X, Languages, Lightbulb, 
+import {
+    Mail, Linkedin, Github, Share2, QrCode, X, Languages, Lightbulb,
     Code, Briefcase, MapPin, ExternalLink, GraduationCap, ArrowRight,
-    ChevronDown, ChevronUp, NotebookIcon,
+    ChevronDown, ChevronUp, Download, Phone,
     Twitter,
     Instagram,
     Award
@@ -118,16 +118,16 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                             </div>
                         </div>
 
-                        {/* Actions - Simplified */}
-                        <div className="grid grid-cols-2 gap-3 mb-8">
-                            <button 
+                        {/* Actions */}
+                        <div className="grid grid-cols-2 gap-3 mb-4">
+                            <button
                                 onClick={() => window.location.href = `mailto:${DATA.contact.email}`}
                                 className="bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-200 dark:text-slate-900 text-white py-4 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-xl shadow-slate-900/10 group"
                             >
                                 <Mail size={18} className="group-hover:-translate-y-0.5 transition-transform" />
                                 <span className="text-sm font-bold">{t('common.email')}</span>
                             </button>
-                            <button 
+                            <button
                                 onClick={() => window.open(DATA.contact.social.LinkedIn.url, '_blank', 'noopener,noreferrer')}
                                 className="bg-indigo-600 hover:bg-indigo-500 text-white py-4 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-xl shadow-indigo-600/20 group"
                             >
@@ -135,18 +135,29 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                 <span className="text-sm font-bold">{t('common.connect')}</span>
                             </button>
                         </div>
+                        {/* CV Download Button */}
+                        <a
+                            href="https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video/MyResume.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full mb-8 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-indigo-400 hover:text-indigo-600 dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-all text-sm font-semibold group"
+                        >
+                            <Download size={16} className="group-hover:-translate-y-0.5 transition-transform" />
+                            {locale === 'fr' ? 'Télécharger mon CV' : 'Download Resume'}
+                        </a>
 
                         {/* Social Footer */}
-                        <div className="pt-6 border-t border-slate-200/50 dark:border-slate-700/50 flex justify-center gap-6">
-                            <SocialIcon href={DATA.contact.social.LinkedIn.url} icon={<Linkedin size={22} />} />
-                            <SocialIcon href={DATA.contact.social.GitHub.url} icon={<Github size={22} />} />
-                            <SocialIcon href={DATA.contact.social.X.url} icon={<Twitter size={22} />} />
-                            <SocialIcon href={DATA.contact.social.Instagram.url} icon={<Instagram size={22} />} />
-                            <button 
-                                onClick={() => setShowQR(true)} 
+                        <div className="pt-6 border-t border-slate-200/50 dark:border-slate-700/50 flex justify-center gap-5">
+                            <SocialIcon href={DATA.contact.social.LinkedIn.url} icon={<Linkedin size={20} />} />
+                            <SocialIcon href={DATA.contact.social.GitHub.url} icon={<Github size={20} />} />
+                            <SocialIcon href={DATA.contact.social.X.url} icon={<Twitter size={20} />} />
+                            <SocialIcon href={DATA.contact.social.Instagram.url} icon={<Instagram size={20} />} />
+                            <SocialIcon href={`tel:${DATA.contact.tel}`} icon={<Phone size={20} />} />
+                            <button
+                                onClick={() => setShowQR(true)}
                                 className="text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors p-2 hover:scale-110"
                             >
-                                <QrCode size={22} />
+                                <QrCode size={20} />
                             </button>
                         </div>
                     </div>
@@ -161,10 +172,25 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                             <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-2 rounded-xl"><Lightbulb size={24} /></span>
                             {DATA.summary.title}
                         </h2>
-                        <div className="text-slate-600 dark:text-slate-300 leading-relaxed text-lg space-y-4">
+                        <div className="text-slate-600 dark:text-slate-300 leading-relaxed text-lg space-y-4 mb-8">
                             {DATA.summary.description.split('\n\n').map((paragraph, index) => (
                                 <p key={index}>{paragraph}</p>
                             ))}
+                        </div>
+                        {/* Key metrics for recruiters */}
+                        <div className="grid grid-cols-3 gap-4">
+                            <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl p-4 text-center border border-indigo-100 dark:border-indigo-800/40">
+                                <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">3+</p>
+                                <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1 leading-tight">{locale === 'fr' ? "Ans d'expérience" : 'Years experience'}</p>
+                            </div>
+                            <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl p-4 text-center border border-emerald-100 dark:border-emerald-800/40">
+                                <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">-78%</p>
+                                <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1 leading-tight">{locale === 'fr' ? 'Réduction coûts cloud' : 'Cloud cost reduction'}</p>
+                            </div>
+                            <div className="bg-violet-50 dark:bg-violet-900/20 rounded-2xl p-4 text-center border border-violet-100 dark:border-violet-800/40">
+                                <p className="text-2xl font-bold text-violet-600 dark:text-violet-400">4000+</p>
+                                <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1 leading-tight">{locale === 'fr' ? 'CV traités / ATS' : 'Resumes processed / ATS'}</p>
+                            </div>
                         </div>
                     </section>
                     
@@ -187,9 +213,9 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                     className="flex items-center gap-2 px-6 py-3 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 font-semibold text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-all shadow-sm"
                                 >
                                     {isWorkExpanded ? (
-                                        <>Show Less <ChevronUp size={16} /></>
+                                        <>{locale === 'fr' ? 'Voir moins' : 'Show Less'} <ChevronUp size={16} /></>
                                     ) : (
-                                        <>Show More <ChevronDown size={16} /></>
+                                        <>{locale === 'fr' ? 'Voir plus' : 'Show More'} <ChevronDown size={16} /></>
                                     )}
                                 </button>
                             </div>
