@@ -3,19 +3,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { getData } from "@/data/resume";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans as FontSans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
-
-const fontSans = FontSans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-sans",
-  display: "swap",
-  preload: true,
-});
 
 export const generateMetadata = ({
   params: { locale },
@@ -120,6 +111,14 @@ export default function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
+        {/* Google Fonts — chargement CDN (pas de download au build time) */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet"
+        />
         {/* Anti-FOUC: applique le thème avant que React hydrate pour éviter le flash */}
         <Script
           id="theme-init"
@@ -136,8 +135,7 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
+          "min-h-screen bg-background font-sans antialiased"
         )}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <Providers locale={locale}>

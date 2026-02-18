@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect, KeyboardEvent } from 'react';
-import { X, Minus, Square, Terminal } from 'lucide-react';
+import { Terminal as TerminalIcon } from 'lucide-react';
 
 interface TerminalProps {
   locale: string;
@@ -169,7 +169,7 @@ export function Terminal({ locale, data }: TerminalProps) {
         title={fr ? 'Ouvrir le terminal (Ctrl+`)' : 'Open terminal (Ctrl+`)'}
         className="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-2xl bg-slate-900 dark:bg-slate-800 text-emerald-400 flex items-center justify-center shadow-2xl shadow-slate-900/30 hover:scale-110 transition-all border border-slate-700"
       >
-        <Terminal size={20} />
+        <TerminalIcon size={20} />
       </button>
 
       {/* Terminal window */}
