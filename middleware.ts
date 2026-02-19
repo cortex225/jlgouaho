@@ -1,14 +1,8 @@
 // middleware.ts
-import { createI18nMiddleware } from "next-international/middleware";
 import { NextRequest, NextResponse } from "next/server";
 
 const LOCALES = ["en", "fr"] as const;
 type Locale = (typeof LOCALES)[number];
-
-const I18nMiddleware = createI18nMiddleware({
-  locales: ["en", "fr"],
-  defaultLocale: "fr",
-});
 
 /**
  * Détecte la locale préférée à partir du header Accept-Language.
@@ -34,19 +28,20 @@ function detectLocale(request: NextRequest): Locale {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Si le chemin n'a pas encore de préfixe de locale, rediriger vers la locale du navigateur
+  // Si le chemin a déjà un préfixe de locale valide, laisser passer
   const hasLocale = LOCALES.some(
     (l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`)
   );
 
-  if (!hasLocale) {
-    const locale = detectLocale(request);
-    const url = request.nextUrl.clone();
-    url.pathname = `/${locale}${pathname === "/" ? "" : pathname}`;
-    return NextResponse.redirect(url);
+  if (hasLocale) {
+    return NextResponse.next();
   }
 
-  return I18nMiddleware(request);
+  // Sinon, détecter la locale et rediriger
+  const locale = detectLocale(request);
+  const url = request.nextUrl.clone();
+  url.pathname = `/${locale}${pathname === "/" ? "" : pathname}`;
+  return NextResponse.redirect(url);
 }
 
 export const config = {
