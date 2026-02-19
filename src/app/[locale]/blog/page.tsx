@@ -27,7 +27,7 @@ export default async function BlogPage({ params: { locale } }: { params: { local
     <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 font-sans relative selection:bg-indigo-100 selection:text-indigo-900">
       <div className="fixed inset-0 animated-bg z-0 pointer-events-none" />
 
-      <div className="w-full max-w-4xl mx-auto p-4 md:p-8 lg:p-12 relative z-10">
+      <div className="w-full max-w-4xl mx-auto p-4 pb-24 md:p-8 md:pb-24 lg:p-12 lg:pb-24 relative z-10">
 
         {/* Header */}
         <div className="mb-12 flex items-center justify-between">

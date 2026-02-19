@@ -189,7 +189,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                 </aside>
 
                 {/* --- RIGHT COLUMN: DETAILED CONTENT --- */}
-                <main className="flex-1 w-full space-y-12 lg:space-y-20 lg:pt-8 pb-12">
+                <main className="flex-1 w-full space-y-12 lg:space-y-20 lg:pt-8 pb-24">
                     
                     {/* About Section */}
                     <section className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-[2rem] p-6 md:p-10 border border-white dark:border-slate-800 shadow-sm">

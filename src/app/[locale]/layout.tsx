@@ -7,6 +7,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
+import Navbar from "@/components/navbar";
 
 export const generateMetadata = ({
   params: { locale },
@@ -141,6 +142,7 @@ export default function RootLayout({
           <Providers locale={locale}>
             <TooltipProvider delayDuration={0}>
               {children}
+              <Navbar />
             </TooltipProvider>
             <Analytics />
           </Providers>

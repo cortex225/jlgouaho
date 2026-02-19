@@ -145,10 +145,11 @@ export function getData(locale: "en" | "fr" = "fr") {
     ],
     navbar: [
       { href: "/", icon: HomeIcon, label: t.hero.greeting },
+      { href: "/blog", icon: NotebookIcon, label: "Blog" },
       {
         href: "https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video/MyResume.pdf",
         icon: Download,
-        label: "Download Resume",
+        label: locale === "fr" ? "Télécharger CV" : "Download Resume",
       },
     ],
     contact: {
