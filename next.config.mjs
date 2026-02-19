@@ -1,15 +1,24 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // Disable strict checking for now to unblock build
     eslint: {
         ignoreDuringBuilds: true,
     },
     typescript: {
         ignoreBuildErrors: true,
     },
-    // NOTE: La redirection / → /fr est gérée par le middleware (next-international)
-    // Ne pas dupliquer ici pour éviter les chaînes de redirections que Google marque
-    // comme "Page avec redirection" dans la Search Console.
+    async rewrites() {
+        return {
+            // afterFiles runs AFTER middleware + filesystem routes.
+            // This is the last-resort fallback: if both the middleware
+            // and the route handler somehow fail, rewrite to /fr.
+            afterFiles: [
+                {
+                    source: "/:path((?!en|fr|api|_next|static).*)",
+                    destination: "/fr/:path",
+                },
+            ],
+        };
+    },
 };
 
 export default nextConfig;
