@@ -1,0 +1,157 @@
+---
+title: "Comment j'ai réduit les coûts Azure de 78% chez Royal Broker"
+publishedAt: "2025-01-15"
+summary: "Retour d'expérience concret sur la migration cloud que j'ai menée chez Royal Broker : de 600$/mois à 135$/mois, en 3 mois. Analyse de l'architecture, des erreurs à éviter et des décisions qui ont tout changé."
+image: "/blog/azure-cost.png"
+---
+
+En août 2022, je rejoins Royal Broker Solutions en stage. Six mois plus tard, je suis embauché à temps plein avec pour mission principale : reprendre et optimiser notre plateforme SaaS interne, **InstaHR**.
+
+Le problème ? On payait **600$/mois** sur Azure pour une application utilisée par une trentaine de personnes. C'était aberrant.
+
+Voici exactement comment on est passé à **135$/mois**.
+
+---
+
+## Le diagnostic initial
+
+La première chose que j'ai faite : auditer la facture Azure service par service.
+
+```
+Azure App Service (Plan P2v3)         → 312$/mois
+Azure SQL Database (Standard S3)      → 150$/mois
+Azure Blob Storage                    →  28$/mois
+Azure Application Gateway             →  85$/mois
+Azure Active Directory Premium P1     →  25$/mois
+─────────────────────────────────────────────────
+TOTAL                                 → 600$/mois
+```
+
+Plusieurs constats immédiats :
+
+1. **Le plan App Service P2v3** (4 vCPU, 14 GB RAM) était totalement surdimensionné pour notre charge réelle
+2. **Azure SQL Standard S3** (100 DTUs) — notre pic de requêtes concurrentes dépassait rarement 5
+3. **L'Application Gateway** était utilisé comme simple load balancer pour... une seule instance
+4. **Azure AD Premium** activé pour des features qu'on n'utilisait pas
+
+---
+
+## L'approche : Right-sizing + Architecture Serverless
+
+### Étape 1 : Analyser la charge réelle
+
+Avant de toucher quoi que ce soit, j'ai instrumenté l'app avec **Azure Monitor** et **Application Insights** pendant 3 semaines.
+
+Résultats :
+- CPU moyen : **8%** (pic à 35% les lundis matins)
+- Mémoire : **2.1 GB** utilisés en moyenne
+- Requêtes SQL simultanées max : **12**
+- Trafic : environ 200 requêtes/heure en heures de pointe
+
+Ces données m'ont permis de justifier chaque décision de migration auprès du management. Ne jamais optimiser à l'aveugle — les métriques d'abord.
+
+### Étape 2 : Migrer vers une architecture serverless hybride
+
+Au lieu d'une migration brutale, j'ai procédé par modules :
+
+**Backend ASP.NET Core → Azure Functions (Consumption Plan)**
+
+Les opérations longues (envoi d'emails, génération de PDFs, synchronisation Zoho) ont été extraites en Azure Functions déclenchées par des queues.
+
+```csharp
+[FunctionName("SendCandidateEmail")]
+public static async Task Run(
+    [QueueTrigger("email-queue")] EmailMessage message,
+    ILogger log)
+{
+    // Envoi d'email via SendGrid
+    await _emailService.SendAsync(message);
+}
+```
+
+**Impact :** Ces workloads ne tournent maintenant que quand ils sont déclenchés. Coût : quasi nul (inclus dans le free tier).
+
+**Azure SQL → Azure SQL Serverless**
+
+J'ai migré vers le tier **Serverless** d'Azure SQL qui scale automatiquement entre 0.5 et 2 vCores, avec auto-pause après 1h d'inactivité.
+
+```sql
+-- Configuration serverless
+CREATE DATABASE InstaHR
+WITH
+  (EDITION = 'GeneralPurpose',
+   SERVICE_OBJECTIVE = 'GP_S_Gen5_1',
+   MIN_CAPACITY = 0.5,
+   AUTO_PAUSE_DELAY = 60);
+```
+
+**Impact :** On ne paie que ce qu'on consomme. Économie : 110$/mois.
+
+**App Service P2v3 → B2s**
+
+Avec les Azure Functions absorbant les workloads asynchrones, le serveur principal n'a plus besoin d'autant de ressources.
+
+```
+Avant → P2v3 : 4 vCPU, 14 GB RAM → 312$/mois
+Après → B2s  : 2 vCPU,  4 GB RAM →  38$/mois
+```
+
+**Application Gateway → Azure Front Door (Free Tier)**
+
+Pour notre cas (une seule origine, SSL, pas de WAF avancé), Azure Front Door Basic était gratuit.
+
+---
+
+## L'architecture finale
+
+```
+Utilisateurs
+    ↓
+Azure Front Door (Gratuit)
+    ↓
+Azure App Service B2s (38$/mois)
+    ↓              ↓
+Azure SQL        Azure Storage
+Serverless       (12$/mois)
+(75$/mois)
+    ↓
+Azure Functions (Consumption)
+Email / PDF / Zoho Sync
+(~10$/mois)
+─────────────────────────────
+TOTAL : 135$/mois (-78%)
+```
+
+---
+
+## Les erreurs que j'aurais évitées
+
+**1. Ne pas avoir de métriques au départ**
+
+J'ai failli réduire le plan SQL sans savoir la charge réelle. Si on avait des pics de 200 requêtes concurrentes, le serverless aurait throttlé et dégradé l'expérience utilisateur.
+
+**2. Migrer tout d'un coup**
+
+J'ai procédé progressivement : d'abord les Azure Functions (sans impact sur le core), puis SQL, puis App Service. Chaque étape était testée en staging pendant une semaine.
+
+**3. Ignorer les frais de sortie réseau**
+
+Azure facture la bande passante sortante. En déplaçant le stockage dans la même région que l'App Service, on a évité des frais de transfer data inter-régions.
+
+---
+
+## Ce que cette expérience m'a appris
+
+Le cloud est puissant mais dangereux si on n'y fait pas attention. Les fournisseurs rendent le "provisioning" trop facile — un clic et vous avez une machine à 300$/mois.
+
+Les pratiques qui ont le plus d'impact :
+- **Instrumenter avant d'optimiser** — les métriques justifient les décisions
+- **Serverless pour les workloads intermittents** — vous ne payez que ce que vous consommez
+- **Right-sizing régulier** — les besoins changent, les plans doivent suivre
+- **Budget alerts** — j'ai configuré des alertes à 80% et 100% du budget mensuel
+
+La réduction de 600$ à 135$/mois a libéré du budget pour d'autres initiatives. Et surtout, ça m'a donné une crédibilité technique au sein de l'équipe qui a facilité les projets suivants.
+
+---
+
+*Vous travaillez sur une optimisation cloud similaire ? N'hésitez pas à me contacter — je suis toujours partant pour en discuter.*

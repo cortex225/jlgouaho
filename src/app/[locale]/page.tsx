@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { 
-    Mail, Linkedin, Github, Share2, QrCode, X, Languages, Lightbulb, 
+import {
+    Mail, Linkedin, Github, Share2, QrCode, X, Languages, Lightbulb,
     Code, Briefcase, MapPin, ExternalLink, GraduationCap, ArrowRight,
-    ChevronDown, ChevronUp, NotebookIcon,
+    ChevronDown, ChevronUp, Download, Phone, Quote, BookOpen,
+    Hammer, GanttChart, CheckCircle2,
     Twitter,
     Instagram,
     Award
@@ -16,8 +17,9 @@ import Link from 'next/link';
 import { ModeToggle } from '@/components/mode-toggle';
 import Image from 'next/image';
 import { useI18n } from '@/app/locales/client';
-
 import { ProjectModal } from '@/components/project-modal';
+import { ContactForm } from '@/components/contact-form';
+import { Terminal } from '@/components/terminal';
 
 export default function Page({ params: { locale } }: { params: { locale: string } }) {
     const t = useI18n();
@@ -118,16 +120,16 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                             </div>
                         </div>
 
-                        {/* Actions - Simplified */}
-                        <div className="grid grid-cols-2 gap-3 mb-8">
-                            <button 
+                        {/* Actions */}
+                        <div className="grid grid-cols-2 gap-3 mb-4">
+                            <button
                                 onClick={() => window.location.href = `mailto:${DATA.contact.email}`}
                                 className="bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-200 dark:text-slate-900 text-white py-4 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-xl shadow-slate-900/10 group"
                             >
                                 <Mail size={18} className="group-hover:-translate-y-0.5 transition-transform" />
                                 <span className="text-sm font-bold">{t('common.email')}</span>
                             </button>
-                            <button 
+                            <button
                                 onClick={() => window.open(DATA.contact.social.LinkedIn.url, '_blank', 'noopener,noreferrer')}
                                 className="bg-indigo-600 hover:bg-indigo-500 text-white py-4 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-xl shadow-indigo-600/20 group"
                             >
@@ -135,18 +137,52 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                 <span className="text-sm font-bold">{t('common.connect')}</span>
                             </button>
                         </div>
+                        {/* CV Download Button */}
+                        <a
+                            href="https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video/MyResume.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full mb-5 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-indigo-400 hover:text-indigo-600 dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-all text-sm font-semibold group"
+                        >
+                            <Download size={16} className="group-hover:-translate-y-0.5 transition-transform" />
+                            {locale === 'fr' ? 'Télécharger mon CV' : 'Download Resume'}
+                        </a>
+
+                        {/* Availability */}
+                        <div className="mb-6 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-700/50 p-4 space-y-2.5">
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t('sections.availability.title')}</p>
+                            <div className="flex items-center gap-2">
+                                <CheckCircle2 size={14} className="text-emerald-500 shrink-0" />
+                                <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">{t('sections.availability.availableNow')}</span>
+                            </div>
+                            <div className="space-y-1.5 text-xs text-slate-500 dark:text-slate-400">
+                                <div className="flex justify-between">
+                                    <span className="font-medium">{t('sections.availability.typeLabel')}</span>
+                                    <span>{t('sections.availability.types')}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="font-medium">{t('sections.availability.modeLabel')}</span>
+                                    <span>{t('sections.availability.modes')}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="font-medium">{t('sections.availability.languagesLabel')}</span>
+                                    <span>{t('sections.availability.languages')}</span>
+                                </div>
+                            </div>
+                        </div>
 
                         {/* Social Footer */}
-                        <div className="pt-6 border-t border-slate-200/50 dark:border-slate-700/50 flex justify-center gap-6">
-                            <SocialIcon href={DATA.contact.social.LinkedIn.url} icon={<Linkedin size={22} />} />
-                            <SocialIcon href={DATA.contact.social.GitHub.url} icon={<Github size={22} />} />
-                            <SocialIcon href={DATA.contact.social.X.url} icon={<Twitter size={22} />} />
-                            <SocialIcon href={DATA.contact.social.Instagram.url} icon={<Instagram size={22} />} />
-                            <button 
-                                onClick={() => setShowQR(true)} 
+                        <div className="pt-6 border-t border-slate-200/50 dark:border-slate-700/50 flex justify-center gap-5">
+                            <SocialIcon href={DATA.contact.social.LinkedIn.url} icon={<Linkedin size={20} />} />
+                            <SocialIcon href={DATA.contact.social.GitHub.url} icon={<Github size={20} />} />
+                            <SocialIcon href={DATA.contact.social.X.url} icon={<Twitter size={20} />} />
+                            <SocialIcon href={DATA.contact.social.Instagram.url} icon={<Instagram size={20} />} />
+                            <SocialIcon href={`tel:${DATA.contact.tel}`} icon={<Phone size={20} />} />
+                            <button
+                                onClick={() => setShowQR(true)}
                                 className="text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors p-2 hover:scale-110"
                             >
-                                <QrCode size={22} />
+                                <QrCode size={20} />
                             </button>
                         </div>
                     </div>
@@ -161,13 +197,61 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                             <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-2 rounded-xl"><Lightbulb size={24} /></span>
                             {DATA.summary.title}
                         </h2>
-                        <div className="text-slate-600 dark:text-slate-300 leading-relaxed text-lg space-y-4">
+                        <div className="text-slate-600 dark:text-slate-300 leading-relaxed text-lg space-y-4 mb-8">
                             {DATA.summary.description.split('\n\n').map((paragraph, index) => (
                                 <p key={index}>{paragraph}</p>
                             ))}
                         </div>
+                        {/* Key metrics for recruiters */}
+                        <div className="grid grid-cols-3 gap-4">
+                            <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl p-4 text-center border border-indigo-100 dark:border-indigo-800/40">
+                                <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">3+</p>
+                                <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1 leading-tight">{locale === 'fr' ? "Ans d'expérience" : 'Years experience'}</p>
+                            </div>
+                            <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl p-4 text-center border border-emerald-100 dark:border-emerald-800/40">
+                                <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">-78%</p>
+                                <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1 leading-tight">{locale === 'fr' ? 'Réduction coûts cloud' : 'Cloud cost reduction'}</p>
+                            </div>
+                            <div className="bg-violet-50 dark:bg-violet-900/20 rounded-2xl p-4 text-center border border-violet-100 dark:border-violet-800/40">
+                                <p className="text-2xl font-bold text-violet-600 dark:text-violet-400">4000+</p>
+                                <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1 leading-tight">{locale === 'fr' ? 'CV traités / ATS' : 'Resumes processed / ATS'}</p>
+                            </div>
+                        </div>
                     </section>
-                    
+
+                    {/* Currently */}
+                    <section className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-[2rem] p-6 md:p-8 border border-white dark:border-slate-800 shadow-sm">
+                        <h2 className="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-3">
+                            <span className="bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 p-2 rounded-xl"><GanttChart size={22} /></span>
+                            {t('sections.currently.title')}
+                        </h2>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div className="space-y-2">
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
+                                    <Award size={10} /> {t('sections.currently.certificationLabel')}
+                                </p>
+                                {DATA.currently.certifications.map((cert, i) => (
+                                    <div key={i} className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse shrink-0" />
+                                        <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">{cert}</span>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="space-y-2">
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
+                                    <Hammer size={10} /> {t('sections.currently.buildingLabel')}
+                                </p>
+                                <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">{locale === 'fr' ? DATA.currently.building.fr : DATA.currently.building.en}</p>
+                            </div>
+                            <div className="space-y-2">
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
+                                    <BookOpen size={10} /> {t('sections.currently.readingLabel')}
+                                </p>
+                                <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">{DATA.currently.reading}</p>
+                            </div>
+                        </div>
+                    </section>
+
                     {/* Work Experience */}
                     <section>
                         <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-8 ml-4 flex items-center gap-3">
@@ -187,9 +271,9 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                     className="flex items-center gap-2 px-6 py-3 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 font-semibold text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-all shadow-sm"
                                 >
                                     {isWorkExpanded ? (
-                                        <>Show Less <ChevronUp size={16} /></>
+                                        <>{locale === 'fr' ? 'Voir moins' : 'Show Less'} <ChevronUp size={16} /></>
                                     ) : (
-                                        <>Show More <ChevronDown size={16} /></>
+                                        <>{locale === 'fr' ? 'Voir plus' : 'Show More'} <ChevronDown size={16} /></>
                                     )}
                                 </button>
                             </div>
@@ -258,6 +342,35 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                         </div>
                     </section>
 
+                    {/* Testimonials */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-8 ml-4 flex items-center gap-3">
+                            <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-2 rounded-xl"><Quote size={24} /></span>
+                            {t('sections.testimonials.title')}
+                        </h2>
+                        <div className="grid grid-cols-1 gap-6">
+                            {DATA.testimonials.map((testimonial, i) => (
+                                <div key={i} className="bg-white dark:bg-slate-900 rounded-[2rem] p-7 border border-white dark:border-slate-800 shadow-sm relative overflow-hidden">
+                                    <div className="absolute top-4 right-6 text-8xl font-serif text-slate-100 dark:text-slate-800 leading-none select-none pointer-events-none">"</div>
+                                    <p className="text-slate-600 dark:text-slate-300 text-base leading-relaxed mb-6 relative z-10 italic">
+                                        "{locale === 'fr' ? testimonial.quote.fr : testimonial.quote.en}"
+                                    </p>
+                                    <div className="flex items-center gap-4">
+                                        <div className="relative w-12 h-12 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800 shrink-0 border-2 border-slate-200 dark:border-slate-700">
+                                            <Image src={testimonial.avatar} alt={testimonial.author} fill className="object-cover" />
+                                        </div>
+                                        <div>
+                                            <p className="font-bold text-slate-900 dark:text-white text-sm">{testimonial.author}</p>
+                                            <p className="text-xs text-slate-500 dark:text-slate-400">
+                                                {locale === 'fr' ? testimonial.role.fr : testimonial.role.en} · {testimonial.company}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
                      {/* Education */}
                      <section className="bg-slate-900 dark:bg-slate-950 text-slate-100 rounded-[2.5rem] p-8 md:p-12 overflow-hidden relative">
                          <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500 rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
@@ -316,15 +429,31 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                     </section>
 
 
-                    {/* Final CTA */}
-                    <div className="text-center py-12">
-                         <button 
-                            onClick={() => window.open(`mailto:${DATA.contact.email}`)}
-                            className="bg-indigo-600 hover:bg-indigo-500 text-white text-lg font-bold py-5 px-10 rounded-full shadow-2xl shadow-indigo-500/30 hover:shadow-indigo-500/40 hover:-translate-y-1 transition-all"
-                        >
-                            {t('common.getInTouch')}
-                        </button>
-                        <p className="mt-4 text-slate-500 dark:text-slate-400 text-sm">© {new Date().getFullYear()} {DATA.name}. {t('common.allRightsReserved')}</p>
+                    {/* Contact Form */}
+                    <section className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-[2.5rem] p-8 md:p-12 border border-white dark:border-slate-800 shadow-sm">
+                        <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-2 flex items-center gap-3">
+                            <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-2 rounded-xl"><Mail size={24} /></span>
+                            {t('sections.contactForm.title')}
+                        </h2>
+                        <p className="text-slate-500 dark:text-slate-400 mb-8 ml-14">{t('sections.contactForm.subtitle')}</p>
+                        <ContactForm
+                            locale={locale}
+                            email={DATA.contact.email}
+                            labels={{
+                                title: t('sections.contactForm.title'),
+                                subtitle: t('sections.contactForm.subtitle'),
+                                namePlaceholder: t('sections.contactForm.namePlaceholder'),
+                                emailPlaceholder: t('sections.contactForm.emailPlaceholder'),
+                                messagePlaceholder: t('sections.contactForm.messagePlaceholder'),
+                                send: t('sections.contactForm.send'),
+                                success: t('sections.contactForm.success'),
+                            }}
+                        />
+                    </section>
+
+                    {/* Footer */}
+                    <div className="text-center py-6">
+                        <p className="text-slate-500 dark:text-slate-400 text-sm">© {new Date().getFullYear()} {DATA.name}. {t('common.allRightsReserved')}</p>
                     </div>
 
                 </main>
@@ -368,10 +497,23 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                     </div>
                 </div>
             )}
-            <ProjectModal 
-                project={selectedProject} 
-                open={!!selectedProject} 
-                onClose={() => setSelectedProject(null)} 
+            <ProjectModal
+                project={selectedProject}
+                open={!!selectedProject}
+                onClose={() => setSelectedProject(null)}
+            />
+            <Terminal
+                locale={locale}
+                data={{
+                    name: DATA.name,
+                    title: DATA.summary.title,
+                    email: DATA.contact.email,
+                    github: DATA.contact.social.GitHub.url,
+                    linkedin: DATA.contact.social.LinkedIn.url,
+                    projects: DATA.projects.map(p => p.title),
+                    skills: DATA.skills.map(s => s.name),
+                    cvUrl: "https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video/MyResume.pdf",
+                }}
             />
         </div>
     );

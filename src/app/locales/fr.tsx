@@ -26,6 +26,8 @@ const translations: Translations = {
     close: "Fermer",
     backToProfile: "Retour au Profil",
     inProgress: "En cours",
+    showMore: "Voir plus",
+    showLess: "Voir moins",
   },
   theme: {
     toggle: "Changer le thème",
@@ -42,8 +44,38 @@ const translations: Translations = {
     description: "Une collection complète de mes travaux, expérimentations et contributions open source.",
     haveIdea: "Vous avez une idée de projet ?",
     letsDiscuss: "Discutons-en",
+    backToProfile: "Retour au Profil",
+    filterAll: "Tous",
   },
   sections: {
+    availability: {
+      title: "Disponibilité",
+      availableNow: "Disponible maintenant",
+      typeLabel: "Type de poste",
+      modeLabel: "Mode de travail",
+      languagesLabel: "Langues",
+      types: "Temps plein · Contrat",
+      modes: "Télétravail · Hybride",
+      languages: "Français (natif) · Anglais (avancé)",
+    },
+    testimonials: {
+      title: "Recommandations",
+    },
+    currently: {
+      title: "En ce moment",
+      certificationLabel: "Certifications en cours",
+      buildingLabel: "Ce que je construis",
+      readingLabel: "Ce que je lis",
+    },
+    contactForm: {
+      title: "Travaillons Ensemble",
+      subtitle: "Décrivez votre projet ou opportunité — je réponds sous 24h.",
+      namePlaceholder: "Votre nom",
+      emailPlaceholder: "votre@email.com",
+      messagePlaceholder: "Bonjour Jean-Luc, je vous contacte au sujet de...",
+      send: "Envoyer le message",
+      success: "Message envoyé ! Je vous réponds dans les 24h.",
+    },
     about: {
       title: "À propos de moi",
       description:

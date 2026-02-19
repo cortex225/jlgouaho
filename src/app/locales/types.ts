@@ -23,6 +23,8 @@ export type Translations = {
     close: string;
     backToProfile: string;
     inProgress: string;
+    showMore: string;
+    showLess: string;
   };
   theme: {
     toggle: string;
@@ -39,11 +41,41 @@ export type Translations = {
     description: string;
     haveIdea: string;
     letsDiscuss: string;
+    backToProfile: string;
+    filterAll: string;
   };
   sections: {
     about: {
       title: string;
       description: string;
+    };
+    availability: {
+      title: string;
+      availableNow: string;
+      typeLabel: string;
+      modeLabel: string;
+      languagesLabel: string;
+      types: string;
+      modes: string;
+      languages: string;
+    };
+    testimonials: {
+      title: string;
+    };
+    currently: {
+      title: string;
+      certificationLabel: string;
+      buildingLabel: string;
+      readingLabel: string;
+    };
+    contactForm: {
+      title: string;
+      subtitle: string;
+      namePlaceholder: string;
+      emailPlaceholder: string;
+      messagePlaceholder: string;
+      send: string;
+      success: string;
     };
     work: {
       title: string;
