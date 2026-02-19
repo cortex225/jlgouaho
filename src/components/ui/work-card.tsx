@@ -22,7 +22,7 @@ export const WorkCard: React.FC<WorkCardProps> = ({ job }) => {
 
     return (
         <div className="group bg-white dark:bg-slate-900 rounded-[2rem] p-6 md:p-8 border border-white dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300">
-            <div className="flex flex-col md:flex-row gap-6 md:items-start cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
+            <div className="flex flex-col md:flex-row  gap-6 md:items-start cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
                 <div className="shrink-0">
                     <div className="w-16 h-16 rounded-2xl overflow-hidden bg-white shadow-sm border border-slate-100 dark:border-slate-800 relative">
                         <Image src={job.logoUrl} alt={job.company} fill className="object-cover" />
@@ -46,7 +46,7 @@ export const WorkCard: React.FC<WorkCardProps> = ({ job }) => {
                     </div>
                     
                     {/* Desktop toggle indicator */}
-                    <div className="hidden md:flex justify-end -mt-6 mb-2">
+                    <div className="hidden md:flex justify-end">
                          <span className="text-slate-400 hover:text-indigo-600 transition-colors">
                                 {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                         </span>

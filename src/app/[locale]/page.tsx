@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Mail, Linkedin, Github, Share2, QrCode, X, Languages, Lightbulb,
     Code, Briefcase, MapPin, ExternalLink, GraduationCap, ArrowRight,
@@ -20,6 +20,7 @@ import { useI18n } from '@/app/locales/client';
 import { ProjectModal } from '@/components/project-modal';
 import { ContactForm } from '@/components/contact-form';
 import { Terminal } from '@/components/terminal';
+import { TestimonialsSlider } from './TestimonialsSlider';
 
 export default function Page({ params: { locale } }: { params: { locale: string } }) {
     const t = useI18n();
@@ -138,7 +139,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                             </button>
                         </div>
                         {/* CV Download Button */}
-                        <a
+                        {/* <a
                             href="https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video/MyResume.pdf"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -146,10 +147,10 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                         >
                             <Download size={16} className="group-hover:-translate-y-0.5 transition-transform" />
                             {locale === 'fr' ? 'Télécharger mon CV' : 'Download Resume'}
-                        </a>
+                        </a> */}
 
                         {/* Availability */}
-                        <div className="mb-6 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-700/50 p-4 space-y-2.5">
+                        {/* <div className="mb-6 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-700/50 p-4 space-y-2.5">
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t('sections.availability.title')}</p>
                             <div className="flex items-center gap-2">
                                 <CheckCircle2 size={14} className="text-emerald-500 shrink-0" />
@@ -169,11 +170,11 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                     <span>{t('sections.availability.languages')}</span>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* Social Footer */}
                         <div className="pt-6 border-t border-slate-200/50 dark:border-slate-700/50 flex justify-center gap-5">
-                            <SocialIcon href={DATA.contact.social.LinkedIn.url} icon={<Linkedin size={20} />} />
+                            <SocialIcon href={DATA.contact.social.blog.url} icon={<BookOpen size={20} />} />
                             <SocialIcon href={DATA.contact.social.GitHub.url} icon={<Github size={20} />} />
                             <SocialIcon href={DATA.contact.social.X.url} icon={<Twitter size={20} />} />
                             <SocialIcon href={DATA.contact.social.Instagram.url} icon={<Instagram size={20} />} />
@@ -189,7 +190,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                 </aside>
 
                 {/* --- RIGHT COLUMN: DETAILED CONTENT --- */}
-                <main className="flex-1 w-full space-y-12 lg:space-y-20 lg:pt-8 pb-24">
+                <main className="flex-1 w-full space-y-12 lg:space-y-12  pb-24">
                     
                     {/* About Section */}
                     <section className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-[2rem] p-6 md:p-10 border border-white dark:border-slate-800 shadow-sm">
@@ -202,25 +203,11 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                 <p key={index}>{paragraph}</p>
                             ))}
                         </div>
-                        {/* Key metrics for recruiters */}
-                        <div className="grid grid-cols-3 gap-4">
-                            <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl p-4 text-center border border-indigo-100 dark:border-indigo-800/40">
-                                <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">3+</p>
-                                <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1 leading-tight">{locale === 'fr' ? "Ans d'expérience" : 'Years experience'}</p>
-                            </div>
-                            <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl p-4 text-center border border-emerald-100 dark:border-emerald-800/40">
-                                <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">-78%</p>
-                                <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1 leading-tight">{locale === 'fr' ? 'Réduction coûts cloud' : 'Cloud cost reduction'}</p>
-                            </div>
-                            <div className="bg-violet-50 dark:bg-violet-900/20 rounded-2xl p-4 text-center border border-violet-100 dark:border-violet-800/40">
-                                <p className="text-2xl font-bold text-violet-600 dark:text-violet-400">4000+</p>
-                                <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1 leading-tight">{locale === 'fr' ? 'CV traités / ATS' : 'Resumes processed / ATS'}</p>
-                            </div>
-                        </div>
+                    
                     </section>
 
                     {/* Currently */}
-                    <section className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-[2rem] p-6 md:p-8 border border-white dark:border-slate-800 shadow-sm">
+                    {/* <section className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-[2rem] p-6 md:p-8 border border-white dark:border-slate-800 shadow-sm">
                         <h2 className="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-3">
                             <span className="bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 p-2 rounded-xl"><GanttChart size={22} /></span>
                             {t('sections.currently.title')}
@@ -250,7 +237,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                 <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">{DATA.currently.reading}</p>
                             </div>
                         </div>
-                    </section>
+                    </section> */}
 
                     {/* Work Experience */}
                     <section>
@@ -343,33 +330,13 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                     </section>
 
                     {/* Testimonials */}
-                    <section>
+                    {/* <section>
                         <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-8 ml-4 flex items-center gap-3">
                             <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-2 rounded-xl"><Quote size={24} /></span>
                             {t('sections.testimonials.title')}
                         </h2>
-                        <div className="grid grid-cols-1 gap-6">
-                            {DATA.testimonials.map((testimonial, i) => (
-                                <div key={i} className="bg-white dark:bg-slate-900 rounded-[2rem] p-7 border border-white dark:border-slate-800 shadow-sm relative overflow-hidden">
-                                    <div className="absolute top-4 right-6 text-8xl font-serif text-slate-100 dark:text-slate-800 leading-none select-none pointer-events-none">"</div>
-                                    <p className="text-slate-600 dark:text-slate-300 text-base leading-relaxed mb-6 relative z-10 italic">
-                                        "{locale === 'fr' ? testimonial.quote.fr : testimonial.quote.en}"
-                                    </p>
-                                    <div className="flex items-center gap-4">
-                                        <div className="relative w-12 h-12 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800 shrink-0 border-2 border-slate-200 dark:border-slate-700">
-                                            <Image src={testimonial.avatar} alt={testimonial.author} fill className="object-cover" />
-                                        </div>
-                                        <div>
-                                            <p className="font-bold text-slate-900 dark:text-white text-sm">{testimonial.author}</p>
-                                            <p className="text-xs text-slate-500 dark:text-slate-400">
-                                                {locale === 'fr' ? testimonial.role.fr : testimonial.role.en} · {testimonial.company}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
+                        <TestimonialsSlider locale={locale} testimonials={DATA.testimonials} />
+                    </section> */}
 
                      {/* Education */}
                      <section className="bg-slate-900 dark:bg-slate-950 text-slate-100 rounded-[2.5rem] p-8 md:p-12 overflow-hidden relative">
@@ -428,28 +395,6 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                         </div>
                     </section>
 
-
-                    {/* Contact Form */}
-                    <section className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-[2.5rem] p-8 md:p-12 border border-white dark:border-slate-800 shadow-sm">
-                        <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-2 flex items-center gap-3">
-                            <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-2 rounded-xl"><Mail size={24} /></span>
-                            {t('sections.contactForm.title')}
-                        </h2>
-                        <p className="text-slate-500 dark:text-slate-400 mb-8 ml-14">{t('sections.contactForm.subtitle')}</p>
-                        <ContactForm
-                            locale={locale}
-                            email={DATA.contact.email}
-                            labels={{
-                                title: t('sections.contactForm.title'),
-                                subtitle: t('sections.contactForm.subtitle'),
-                                namePlaceholder: t('sections.contactForm.namePlaceholder'),
-                                emailPlaceholder: t('sections.contactForm.emailPlaceholder'),
-                                messagePlaceholder: t('sections.contactForm.messagePlaceholder'),
-                                send: t('sections.contactForm.send'),
-                                success: t('sections.contactForm.success'),
-                            }}
-                        />
-                    </section>
 
                     {/* Footer */}
                     <div className="text-center py-6">

@@ -2,7 +2,7 @@ import React from "react";
 import en from "@/app/locales/en";
 import fr from "@/app/locales/fr";
 import { Icons } from "@/components/icons";
-import { Download, HomeIcon, NotebookIcon } from "lucide-react";
+import { BookOpen, Download, HomeIcon, NotebookIcon } from "lucide-react";
 
 /**
  * Sélectionne le fichier de traduction en fonction de la locale.
@@ -190,6 +190,13 @@ export function getData(locale: "en" | "fr" = "fr") {
         //   icon: Icons.youtube,
         //   navbar: true,
         // },
+        blog: {
+          name: "Blog",
+          url: "/blog",
+          icon: BookOpen,
+
+          navbar: true,
+        },
         email: {
           name: "Send Email",
           url: "mailto:jlgouaho@gmail.com",

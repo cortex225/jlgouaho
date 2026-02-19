@@ -142,7 +142,6 @@ export default function RootLayout({
           <Providers locale={locale}>
             <TooltipProvider delayDuration={0}>
               {children}
-              <Navbar />
             </TooltipProvider>
             <Analytics />
           </Providers>
