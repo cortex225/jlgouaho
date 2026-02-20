@@ -19,10 +19,10 @@ export function getData(locale: "en" | "fr" = "fr") {
 
   return {
     name: "Déto Jean-Luc Gouaho",
-    initials: "DV",
+    initials: "jl",
     url: "https://jlgouaho.com",
     businessUrl: "https://business.jlgouaho.com",
-    location: "Quebec, CA",
+    location: "CANADA",
     locationLink: "",
     description: t.sections.about,
     summary: t.sections.about,
@@ -192,7 +192,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         // },
         blog: {
           name: "Blog",
-          url: "/blog",
+          url: "https://jlgouaho.com/blog",
           icon: BookOpen,
 
           navbar: true,
@@ -316,7 +316,7 @@ export function getData(locale: "en" | "fr" = "fr") {
           "/projects/magic-search/magic-2.png",
         ],
         video:
-          "https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video/magic-search.mp4",
+          "https://pub-c0874d8393bb493ea002a55cbc71d1ab.r2.dev/portfolio/magic-search.mp4",
         links: [
           {
             type: "Website",
@@ -331,7 +331,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         ],
       },
         {
-        title: "RecruitEase",
+        title: "RecruitEasy",
         description: t.sections.projects.recruitEase.description,
         overview: t.sections.projects.recruitEase.overview,
         features: t.sections.projects.recruitEase.features,
@@ -354,12 +354,15 @@ export function getData(locale: "en" | "fr" = "fr") {
         ],
         images: [
           "/projects/recruit-ease/landing2.gif",
-          "/projects/recruit-ease/jobs.png",
-          "/projects/recruit-ease/landing.png",
-          "/projects/recruit-ease/recommendations.png",
+          "/projects/recruit-ease/landing3.png",
+          "/projects/recruit-ease/img1.png",
+          "/projects/recruit-ease/img2.png",
+          "/projects/recruit-ease/img3.png",
+          "/projects/recruit-ease/img4.png",
+
         ],
         video:
-          "https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video//recruitease.mp4",
+          "https://pub-c0874d8393bb493ea002a55cbc71d1ab.r2.dev/portfolio/recruitease.mp4",
         links: [
           {
             type: "Website",
@@ -435,7 +438,7 @@ export function getData(locale: "en" | "fr" = "fr") {
           "/projects/playerConnect/recruiter.png",
         ],
         video:
-          "https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video//playerConnect1.mp4",
+          "https://pub-c0874d8393bb493ea002a55cbc71d1ab.r2.dev/portfolio/playerConnect1.mp4",
         links: [
           // {
           //   type: "Website",
@@ -456,20 +459,21 @@ export function getData(locale: "en" | "fr" = "fr") {
         features: t.sections.projects.leadMapper.features,
         challenges: t.sections.projects.leadMapper.challenges,
         conclusion: t.sections.projects.leadMapper.conclusion,
-        href: "#",
+        href: "https://lead-mapper.vercel.app/",
         dates: "Dec 2024 - Jan 2025",
         active: true,
         technologies: [
-          "Chrome Extension",
           "JavaScript",
           "TypeScript",
           "React",
           "TailwindCSS",
-          "Chrome APIs",
+          "Google Map APIs",
           "Local Storage",
         ],
         images: [
-          "/projects/LeadMapper/CleanShot 2026-01-10 at 16.54.32@2x.png",
+          "/projects/LeadMapper/img1.png",
+          "/projects/LeadMapper/img2.png",
+     
         ],
         links: [
           {
@@ -499,7 +503,10 @@ export function getData(locale: "en" | "fr" = "fr") {
           "Vercel",
         ],
         images: [
-          "/projects/portfolio/placeholder-1.png",
+          "/projects/portfolio/img1.png",
+          "/projects/portfolio/img2.png",
+          "/projects/portfolio/img3.png",
+
         ],
         links: [
           {
@@ -563,13 +570,44 @@ export function getData(locale: "en" | "fr" = "fr") {
           "Vercel",
         ],
         images: [
-          "/projects/hvd/placeholder-1.png",
+          "/projects/hvd/img1.png",
+          "/projects/hvd/img2.png",
+          "/projects/hvd/img3.png",
+          "/projects/hvd/img4.png",
         ],
         links: [
           {
             type: "Website",
             href: "https://hvd-beta.vercel.app/",
             icon: <Icons.globe className="size-3" />,
+          },
+        ],
+      },
+      {
+        title: "Ma Civ",
+        description: t.sections.projects.maCiv.description,
+        overview: t.sections.projects.maCiv.overview,
+        features: t.sections.projects.maCiv.features,
+        challenges: t.sections.projects.maCiv.challenges,
+        conclusion: t.sections.projects.maCiv.conclusion,
+        href: "#",
+        dates: "2022 - 2023",
+        active: true,
+        technologies: [
+          "HTML",
+          "CSS",
+          "JavaScript",
+        ],
+        images: [
+          "/projects/ma-civ/img1.png",
+          "/projects/ma-civ/img2.png",
+        ],
+        video: "https://pub-c0874d8393bb493ea002a55cbc71d1ab.r2.dev/portfolio/maciv_landing.mp4",
+        links: [
+          {
+            type: "Github",
+            href: "https://github.com/cortex225/ma-civ",
+            icon: <Icons.github className="h-4 w-4" />,
           },
         ],
       },

@@ -113,7 +113,18 @@ export default function ProjectsPage({ params: { locale } }: { params: { locale:
                             style={{ animationDelay: `${i * 100}ms` }}
                         >
                             
-                            {project.images && project.images.length > 0 ? (
+                            {(project as any).video ? (
+                                    <div className="rounded-xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800 mb-6 group-hover:scale-[1.02] transition-transform duration-500 h-48 relative">
+                                    <video 
+                                        src={(project as any).video} 
+                                        autoPlay
+                                        loop
+                                        muted
+                                        playsInline
+                                        className="w-full h-full object-cover object-top"
+                                    />
+                                </div>
+                            ) : project.images && project.images.length > 0 ? (
                                     <div className="rounded-xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800 mb-6 group-hover:scale-[1.02] transition-transform duration-500 h-48 relative">
                                     <Image 
                                         src={project.images[0]} 

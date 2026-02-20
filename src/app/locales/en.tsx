@@ -506,6 +506,40 @@ const translations: Translations = {
         conclusion:
           "This freelance project reinforced my skills in client communication and translating business needs into effective web design. It demonstrated the impact a modern website can have on a local business's professional image.",
       },
+      maCiv: {
+        description:
+          "An immersive showcase website developed in pure HTML and CSS to promote the rich cultural, historical, and touristic heritage of Ivory Coast.",
+        overview:
+          "Ma Civ is a personal project born from my desire to celebrate my roots. It is a welcoming and colorful digital platform designed to highlight the beauty of Ivory Coast. The website acts as a digital ambassador, covering the country's must-sees across various sections: local gastronomy, history, nature, and culture.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Gastronomy:</strong> Highlighting typical Ivorian dishes such as Alloco, Garba, and Foutou.</li>
+            <li><strong>Nature & Parks:</strong> Focusing on the rich biodiversity, notably the Taï National Park.</li>
+            <li><strong>History & Heritage:</strong> Presenting iconic monuments like the Basilica.</li>
+            <li><strong>Art & Culture:</strong> Exploring ancestral masks and the vibrant Ivorian music scene.</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">🎨 Responsive Design without Frameworks</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> Creating an immersive and well-structured design without using tools like Bootstrap or Tailwind.<br>
+                <span class="font-semibold">Solution:</span> Advanced use of CSS Grid and Flexbox with careful attention to media queries to ensure perfect readability on mobile devices.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">⚡ Visual Media Optimization</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> Presenting high-resolution images of the country's heritage without slowing down the load time.<br>
+                <span class="font-semibold">Solution:</span> Manual optimization and resizing of visual assets to ensure a smooth browsing experience while keeping colors vibrant.
+              </p>
+            </div>
+          </div>
+        `,
+        conclusion:
+          "Ma Civ is a true passion project that serves as a digital ambassador for Ivory Coast. Developing this site allowed me to solidify my web development fundamentals (HTML/CSS) while proudly sharing my culture.",
+      },
       virtualCardPro: {
         description:
           "A digital business card and professional portfolio app - bridging physical and digital networking with smart features.",

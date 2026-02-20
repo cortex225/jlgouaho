@@ -48,16 +48,25 @@ export async function getPost(slug: string) {
   };
 }
 
+export function getPostMeta(slug: string) {
+  const filePath = path.join(process.cwd(), "content", `${slug}.mdx`);
+  let source = fs.readFileSync(filePath, "utf-8");
+  const { data: metadata } = matter(source);
+  return {
+    metadata,
+    slug,
+  };
+}
+
 async function getAllPosts(dir: string) {
   let mdxFiles = getMDXFiles(dir);
   return Promise.all(
     mdxFiles.map(async (file) => {
       let slug = path.basename(file, path.extname(file));
-      let { metadata, source } = await getPost(slug);
+      let { metadata } = getPostMeta(slug);
       return {
         metadata,
         slug,
-        source,
       };
     })
   );

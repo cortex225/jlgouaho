@@ -188,6 +188,13 @@ export type Translations = {
         challenges: string;
         conclusion: string;
       };
+      maCiv: {
+        description: string;
+        overview: string;
+        features: string;
+        challenges: string;
+        conclusion: string;
+      };
       virtualCardPro: {
         description: string;
         overview: string;

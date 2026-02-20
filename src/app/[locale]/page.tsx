@@ -21,6 +21,11 @@ import { ProjectModal } from '@/components/project-modal';
 import { ContactForm } from '@/components/contact-form';
 import { Terminal } from '@/components/terminal';
 import { TestimonialsSlider } from './TestimonialsSlider';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function Page({ params: { locale } }: { params: { locale: string } }) {
     const t = useI18n();
@@ -140,7 +145,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                         </div>
                         {/* CV Download Button */}
                         {/* <a
-                            href="https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video/MyResume.pdf"
+                            href="https://pub-c0874d8393bb493ea002a55cbc71d1ab.r2.dev/portfolio/MyResume.pdf"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="w-full mb-5 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-indigo-400 hover:text-indigo-600 dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-all text-sm font-semibold group"
@@ -174,17 +179,64 @@ export default function Page({ params: { locale } }: { params: { locale: string 
 
                         {/* Social Footer */}
                         <div className="pt-6 border-t border-slate-200/50 dark:border-slate-700/50 flex justify-center gap-5">
-                            <SocialIcon href={DATA.contact.social.blog.url} icon={<BookOpen size={20} />} />
-                            <SocialIcon href={DATA.contact.social.GitHub.url} icon={<Github size={20} />} />
-                            <SocialIcon href={DATA.contact.social.X.url} icon={<Twitter size={20} />} />
-                            <SocialIcon href={DATA.contact.social.Instagram.url} icon={<Instagram size={20} />} />
-                            <SocialIcon href={`tel:${DATA.contact.tel}`} icon={<Phone size={20} />} />
-                            <button
-                                onClick={() => setShowQR(true)}
-                                className="text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors p-2 hover:scale-110"
-                            >
-                                <QrCode size={20} />
-                            </button>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <SocialIcon href={DATA.contact.social.blog.url} icon={<BookOpen size={20} />} />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>{locale === 'fr' ? 'Lire mon blog' : 'Read my blog'}</p>
+                                </TooltipContent>
+                            </Tooltip>
+                            
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <SocialIcon href={DATA.contact.social.GitHub.url} icon={<Github size={20} />} />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>{locale === 'fr' ? 'Voir mes projets sur GitHub' : 'View my projects on GitHub'}</p>
+                                </TooltipContent>
+                            </Tooltip>
+                            
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <SocialIcon href={DATA.contact.social.X.url} icon={<Twitter size={20} />} />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>{locale === 'fr' ? 'Me suivre sur X' : 'Follow me on X'}</p>
+                                </TooltipContent>
+                            </Tooltip>
+                            
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <SocialIcon href={DATA.contact.social.Instagram.url} icon={<Instagram size={20} />} />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>{locale === 'fr' ? 'Me suivre sur Instagram' : 'Follow me on Instagram'}</p>
+                                </TooltipContent>
+                            </Tooltip>
+                            
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <SocialIcon href={`tel:${DATA.contact.tel}`} icon={<Phone size={20} />} />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>{locale === 'fr' ? "M'appeler" : 'Call me'}</p>
+                                </TooltipContent>
+                            </Tooltip>
+
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <button
+                                        onClick={() => setShowQR(true)}
+                                        className="text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors p-2 hover:scale-110"
+                                    >
+                                        <QrCode size={20} />
+                                    </button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>{locale === 'fr' ? 'Partager via QR Code' : 'Share via QR Code'}</p>
+                                </TooltipContent>
+                            </Tooltip>
                         </div>
                     </div>
                 </aside>
@@ -304,7 +356,18 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                         ))}
                                     </div>
 
-                                    {project.images && project.images.length > 0 && (
+                                    {(project as any).video ? (
+                                        <div className="rounded-xl overflow-hidden shadow-md border border-slate-100 dark:border-slate-800 mt-4 group-hover:scale-[1.02] transition-transform duration-500">
+                                            <video
+                                                src={(project as any).video}
+                                                autoPlay
+                                                loop
+                                                muted
+                                                playsInline
+                                                className="w-full h-48 object-cover object-top"
+                                            />
+                                        </div>
+                                    ) : project.images && project.images.length > 0 && (
                                          <div className="rounded-xl overflow-hidden shadow-md border border-slate-100 dark:border-slate-800 mt-4 group-hover:scale-[1.02] transition-transform duration-500">
                                             <Image 
                                                 src={project.images[0]} 
@@ -457,7 +520,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                     linkedin: DATA.contact.social.LinkedIn.url,
                     projects: DATA.projects.map(p => p.title),
                     skills: DATA.skills.map(s => s.name),
-                    cvUrl: "https://cwxxwhrcxhafmhhqszgm.supabase.co/storage/v1/object/public/video/MyResume.pdf",
+                    cvUrl: "https://pub-c0874d8393bb493ea002a55cbc71d1ab.r2.dev/portfolio/MyResume.pdf",
                 }}
             />
         </div>

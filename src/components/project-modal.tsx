@@ -29,6 +29,18 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, open, onClo
         };
     }, [open]);
 
+    const mediaList = React.useMemo(() => {
+        if (!project) return [];
+        const list: { type: 'video' | 'image', src: string }[] = [];
+        if (project.video) {
+            list.push({ type: 'video', src: project.video });
+        }
+        if (project.images && Array.isArray(project.images)) {
+            list.push(...project.images.map((src: string) => ({ type: 'image', src })));
+        }
+        return list;
+    }, [project]);
+
     // Handle keyboard navigation for slider
     useEffect(() => {
         if (activeImageIndex === null) return;
@@ -41,21 +53,21 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, open, onClo
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [activeImageIndex, project]);
+    }, [activeImageIndex, mediaList]);
 
     if (!open || !project) return null;
 
     const handleNextImage = () => {
-        if (!project.images) return;
+        if (mediaList.length === 0) return;
         setActiveImageIndex((prev) => 
-            prev === null ? null : (prev + 1) % project.images.length
+            prev === null ? null : (prev + 1) % mediaList.length
         );
     };
 
     const handlePrevImage = () => {
-        if (!project.images) return;
+        if (mediaList.length === 0) return;
         setActiveImageIndex((prev) => 
-            prev === null ? null : (prev - 1 + project.images.length) % project.images.length
+            prev === null ? null : (prev - 1 + mediaList.length) % mediaList.length
         );
     };
 
@@ -99,7 +111,16 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, open, onClo
                                     className="relative h-64 md:h-96 w-full bg-slate-100 dark:bg-slate-900 shrink-0 cursor-zoom-in group"
                                     onClick={() => setActiveImageIndex(0)}
                                 >
-                                    {project.images && project.images.length > 0 ? (
+                                    {project.video ? (
+                                        <video
+                                            src={project.video}
+                                            autoPlay
+                                            loop
+                                            muted
+                                            playsInline
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                        />
+                                    ) : project.images && project.images.length > 0 ? (
                                         <Image
                                             src={project.images[0]}
                                             alt={project.title}
@@ -216,22 +237,33 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, open, onClo
                                         </div>
 
                                         {/* Extra Images Grid */}
-                                        {project.images && project.images.length > 1 && (
+                                        {mediaList.length > 1 && (
                                             <div className="space-y-4">
                                                 <h4 className="font-bold text-slate-900 dark:text-white">{t('common.gallery')}</h4>
                                                 <div className="grid grid-cols-1 gap-4">
-                                                    {project.images.slice(1).map((img: string, i: number) => (
+                                                    {mediaList.slice(1).map((media, i: number) => (
                                                         <div 
                                                             key={i} 
                                                             className="relative aspect-video rounded-xl overflow-hidden border border-slate-100 dark:border-slate-800 shadow-sm cursor-zoom-in hover:ring-2 ring-indigo-500 transition-all"
                                                             onClick={() => setActiveImageIndex(i + 1)}
                                                         >
-                                                            <Image
-                                                                src={img}
-                                                                alt={`${project.title} screenshot ${i + 2}`}
-                                                                fill
-                                                                className="object-cover"
-                                                            />
+                                                            {media.type === 'video' ? (
+                                                                <video
+                                                                    src={media.src}
+                                                                    autoPlay
+                                                                    loop
+                                                                    muted
+                                                                    playsInline
+                                                                    className="w-full h-full object-cover pointer-events-none"
+                                                                />
+                                                            ) : (
+                                                                <Image
+                                                                    src={media.src}
+                                                                    alt={`${project.title} screenshot ${i + 2}`}
+                                                                    fill
+                                                                    className="object-cover pointer-events-none"
+                                                                />
+                                                            )}
                                                         </div>
                                                     ))}
                                                 </div>
@@ -285,18 +317,29 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, open, onClo
                                         exit={{ opacity: 0, x: -20 }}
                                         className="w-full h-full relative"
                                     >
-                                        <Image
-                                            src={project.images[activeImageIndex]}
-                                            alt={`Slide ${activeImageIndex}`}
-                                            fill
-                                            className="object-contain"
-                                            priority
-                                        />
+                                        {mediaList[activeImageIndex].type === 'video' ? (
+                                            <video
+                                                src={mediaList[activeImageIndex].src}
+                                                autoPlay
+                                                loop
+                                                muted
+                                                playsInline
+                                                className="w-full h-full object-contain"
+                                            />
+                                        ) : (
+                                            <Image
+                                                src={mediaList[activeImageIndex].src}
+                                                alt={`Slide ${activeImageIndex}`}
+                                                fill
+                                                className="object-contain"
+                                                priority
+                                            />
+                                        )}
                                     </motion.div>
                                     
                                     {/* Pagination Dots */}
                                     <div className="absolute -bottom-12 left-0 right-0 flex justify-center gap-2">
-                                        {project.images.map((_: any, idx: number) => (
+                                        {mediaList.map((_: any, idx: number) => (
                                             <button
                                                 key={idx}
                                                 onClick={() => setActiveImageIndex(idx)}

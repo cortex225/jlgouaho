@@ -505,6 +505,40 @@ const translations: Translations = {
         conclusion:
           "Ce projet client m'a permis de mettre en pratique mes compétences en design UI/UX pour créer une présence web professionnelle qui répond aux besoins spécifiques d'une clinique vétérinaire. La satisfaction du client confirme l'importance d'écouter et comprendre les besoins métier.",
       },
+      maCiv: {
+        description:
+          "Un site vitrine immersif développé en HTML et CSS pur pour promouvoir la richesse culturelle, historique et touristique de la Côte d'Ivoire.",
+        overview:
+          "Ma Civ est un projet personnel né de mon désir de célébrer mes racines. Il s'agit d'une plateforme numérique accueillante et colorée conçue pour faire découvrir la beauté de la Côte d'Ivoire. Le site met en lumière les incontournables du pays à travers différentes sections : la gastronomie locale, l'histoire, la nature et la culture.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Gastronomie :</strong> Mise en valeur des plats typiques ivoiriens tels que l'Alloco, le Garba et le Foutou.</li>
+            <li><strong>Nature & Parcs :</strong> Focus sur la riche biodiversité, notamment le Parc National de Taï.</li>
+            <li><strong>Histoire & Patrimoine :</strong> Présentation des monuments emblématiques comme la Basilique.</li>
+            <li><strong>Art & Culture :</strong> Exploration des masques ancestraux et de la vibrante scène musicale ivoirienne.</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">🎨 Conception Responsive sans Framework</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Créer un design immersif et structuré sans utiliser d'outils comme Bootstrap ou Tailwind.<br>
+                <span class="font-semibold">Solution :</span> Utilisation avancée de CSS Grid et Flexbox avec une attention particulière portée aux media queries pour assurer une lisibilité parfaite sur mobile.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">⚡ Optimisation des Médias Visuels</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Présenter des images haute résolution du patrimoine sans ralentir le temps de chargement.<br>
+                <span class="font-semibold">Solution :</span> Optimisation et redimensionnement manuel des assets visuels pour garantir une navigation fluide tout en gardant des couleurs vibrantes.
+              </p>
+            </div>
+          </div>
+        `,
+        conclusion:
+          "Ma Civ est un véritable projet passion qui fait office d'ambassadeur digital pour la Côte d'Ivoire. Développer ce site m'a permis de consolider mes fondamentaux en développement web (HTML/CSS) tout en partageant fièrement ma culture.",
+      },
       virtualCardPro: {
         description:
           "Une application de carte de visite numérique et portfolio professionnel - connectant le réseautage physique et digital avec des fonctionnalités intelligentes.",
