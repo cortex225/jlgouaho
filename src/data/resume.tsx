@@ -18,9 +18,10 @@ export function getData(locale: "en" | "fr" = "fr") {
   const t = getTranslation(locale);
 
   return {
+    i18n: t,
     name: "Déto Jean-Luc Gouaho",
     initials: "jl",
-    url: "https://jlgouaho.com",
+    url: "https://www.jlgouaho.com",
     businessUrl: "https://business.jlgouaho.com",
     location: "CANADA",
     locationLink: "",
@@ -192,7 +193,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         // },
         blog: {
           name: "Blog",
-          url: "https://jlgouaho.com/blog",
+          url: "https://www.jlgouaho.com/blog",
           icon: BookOpen,
 
           navbar: true,
@@ -490,7 +491,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         features: t.sections.projects.portfolio.features,
         challenges: t.sections.projects.portfolio.challenges,
         conclusion: t.sections.projects.portfolio.conclusion,
-        href: "https://jlgouaho.com",
+        href: "https://www.jlgouaho.com",
         dates: "Jan 2024 - Present",
         active: true,
         technologies: [
@@ -511,7 +512,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         links: [
           {
             type: "Website",
-            href: "https://jlgouaho.com",
+            href: "https://www.jlgouaho.com",
             icon: <Icons.globe className="size-3" />,
           },
           {

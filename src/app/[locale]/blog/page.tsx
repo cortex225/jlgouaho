@@ -1,15 +1,62 @@
 import { getBlogPosts } from "@/data/blog";
+import { getData } from "@/data/resume";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, BookOpen, ArrowRight, Calendar } from 'lucide-react';
 import { ModeToggle } from '@/components/mode-toggle';
 
-export const metadata = {
-  title: "Blog",
-  description: "Retours d'expérience en développement cloud, DevOps et Full-Stack.",
-};
+const BASE_URL = "https://www.jlgouaho.com";
 
-export default async function BlogPage({ params: { locale } }: { params: { locale: string } }) {
+export async function generateMetadata({
+  params: { locale },
+}: {
+  params: { locale: "en" | "fr" };
+}): Promise<Metadata> {
+  const data = getData(locale);
+  const title = data.i18n.seo.blogTitle;
+  const description = data.i18n.seo.blogDescription;
+  const url = `${BASE_URL}/${locale}/blog`;
+  const ogLocale = locale === "fr" ? "fr_CA" : "en_CA";
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: url,
+      languages: {
+        "fr-CA": `${BASE_URL}/fr/blog`,
+        "en-CA": `${BASE_URL}/en/blog`,
+        "x-default": `${BASE_URL}/fr/blog`,
+      },
+    },
+    openGraph: {
+      type: "website",
+      url,
+      siteName: data.name,
+      locale: ogLocale,
+      title,
+      description,
+      images: [
+        {
+          url: `${BASE_URL}/me.png`,
+          width: 800,
+          height: 800,
+          alt: data.name,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [`${BASE_URL}/me.png`],
+    },
+  };
+}
+
+export default async function BlogPage({ params: { locale } }: { params: { locale: "en" | "fr" } }) {
   const posts = await getBlogPosts();
+  const data = getData(locale);
 
   const sorted = posts.sort((a, b) =>
     new Date(b.metadata.publishedAt) > new Date(a.metadata.publishedAt) ? 1 : -1
@@ -17,14 +64,59 @@ export default async function BlogPage({ params: { locale } }: { params: { local
 
   const labels = {
     backToProfile: locale === 'fr' ? 'Retour au Profil' : 'Back to Profile',
-    title: locale === 'fr' ? 'Blog' : 'Blog',
-    description: locale === 'fr'
-      ? 'Retours d\'expérience en développement cloud, DevOps et Full-Stack.'
-      : 'Experience reports on cloud development, DevOps and Full-Stack.',
+    title: data.i18n.blog.title,
+    description: data.i18n.blog.description,
+  };
+
+  const inLanguage = locale === "fr" ? "fr-CA" : "en-CA";
+  const blogUrl = `${BASE_URL}/${locale}/blog`;
+
+  const blogJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    inLanguage,
+    url: blogUrl,
+    name: data.i18n.seo.blogTitle,
+    description: data.i18n.seo.blogDescription,
+    blogPost: sorted.map((post) => ({
+      "@type": "BlogPosting",
+      headline: post.metadata.title,
+      url: `${BASE_URL}/${locale}/blog/${post.slug}`,
+      datePublished: post.metadata.publishedAt,
+    })),
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: locale === "fr" ? "Accueil" : "Home",
+        item: `${BASE_URL}/${locale}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: blogUrl,
+      },
+    ],
   };
 
   return (
     <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 font-sans relative selection:bg-indigo-100 selection:text-indigo-900">
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <div className="fixed inset-0 animated-bg z-0 pointer-events-none" />
 
       <div className="w-full max-w-4xl mx-auto p-4 pb-24 md:p-8 md:pb-24 lg:p-12 lg:pb-24 relative z-10">
