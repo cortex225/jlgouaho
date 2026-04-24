@@ -3,6 +3,33 @@ import type { Translations } from "./types";
 
 const translations: Translations = {
   hello: "Hello",
+  seo: {
+    tagline:
+      "Full-Stack Developer (.NET, Vue.js, Azure) based in Quebec, Canada — cloud, DevOps and automation specialist. I help companies cut cloud costs and ship faster.",
+    keywords: [
+      "Full-Stack Developer Quebec",
+      "Full-Stack Developer Montreal",
+      ".NET Developer Canada",
+      "Vue.js Developer",
+      "Next.js Developer",
+      "Azure Specialist",
+      "Cloud DevOps Engineer",
+      "Python Automation",
+      "Freelance Developer Canada",
+      "Jean-Luc Gouaho",
+      "jlgouaho",
+    ],
+    homeTitle:
+      "Déto Jean-Luc Gouaho — Full-Stack Cloud & Azure Developer in Quebec",
+    homeDescription:
+      "Full-Stack Developer specialized in .NET, Vue.js, Next.js and Azure. 3+ years of experience, 78% cloud cost reduction, Python ATS processing 4000+ resumes in seconds. Open to opportunities in Canada.",
+    projectsTitle: "Projects — Jean-Luc Gouaho Portfolio",
+    projectsDescription:
+      "A collection of full-stack projects: SaaS CRM, AI-powered ATS, e-commerce platform, DevOps automation. Stack: Next.js, .NET, Vue.js, Azure, PostgreSQL, OpenAI.",
+    blogTitle: "Blog — Cloud, DevOps & Full-Stack Deep Dives",
+    blogDescription:
+      "Hands-on technical articles: Azure cost optimization (-78%), Python ATS processing 4000+ resumes, serverless architecture, CI/CD and DevOps best practices.",
+  },
   hero: {
     greeting: "Hi, I'm",
     title: "Full-Stack Developer | Automation & Cloud Specialist",
@@ -48,6 +75,66 @@ const translations: Translations = {
     filterAll: "All",
   },
   sections: {
+    impact: {
+      title: "Measurable impact",
+      subtitle: "Real production results, not buzzwords",
+      metrics: [
+        {
+          value: "78%",
+          label: "Cloud cost reduction",
+          description:
+            "Azure migration at Royal Broker Solutions cut monthly spend from $600 to $135 with no performance trade-off.",
+        },
+        {
+          value: "4000+",
+          label: "Resumes processed in seconds",
+          description:
+            "Custom Python ATS that parses and ranks thousands of applications in seconds instead of days.",
+        },
+        {
+          value: "60%",
+          label: "Faster deployments",
+          description:
+            "CI/CD pipelines with Git and Azure DevOps, dramatically reducing time-to-production for new features.",
+        },
+      ],
+    },
+    faq: {
+      title: "Frequently asked questions",
+      subtitle: "What recruiters and clients ask me the most",
+      items: [
+        {
+          question: "What kind of role are you looking for?",
+          answer:
+            "I'm open to full-time or contract roles as a Full-Stack Developer, Cloud Engineer or DevOps Developer, remote or hybrid from Quebec, Canada. My preferred stacks are .NET, Vue.js, Next.js and Azure, but I pick up new tech quickly.",
+        },
+        {
+          question: "What are your core technologies?",
+          answer:
+            "C#, .NET, TypeScript, JavaScript, Python, Vue.js, React, Next.js, Node.js, PostgreSQL, SQL Server, Docker, Azure, AWS. I also work with Groovy/Grails and low-code tools like Caspio and Power Automate.",
+        },
+        {
+          question: "What business impact have you delivered?",
+          answer:
+            "At Royal Broker Solutions, I migrated the infrastructure to Azure cutting costs by 78% ($600 to $135/month), built a Python ATS that sorts 4000+ resumes in seconds, and accelerated deployments by 60% via CI/CD.",
+        },
+        {
+          question: "Are you available for freelance projects?",
+          answer:
+            "Yes. I take on full-stack development, Azure cost optimization, business process automation and SaaS application work. I reply to every inquiry within 24 hours.",
+        },
+        {
+          question: "Where are you based and what languages do you work in?",
+          answer:
+            "I'm based in Quebec, Canada. I work fluently in French (native) and English (advanced), which lets me collaborate with teams across North America and Europe.",
+        },
+        {
+          question: "How can I reach you?",
+          answer:
+            "Email me at jlgouaho@gmail.com, connect on LinkedIn (linkedin.com/in/jlgouaho), or use the contact form on the site. I typically reply within 24 business hours.",
+        },
+      ],
+    },
     availability: {
       title: "Availability",
       availableNow: "Available now",

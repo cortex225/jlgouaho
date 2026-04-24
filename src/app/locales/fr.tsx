@@ -3,6 +3,33 @@ import type { Translations } from "./types";
 
 const translations: Translations = {
   hello: "Bonjour",
+  seo: {
+    tagline:
+      "Développeur Full-Stack .NET, Vue.js & Azure basé au Québec — spécialiste cloud, DevOps et automatisation. J'aide les entreprises à réduire leurs coûts cloud et à livrer plus vite.",
+    keywords: [
+      "Développeur Full-Stack Québec",
+      "Développeur Full-Stack Montréal",
+      "Développeur .NET Canada",
+      "Développeur Vue.js",
+      "Développeur Next.js",
+      "Spécialiste Azure",
+      "Cloud DevOps",
+      "Automatisation Python",
+      "Développeur freelance Québec",
+      "Jean-Luc Gouaho",
+      "jlgouaho",
+    ],
+    homeTitle:
+      "Déto Jean-Luc Gouaho — Développeur Full-Stack Cloud & Azure au Québec",
+    homeDescription:
+      "Développeur Full-Stack .NET, Vue.js, Next.js & Azure. +3 ans d'expérience, réduction de 78% des coûts cloud, ATS Python traitant 4000+ CV/s. Disponible pour opportunités au Canada.",
+    projectsTitle: "Projets — Portfolio de Jean-Luc Gouaho",
+    projectsDescription:
+      "Collection de projets full-stack : CRM SaaS, ATS IA, plateforme e-commerce, automatisations DevOps. Stack : Next.js, .NET, Vue.js, Azure, PostgreSQL, OpenAI.",
+    blogTitle: "Blog — Retours d'expérience Cloud, DevOps & Full-Stack",
+    blogDescription:
+      "Articles techniques concrets : optimisation Azure (-78%), ATS Python pour trier 4000+ CV, architecture serverless, CI/CD et bonnes pratiques DevOps.",
+  },
   hero: {
     greeting: "Bonjour, je suis",
     title: "Développeur Full-Stack | Spécialiste en Cloud & Automatisation",
@@ -48,6 +75,66 @@ const translations: Translations = {
     filterAll: "Tous",
   },
   sections: {
+    impact: {
+      title: "Impact mesurable",
+      subtitle: "Des résultats concrets livrés en production",
+      metrics: [
+        {
+          value: "78%",
+          label: "Coûts cloud réduits",
+          description:
+            "Migration Azure passée de 600 $ à 135 $/mois chez Royal Broker Solutions, sans dégradation de performance.",
+        },
+        {
+          value: "4000+",
+          label: "CV traités en secondes",
+          description:
+            "ATS Python maison qui analyse et trie des milliers de candidatures en quelques secondes, au lieu de jours.",
+        },
+        {
+          value: "60%",
+          label: "Déploiements plus rapides",
+          description:
+            "Pipelines CI/CD avec Git et Azure DevOps, réduisant le time-to-production des nouvelles features.",
+        },
+      ],
+    },
+    faq: {
+      title: "Questions fréquentes",
+      subtitle: "Ce que les recruteurs et clients me demandent le plus",
+      items: [
+        {
+          question: "Quel type de poste recherchez-vous ?",
+          answer:
+            "Je suis ouvert à un poste full-time ou contrat comme Développeur Full-Stack, Ingénieur Cloud ou Développeur DevOps, en télétravail ou hybride depuis le Québec (Canada). J'ai une préférence pour les stacks .NET / Vue.js / Next.js / Azure, mais je m'adapte rapidement.",
+        },
+        {
+          question: "Quelles sont vos technologies principales ?",
+          answer:
+            "C#, .NET, TypeScript, JavaScript, Python, Vue.js, React, Next.js, Node.js, PostgreSQL, SQL Server, Docker, Azure, AWS. Je travaille aussi avec Groovy/Grails et des outils low-code comme Caspio et Power Automate.",
+        },
+        {
+          question: "Quel impact business avez-vous déjà livré ?",
+          answer:
+            "Chez Royal Broker Solutions, j'ai migré l'infrastructure vers Azure en réduisant les coûts de 78% (600 $ à 135 $/mois), développé un ATS Python qui trie 4000+ CV en quelques secondes, et accéléré les déploiements de 60% grâce au CI/CD.",
+        },
+        {
+          question: "Êtes-vous disponible pour des projets freelance ?",
+          answer:
+            "Oui. J'accepte les missions de développement full-stack, d'optimisation cloud Azure, d'automatisation de processus métier et de développement d'applications SaaS. Réponse garantie sous 24 h.",
+        },
+        {
+          question: "Où êtes-vous basé et dans quelles langues travaillez-vous ?",
+          answer:
+            "Je suis basé au Québec, Canada. Je travaille couramment en français (natif) et en anglais (avancé), ce qui me permet de collaborer avec des équipes nord-américaines et européennes.",
+        },
+        {
+          question: "Comment puis-je vous contacter ?",
+          answer:
+            "Par courriel à jlgouaho@gmail.com, sur LinkedIn (linkedin.com/in/jlgouaho) ou via le formulaire du site. Je réponds en général en moins de 24 h ouvrées.",
+        },
+      ],
+    },
     availability: {
       title: "Disponibilité",
       availableNow: "Disponible maintenant",

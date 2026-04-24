@@ -1,5 +1,15 @@
 export type Translations = {
   hello: string;
+  seo: {
+    tagline: string;
+    keywords: string[];
+    homeTitle: string;
+    homeDescription: string;
+    projectsTitle: string;
+    projectsDescription: string;
+    blogTitle: string;
+    blogDescription: string;
+  };
   hero: {
     greeting: string;
     title: string;
@@ -45,6 +55,23 @@ export type Translations = {
     filterAll: string;
   };
   sections: {
+    impact: {
+      title: string;
+      subtitle: string;
+      metrics: {
+        value: string;
+        label: string;
+        description: string;
+      }[];
+    };
+    faq: {
+      title: string;
+      subtitle: string;
+      items: {
+        question: string;
+        answer: string;
+      }[];
+    };
     about: {
       title: string;
       description: string;

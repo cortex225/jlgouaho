@@ -8,7 +8,9 @@ import {
     Hammer, GanttChart, CheckCircle2,
     Twitter,
     Instagram,
-    Award
+    Award,
+    TrendingUp,
+    HelpCircle
 } from 'lucide-react';
 import { SocialIcon } from '@/components/ui/social-icon';
 import { WorkCard } from '@/components/ui/work-card';
@@ -155,7 +157,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                         </a> */}
 
                         {/* Availability */}
-                        {/* <div className="mb-6 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-700/50 p-4 space-y-2.5">
+                        <div className="mb-6 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-700/50 p-4 space-y-2.5">
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t('sections.availability.title')}</p>
                             <div className="flex items-center gap-2">
                                 <CheckCircle2 size={14} className="text-emerald-500 shrink-0" />
@@ -175,7 +177,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                     <span>{t('sections.availability.languages')}</span>
                                 </div>
                             </div>
-                        </div> */}
+                        </div>
 
                         {/* Social Footer */}
                         <div className="pt-6 border-t border-slate-200/50 dark:border-slate-700/50 flex justify-center gap-5">
@@ -255,7 +257,34 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                 <p key={index}>{paragraph}</p>
                             ))}
                         </div>
-                    
+
+                    </section>
+
+                    {/* Impact */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-2 ml-4 flex items-center gap-3">
+                            <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-2 rounded-xl"><TrendingUp size={24} /></span>
+                            {DATA.i18n.sections.impact.title}
+                        </h2>
+                        <p className="text-slate-500 ml-4 mb-8">{DATA.i18n.sections.impact.subtitle}</p>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            {DATA.i18n.sections.impact.metrics.map((metric, i) => (
+                                <div
+                                    key={i}
+                                    className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-[2rem] p-6 md:p-8 border border-white dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300"
+                                >
+                                    <div className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                                        {metric.value}
+                                    </div>
+                                    <div className="text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200 mb-3">
+                                        {metric.label}
+                                    </div>
+                                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                        {metric.description}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
                     </section>
 
                     {/* Currently */}
@@ -400,6 +429,31 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                         </h2>
                         <TestimonialsSlider locale={locale} testimonials={DATA.testimonials} />
                     </section> */}
+
+                    {/* FAQ */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-2 ml-4 flex items-center gap-3">
+                            <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-2 rounded-xl"><HelpCircle size={24} /></span>
+                            {DATA.i18n.sections.faq.title}
+                        </h2>
+                        <p className="text-slate-500 ml-4 mb-8">{DATA.i18n.sections.faq.subtitle}</p>
+                        <div className="space-y-3">
+                            {DATA.i18n.sections.faq.items.map((item, i) => (
+                                <details
+                                    key={i}
+                                    className="group bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-2xl border border-white dark:border-slate-800 shadow-sm overflow-hidden"
+                                >
+                                    <summary className="flex items-center justify-between gap-4 p-5 md:p-6 cursor-pointer list-none font-semibold text-slate-800 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors [&::-webkit-details-marker]:hidden">
+                                        <span>{item.question}</span>
+                                        <ChevronDown size={18} className="shrink-0 transition-transform duration-200 group-open:rotate-180" />
+                                    </summary>
+                                    <div className="px-5 md:px-6 pb-5 md:pb-6 text-slate-600 dark:text-slate-300 leading-relaxed">
+                                        {item.answer}
+                                    </div>
+                                </details>
+                            ))}
+                        </div>
+                    </section>
 
                      {/* Education */}
                      <section className="bg-slate-900 dark:bg-slate-950 text-slate-100 rounded-[2.5rem] p-8 md:p-12 overflow-hidden relative">

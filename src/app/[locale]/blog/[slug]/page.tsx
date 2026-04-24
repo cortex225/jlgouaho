@@ -6,6 +6,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Calendar, List, BookOpen } from "lucide-react";
 
+const BASE_URL = "https://www.jlgouaho.com";
+
 export async function generateStaticParams() {
   const posts = await getBlogPosts();
   return posts.map((post) => ({ slug: post.slug }));
@@ -16,9 +18,11 @@ export async function generateMetadata({
 }: {
   params: {
     slug: string;
+    locale: "en" | "fr";
   };
 }): Promise<Metadata | undefined> {
-  let post = await getPost(params.slug);
+  const { slug, locale } = params;
+  let post = await getPost(slug);
 
   let {
     title,
@@ -27,18 +31,32 @@ export async function generateMetadata({
     image,
   } = post.metadata;
   let ogImage = image
-    ? `${getData().url}${image}`
-    : `${getData().url}/og?title=${title}`;
+    ? `${BASE_URL}${image}`
+    : `${BASE_URL}/og?title=${encodeURIComponent(title)}`;
+
+  const postUrl = `${BASE_URL}/${locale}/blog/${post.slug}`;
+  const ogLocale = locale === "fr" ? "fr_CA" : "en_CA";
 
   return {
     title,
     description,
+    alternates: {
+      canonical: postUrl,
+      languages: {
+        "fr-CA": `${BASE_URL}/fr/blog/${post.slug}`,
+        "en-CA": `${BASE_URL}/en/blog/${post.slug}`,
+        "x-default": `${BASE_URL}/fr/blog/${post.slug}`,
+      },
+    },
     openGraph: {
       title,
       description,
       type: "article",
       publishedTime,
-      url: `${getData().url}/blog/${post.slug}`,
+      authors: [`${BASE_URL}/${locale}`],
+      section: "Tech",
+      locale: ogLocale,
+      url: postUrl,
       images: [
         {
           url: ogImage,
@@ -104,6 +122,12 @@ export default async function Blog({
   const headings = extractHeadings(post.source);
   const contentWithIds = addIdsToHeadings(post.source);
   const isFrench = locale === 'fr';
+  const typedLocale = (locale === 'fr' ? 'fr' : 'en') as 'en' | 'fr';
+  const data = getData(typedLocale);
+  const inLanguage = isFrench ? 'fr-CA' : 'en-CA';
+  const postUrl = `${BASE_URL}/${typedLocale}/blog/${post.slug}`;
+  const blogUrl = `${BASE_URL}/${typedLocale}/blog`;
+  const homeUrl = `${BASE_URL}/${typedLocale}`;
 
   const labels = {
     backToBlog: isFrench ? 'Retour au Blog' : 'Back to Blog',
@@ -113,29 +137,69 @@ export default async function Blog({
     readMore: isFrench ? 'Lire la suite' : 'Read more',
   };
 
+  const blogPostingJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.metadata.title,
+    datePublished: post.metadata.publishedAt,
+    dateModified: post.metadata.publishedAt,
+    description: post.metadata.summary,
+    inLanguage,
+    image: post.metadata.image
+      ? `${BASE_URL}${post.metadata.image}`
+      : `${BASE_URL}/og?title=${encodeURIComponent(post.metadata.title)}`,
+    url: postUrl,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": postUrl,
+    },
+    author: {
+      "@type": "Person",
+      name: data.name,
+      url: `${BASE_URL}/${typedLocale}`,
+    },
+    publisher: {
+      "@type": "Person",
+      "@id": `${BASE_URL}/#person`,
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: isFrench ? "Accueil" : "Home",
+        item: homeUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: blogUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: post.metadata.title,
+        item: postUrl,
+      },
+    ],
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         suppressHydrationWarning
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            headline: post.metadata.title,
-            datePublished: post.metadata.publishedAt,
-            dateModified: post.metadata.publishedAt,
-            description: post.metadata.summary,
-            image: post.metadata.image
-              ? `${getData().url}${post.metadata.image}`
-              : `${getData().url}/og?title=${post.metadata.title}`,
-            url: `${getData().url}/blog/${post.slug}`,
-            author: {
-              "@type": "Person",
-              name: getData().name,
-            },
-          }),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
     <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 font-sans relative selection:bg-indigo-100 selection:text-indigo-900">
       <div className="fixed inset-0 animated-bg z-0 pointer-events-none" />
