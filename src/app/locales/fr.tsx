@@ -75,30 +75,6 @@ const translations: Translations = {
     filterAll: "Tous",
   },
   sections: {
-    impact: {
-      title: "Impact mesurable",
-      subtitle: "Des résultats concrets livrés en production",
-      metrics: [
-        {
-          value: "78%",
-          label: "Coûts cloud réduits",
-          description:
-            "Migration Azure passée de 600 $ à 135 $/mois chez Royal Broker Solutions, sans dégradation de performance.",
-        },
-        {
-          value: "4000+",
-          label: "CV traités en secondes",
-          description:
-            "ATS Python maison qui analyse et trie des milliers de candidatures en quelques secondes, au lieu de jours.",
-        },
-        {
-          value: "60%",
-          label: "Déploiements plus rapides",
-          description:
-            "Pipelines CI/CD avec Git et Azure DevOps, réduisant le time-to-production des nouvelles features.",
-        },
-      ],
-    },
     faq: {
       title: "Questions fréquentes",
       subtitle: "Ce que les recruteurs et clients me demandent le plus",
@@ -670,6 +646,60 @@ const translations: Translations = {
         `,
         conclusion:
           "Virtual Card Pro démontre comment une simple carte de visite peut être transformée en une expérience digitale riche et moderne. Ce projet m'a permis d'explorer les dernières fonctionnalités de React 19 et de créer une solution pratique pour le réseautage professionnel.",
+      },
+      fitTrack: {
+        description:
+          "App mobile fitness & nutrition IA-first : profil intelligent (BMR/TDEE), bibliothèque de 873 exercices animés avec muscles ciblés, générateur de séances IA contextualisé, suivi par spider chart et coach IA conversationnel.",
+        overview:
+          "FitTrack (JL-Fit) est une app mobile React Native / Expo qui centralise entraînement, nutrition et progression. Le moteur santé calcule en temps réel IMC, BMR (Mifflin-St Jeor), TDEE selon l'activité, et suggère automatiquement un objectif réaliste avec garde-fous (-25% TDEE max en sèche, +20% en bulk). Gemini 2.5 pilote le coach conversationnel, le générateur de séances, l'analyse de plats par photo et la suggestion de recettes ; Cloudflare Workers AI (FLUX-1-schnell) génère les visuels de recettes. Une bibliothèque embarquée de 873 exercices (everkinetic) sert de catalogue : Gemini doit obligatoirement piocher ses séances dedans, garantissant que chaque exercice a sa GIF anatomique et sa muscle map SVG. L'historique d'entraînement re-nourrit le contexte de l'IA pour détecter les déséquilibres et calibrer la progression.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Profil intelligent</strong> : IMC live, BMR/TDEE auto, sélecteur d'activité 5 niveaux, suggestion d'objectif adaptative avec macros recalculées en temps réel</li>
+            <li><strong>Coach IA conversationnel</strong> avec contexte complet (profil + IMC + historique 7j + volume par muscle) — rendu markdown</li>
+            <li><strong>Générateur de séances IA</strong> : sélecteur Maison/Salle, multi-select muscles cibles, description libre de l'intention, picking forcé dans le catalogue de 873 exos</li>
+            <li><strong>Bibliothèque d'exercices</strong> : recherche + filtres multi-sélect (muscles, équipement, niveau, lieu), GIFs animées 2-frames sur fond blanc style catalogue</li>
+            <li><strong>Création manuelle de séances</strong> : builder avec picker filtré, configuration sets/reps/repos par exo, sauvegarde réutilisable + édition/duplication/suppression</li>
+            <li><strong>MuscleMap SVG</strong> anatomique avant/arrière avec highlight des muscles primaires (vert) et secondaires (orange)</li>
+            <li><strong>Spider chart</strong> du volume par groupe musculaire (8 axes) avec filtres temporels 7j/30j/1an/total</li>
+            <li><strong>Live workout</strong> avec GIF + MuscleMap visibles pendant la séance, log poids/reps par série, timer de repos auto</li>
+            <li><strong>Nutrition</strong> : analyse de plats par photo (calories + macros), chef IA générant 5 recettes en swipe Tinder avec images FLUX</li>
+            <li><strong>Stockage local-first</strong> via AsyncStorage + clé Gemini embarquée en env (zéro friction utilisateur)</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">🧠 Robustesse des appels Gemini</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> erreurs 503/429 récurrentes lors des pics de charge.<br>
+                <span class="font-semibold">Solution :</span> wrapper <code>callWithRetry</code> avec backoff exponentiel et bascule automatique sur <code>gemini-2.5-flash-lite</code>. Le free tier de Gemini Image étant à 0 requête, l'image generation a été délégée à Cloudflare Workers AI (10k req/jour gratuites).
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">🎯 Garantir que l'IA ne hallucine pas d'exercices</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Gemini inventait des exercices fictifs sans GIF ni muscles, cassant l'UX visuelle.<br>
+                <span class="font-semibold">Solution :</span> shortlist filtrée de 60 exos passée au prompt avec leurs IDs, <code>responseSchema</code> imposant un <code>exerciseId</code> obligatoire, et fuzzy-match par nom en garde-fou si Gemini invente quand même.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">🍽️ Images de recettes uniques</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> deux providers d'image se sont succédés. Pollinations renvoyait la même image pour les 5 recettes (seed string ignoré), puis Gemini Image gratuit a été coupé.<br>
+                <span class="font-semibold">Solution :</span> bascule sur Cloudflare FLUX-1-schnell avec data-URI base64 directe, prompt enrichi du nom de recette pour garantir l'unicité, fallback Pollinations conservé.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">📊 Spider chart SVG sans dépendance lourde</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> visualiser le volume d'entraînement par groupe musculaire avec filtres temporels.<br>
+                <span class="font-semibold">Solution :</span> composant SVG custom (react-native-svg) avec 8 axes regroupant les 17 muscles low-level, cercles concentriques et polygone rempli — ~120 lignes, zéro dépendance chart additionnelle.
+              </p>
+            </div>
+          </div>
+        `,
+        conclusion:
+          "FitTrack est devenu un terrain de jeu complet pour pousser les LLM en contexte mobile : structured outputs, multi-modal (texte + image + photo), boucle de feedback IA ↔ données utilisateur, et une UX qui rivalise avec les apps fitness payantes. Chaque écran exploite le contexte santé pour rendre l'IA vraiment pertinente plutôt que générique.",
       },
     },
 

@@ -55,15 +55,6 @@ export type Translations = {
     filterAll: string;
   };
   sections: {
-    impact: {
-      title: string;
-      subtitle: string;
-      metrics: {
-        value: string;
-        label: string;
-        description: string;
-      }[];
-    };
     faq: {
       title: string;
       subtitle: string;
@@ -223,6 +214,13 @@ export type Translations = {
         conclusion: string;
       };
       virtualCardPro: {
+        description: string;
+        overview: string;
+        features: string;
+        challenges: string;
+        conclusion: string;
+      };
+      fitTrack: {
         description: string;
         overview: string;
         features: string;

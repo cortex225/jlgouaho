@@ -294,6 +294,44 @@ export function getData(locale: "en" | "fr" = "fr") {
     ],
     projects: [
       {
+        title: "FitTrack",
+        description: t.sections.projects.fitTrack.description,
+        overview: t.sections.projects.fitTrack.overview,
+        features: t.sections.projects.fitTrack.features,
+        challenges: t.sections.projects.fitTrack.challenges,
+        conclusion: t.sections.projects.fitTrack.conclusion,
+        href: "#",
+        dates: "2026 - Present",
+        active: true,
+        technologies: [
+          "React Native",
+          "Expo SDK 54",
+          "TypeScript",
+          "React 19",
+          "Gemini 2.5",
+          "Cloudflare FLUX",
+          "react-native-svg",
+          "React Navigation",
+          "AsyncStorage",
+          "Expo Camera",
+          "Expo Haptics",
+        ],
+        images: [
+          "/projects/fittrack/Simulator Screenshot - iPhone 17 Pro - 2026-05-21 at 09.54.43.png",
+          "/projects/fittrack/Simulator Screenshot - iPhone 17 Pro - 2026-05-21 at 09.54.52.png",
+          "/projects/fittrack/Simulator Screenshot - iPhone 17 Pro - 2026-05-21 at 10.23.55.png",
+          "/projects/fittrack/Simulator Screenshot - iPhone 17 Pro - 2026-05-21 at 10.29.36.png",
+          "/projects/fittrack/Simulator Screenshot - iPhone 17 Pro - 2026-05-21 at 10.32.51.png",
+        ],
+        links: [
+          {
+            type: "Github",
+            href: "https://github.com/cortex225/fittrack",
+            icon: <Icons.github className="h-4 w-4" />,
+          },
+        ],
+      },
+      {
         title: "MagicSearch",
         description: t.sections.projects.magicSearch.description,
         overview: t.sections.projects.magicSearch.overview,
@@ -632,7 +670,9 @@ export function getData(locale: "en" | "fr" = "fr") {
           "Google Wallet API",
         ],
         images: [
-          "/projects/virtualCardPro/placeholder-1.png",
+          "/projects/virtualCardPro/CleanShot 2026-02-20 at 12.13.07@2x.png",
+          "/projects/virtualCardPro/CleanShot 2026-02-20 at 12.13.21@2x.png",
+          "/projects/virtualCardPro/CleanShot 2026-02-20 at 12.13.44@2x.png",
         ],
         links: [
           {
