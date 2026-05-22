@@ -268,11 +268,10 @@ export function getData(locale: "en" | "fr" = "fr") {
     certifications: [
       {
         name: "Microsoft AZ-900",
-        logoUrl: "/certifications/microsoft-900.png", 
+        logoUrl: "/certifications/microsoft-900.png",
         href: "https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/",
         date: null,
         description: t.sections.certifications.inProgress,
-        
       },
       {
         name: "Microsoft AI-900",
@@ -316,6 +315,8 @@ export function getData(locale: "en" | "fr" = "fr") {
           "Expo Camera",
           "Expo Haptics",
         ],
+        video:
+          "https://pub-c0874d8393bb493ea002a55cbc71d1ab.r2.dev/portfolio/jl-fit-track.mp4",
         images: [
           "/projects/fittrack/Simulator Screenshot - iPhone 17 Pro - 2026-05-21 at 09.54.43.png",
           "/projects/fittrack/Simulator Screenshot - iPhone 17 Pro - 2026-05-21 at 09.54.52.png",
@@ -369,7 +370,7 @@ export function getData(locale: "en" | "fr" = "fr") {
           },
         ],
       },
-        {
+      {
         title: "RecruitEasy",
         description: t.sections.projects.recruitEase.description,
         overview: t.sections.projects.recruitEase.overview,
@@ -398,7 +399,6 @@ export function getData(locale: "en" | "fr" = "fr") {
           "/projects/recruit-ease/img2.png",
           "/projects/recruit-ease/img3.png",
           "/projects/recruit-ease/img4.png",
-
         ],
         video:
           "https://pub-c0874d8393bb493ea002a55cbc71d1ab.r2.dev/portfolio/recruitease.mp4",
@@ -407,7 +407,7 @@ export function getData(locale: "en" | "fr" = "fr") {
             type: "Website",
             href: "https://recruiteasy.ca",
             icon: <Icons.globe className="size-3" />,
-          }
+          },
         ],
       },
       {
@@ -512,7 +512,6 @@ export function getData(locale: "en" | "fr" = "fr") {
         images: [
           "/projects/LeadMapper/img1.png",
           "/projects/LeadMapper/img2.png",
-     
         ],
         links: [
           {
@@ -545,7 +544,6 @@ export function getData(locale: "en" | "fr" = "fr") {
           "/projects/portfolio/img1.png",
           "/projects/portfolio/img2.png",
           "/projects/portfolio/img3.png",
-
         ],
         links: [
           {
@@ -580,9 +578,7 @@ export function getData(locale: "en" | "fr" = "fr") {
           "TailwindCSS",
           "JWT",
         ],
-        images: [
-          "/projects/budgetBuddy/placeholder-1.png",
-        ],
+        images: ["/projects/budgetBuddy/placeholder-1.png"],
         links: [
           {
             type: "Github",
@@ -629,24 +625,23 @@ export function getData(locale: "en" | "fr" = "fr") {
         features: t.sections.projects.maCiv.features,
         challenges: t.sections.projects.maCiv.challenges,
         conclusion: t.sections.projects.maCiv.conclusion,
-        href: "#",
+        href: "https://ma-civ.vercel.app/",
         dates: "2022 - 2023",
         active: true,
-        technologies: [
-          "HTML",
-          "CSS",
-          "JavaScript",
-        ],
-        images: [
-          "/projects/ma-civ/img1.png",
-          "/projects/ma-civ/img2.png",
-        ],
-        video: "https://pub-c0874d8393bb493ea002a55cbc71d1ab.r2.dev/portfolio/maciv_landing.mp4",
+        technologies: ["HTML", "CSS", "JavaScript"],
+        images: ["/projects/ma-civ/img1.png", "/projects/ma-civ/img2.png"],
+        video:
+          "https://pub-c0874d8393bb493ea002a55cbc71d1ab.r2.dev/portfolio/maciv_landing.mp4",
         links: [
           {
             type: "Github",
             href: "https://github.com/cortex225/ma-civ",
             icon: <Icons.github className="h-4 w-4" />,
+          },
+          {
+            type: "Website",
+            href: "https://ma-civ.vercel.app/",
+            icon: <Icons.globe className="size-3" />,
           },
         ],
       },
@@ -657,7 +652,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         features: t.sections.projects.virtualCardPro.features,
         challenges: t.sections.projects.virtualCardPro.challenges,
         conclusion: t.sections.projects.virtualCardPro.conclusion,
-        href: "#",
+        href: "https://business.jlgouaho.com/",
         dates: "2024 - Present",
         active: true,
         technologies: [
@@ -679,6 +674,11 @@ export function getData(locale: "en" | "fr" = "fr") {
             type: "Github",
             href: "https://github.com/cortex225/virtual-card-pro",
             icon: <Icons.github className="h-4 w-4" />,
+          },
+          {
+            type: "Website",
+            href: "https://business.jlgouaho.com/",
+            icon: <Icons.globe className="size-3" />,
           },
         ],
       },
