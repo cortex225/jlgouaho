@@ -1,0 +1,119 @@
+---
+title: "Bringing Hermes Agent into my workflow: why I prefer it over OpenClaw"
+publishedAt: "2026-05-30"
+summary: "I tested several AI agents to automate tasks across my projects. After integrating Hermes Agent and then comparing it to OpenClaw, I've made my choice. An honest field report on integration, control, transparency, and cost."
+image: "/blog/hermes-agent.png"
+---
+
+AI agents went from gimmick to working tool in just a few months. Instead of answering a question, an agent chains actions together: reading code, calling tools, deciding the next step. I needed one to automate repetitive tasks in my projects.
+
+I first tried **OpenClaw**. Then I integrated **Hermes Agent**. Today, Hermes is the one I'm keeping. Here's why, sticking to the facts of my experience rather than the marketing.
+
+---
+
+## The need: an agent inside my dev loop
+
+Concretely, I wanted an agent capable of:
+
+1. Reading the context of a task (ticket, diff, logs).
+2. Calling my own tools (database, internal API, scripts).
+3. Proposing an action, executing it, and reporting back.
+
+The point wasn't the "magic" of the response, but the **reliability of the integration** and the **control** over what the agent actually does.
+
+---
+
+## Integrating Hermes Agent
+
+What won me over with Hermes was how simple the wiring is. Tool definitions are explicit and typed, and the agent respects the schema I give it.
+
+```ts
+const tools = [
+  {
+    name: "search_candidates",
+    description: "Cherche des candidats par compétence dans RecruitEasy",
+    parameters: {
+      type: "object",
+      properties: {
+        skill: { type: "string" },
+        minExperience: { type: "number" },
+      },
+      required: ["skill"],
+    },
+  },
+];
+
+const agent = createHermesAgent({
+  tools,
+  onToolCall: async (call) => {
+    // I run MY code, the agent doesn't decide on its own
+    if (call.name === "search_candidates") {
+      return await db.searchCandidates(call.arguments);
+    }
+  },
+});
+
+const result = await agent.run("Trouve-moi des devs React avec 3 ans d'expérience");
+```
+
+The key point: **my code is what executes the actions**. The agent proposes a tool call, and I decide whether to run it. That clean boundary between "deciding" and "acting" is exactly what I was looking for.
+
+---
+
+## Why I prefer Hermes over OpenClaw
+
+After running both on the same tasks, here's where Hermes came out ahead for my use case.
+
+### 1. Transparency of reasoning
+
+Hermes exposes the intermediate steps: which tool it wants to call, with which arguments, and why. With OpenClaw, I often felt like I was dealing with a black box: the agent acted, but the "why" stayed murky. When an agent touches my production database, I want to see every decision coming.
+
+### 2. Control over tool calls
+
+Hermes lets me intercept, validate, or reject every tool call before execution. I can insert a human confirmation step on sensitive actions. OpenClaw tended to chain actions more autonomously, which is handy for a demo but worrying in production.
+
+```ts
+onToolCall: async (call) => {
+  if (isDestructive(call)) {
+    const approved = await requireHumanApproval(call);
+    if (!approved) return { error: "Action refusée par l'opérateur" };
+  }
+  return execute(call);
+};
+```
+
+### 3. Cost predictability
+
+With OpenClaw, agent loops would sometimes spiral into long, expensive chains of calls for simple tasks. Hermes is more frugal: it converges on an answer faster, with fewer round trips. Over a month of real usage, the difference on the bill was clear.
+
+### 4. Control over stopping
+
+An agent that doesn't know when to stop is dangerous. Hermes lets me set clear limits (max number of steps, token budget) and it respects the stop conditions. I never ran into an infinite loop, unlike my early attempts with OpenClaw where a bad prompt could send things off the rails.
+
+---
+
+## What still needs work
+
+To be honest, Hermes isn't perfect:
+
+- The **documentation** is sparser than on the more high-profile solutions. I had to read source code to understand certain behaviors.
+- The **ecosystem of ready-made integrations** is smaller. Where OpenClaw offers a ready-to-use connector, with Hermes I sometimes write my own.
+
+But those trade-offs suit me: I'd rather write a bit more glue code and keep control than depend on an opaque abstraction.
+
+---
+
+## The verdict
+
+For production use, where reliability and control matter more than the "wow" effect, **Hermes Agent** fits the way I work better. The transparency of its reasoning, the fine-grained control over tool calls, the cost predictability, and the control over stopping make it a tool I trust.
+
+OpenClaw is still impressive for prototyping quickly. But the day an agent touches my real data, I want to know exactly what it's doing. Hermes is what gives me that assurance.
+
+> My criterion for picking an AI agent: it's not "which one is the most autonomous," but "which one keeps me in the loop when it matters."
+
+---
+
+## References
+
+- [Hermes Agent, Nous Research](https://hermes-agent.nousresearch.com/)
+- [OpenClaw](https://openclaw.ai/)

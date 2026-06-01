@@ -5,7 +5,7 @@ const translations: Translations = {
   hello: "Bonjour",
   seo: {
     tagline:
-      "Développeur Full-Stack .NET, Vue.js & Azure basé au Québec — spécialiste cloud, DevOps et automatisation. J'aide les entreprises à réduire leurs coûts cloud et à livrer plus vite.",
+      "Développeur Full-Stack .NET, Vue.js & Azure basé au Québec, spécialiste cloud, DevOps et automatisation. J'aide les entreprises à réduire leurs coûts cloud et à livrer plus vite.",
     keywords: [
       "Développeur Full-Stack Québec",
       "Développeur Full-Stack Montréal",
@@ -20,13 +20,13 @@ const translations: Translations = {
       "jlgouaho",
     ],
     homeTitle:
-      "Déto Jean-Luc Gouaho — Développeur Full-Stack Cloud & Azure au Québec",
+      "Déto Jean-Luc Gouaho : Développeur Full-Stack Cloud & Azure au Québec",
     homeDescription:
       "Développeur Full-Stack .NET, Vue.js, Next.js & Azure. +3 ans d'expérience, réduction de 78% des coûts cloud, ATS Python traitant 4000+ CV/s. Disponible pour opportunités au Canada.",
-    projectsTitle: "Projets — Portfolio de Jean-Luc Gouaho",
+    projectsTitle: "Projets : Portfolio de Jean-Luc Gouaho",
     projectsDescription:
       "Collection de projets full-stack : CRM SaaS, ATS IA, plateforme e-commerce, automatisations DevOps. Stack : Next.js, .NET, Vue.js, Azure, PostgreSQL, OpenAI.",
-    blogTitle: "Blog — Retours d'expérience Cloud, DevOps & Full-Stack",
+    blogTitle: "Blog : Retours d'expérience Cloud, DevOps & Full-Stack",
     blogDescription:
       "Articles techniques concrets : optimisation Azure (-78%), ATS Python pour trier 4000+ CV, architecture serverless, CI/CD et bonnes pratiques DevOps.",
   },
@@ -65,6 +65,10 @@ const translations: Translations = {
   blog: {
     title: "Blogue",
     description: "Mes réflexions sur le développement logiciel, la vie et plus encore.",
+    writtenBy: "Écrit par",
+    authorTagline:
+      "Développeur full-stack basé au Canada. J'écris sur le code, l'IA et les produits que je construis.",
+    viewProfile: "Voir mon profil",
   },
   projectsPage: {
     allProjects: "Tous les Projets",
@@ -132,7 +136,7 @@ const translations: Translations = {
     },
     contactForm: {
       title: "Travaillons Ensemble",
-      subtitle: "Décrivez votre projet ou opportunité — je réponds sous 24h.",
+      subtitle: "Décrivez votre projet ou opportunité, je réponds sous 24h.",
       namePlaceholder: "Votre nom",
       emailPlaceholder: "votre@email.com",
       messagePlaceholder: "Bonjour Jean-Luc, je vous contacte au sujet de...",
@@ -655,7 +659,7 @@ const translations: Translations = {
         features: `
           <ul class="list-disc pl-4 space-y-1">
             <li><strong>Profil intelligent</strong> : IMC live, BMR/TDEE auto, sélecteur d'activité 5 niveaux, suggestion d'objectif adaptative avec macros recalculées en temps réel</li>
-            <li><strong>Coach IA conversationnel</strong> avec contexte complet (profil + IMC + historique 7j + volume par muscle) — rendu markdown</li>
+            <li><strong>Coach IA conversationnel</strong> avec contexte complet (profil + IMC + historique 7j + volume par muscle), rendu markdown</li>
             <li><strong>Générateur de séances IA</strong> : sélecteur Maison/Salle, multi-select muscles cibles, description libre de l'intention, picking forcé dans le catalogue de 873 exos</li>
             <li><strong>Bibliothèque d'exercices</strong> : recherche + filtres multi-sélect (muscles, équipement, niveau, lieu), GIFs animées 2-frames sur fond blanc style catalogue</li>
             <li><strong>Création manuelle de séances</strong> : builder avec picker filtré, configuration sets/reps/repos par exo, sauvegarde réutilisable + édition/duplication/suppression</li>
@@ -693,7 +697,7 @@ const translations: Translations = {
               <h5 class="font-medium">📊 Spider chart SVG sans dépendance lourde</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> visualiser le volume d'entraînement par groupe musculaire avec filtres temporels.<br>
-                <span class="font-semibold">Solution :</span> composant SVG custom (react-native-svg) avec 8 axes regroupant les 17 muscles low-level, cercles concentriques et polygone rempli — ~120 lignes, zéro dépendance chart additionnelle.
+                <span class="font-semibold">Solution :</span> composant SVG custom (react-native-svg) avec 8 axes regroupant les 17 muscles low-level, cercles concentriques et polygone rempli, ~120 lignes, zéro dépendance chart additionnelle.
               </p>
             </div>
           </div>

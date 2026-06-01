@@ -14,8 +14,26 @@ type Metadata = {
   image?: string;
 };
 
+type Locale = "en" | "fr";
+const CONTENT_DIR = path.join(process.cwd(), "content");
+const DEFAULT_LOCALE: Locale = "fr";
+
 function getMDXFiles(dir: string) {
   return fs.readdirSync(dir).filter((file) => path.extname(file) === ".mdx");
+}
+
+// Files are named `<slug>.<locale>.mdx` (e.g. `my-post.fr.mdx`).
+function parseFileName(file: string) {
+  const base = file.replace(/\.mdx$/, ""); // "<slug>.<locale>"
+  const idx = base.lastIndexOf(".");
+  return { slug: base.slice(0, idx), locale: base.slice(idx + 1) as Locale };
+}
+
+// Resolve the file for a slug in the requested locale, falling back to the default.
+function resolveFilePath(slug: string, locale: Locale) {
+  const localized = path.join(CONTENT_DIR, `${slug}.${locale}.mdx`);
+  if (fs.existsSync(localized)) return localized;
+  return path.join(CONTENT_DIR, `${slug}.${DEFAULT_LOCALE}.mdx`);
 }
 
 export async function markdownToHTML(markdown: string) {
@@ -36,8 +54,8 @@ export async function markdownToHTML(markdown: string) {
   return p.toString();
 }
 
-export async function getPost(slug: string) {
-  const filePath = path.join(process.cwd(), "content", `${slug}.mdx`);
+export async function getPost(slug: string, locale: Locale = DEFAULT_LOCALE) {
+  const filePath = resolveFilePath(slug, locale);
   let source = fs.readFileSync(filePath, "utf-8");
   const { content: rawContent, data: metadata } = matter(source);
   const content = await markdownToHTML(rawContent);
@@ -48,8 +66,8 @@ export async function getPost(slug: string) {
   };
 }
 
-export function getPostMeta(slug: string) {
-  const filePath = path.join(process.cwd(), "content", `${slug}.mdx`);
+export function getPostMeta(slug: string, locale: Locale = DEFAULT_LOCALE) {
+  const filePath = resolveFilePath(slug, locale);
   let source = fs.readFileSync(filePath, "utf-8");
   const { data: metadata } = matter(source);
   return {
@@ -58,20 +76,18 @@ export function getPostMeta(slug: string) {
   };
 }
 
-async function getAllPosts(dir: string) {
-  let mdxFiles = getMDXFiles(dir);
+async function getAllPosts(locale: Locale) {
+  const slugs = Array.from(
+    new Set(getMDXFiles(CONTENT_DIR).map((file) => parseFileName(file).slug))
+  );
   return Promise.all(
-    mdxFiles.map(async (file) => {
-      let slug = path.basename(file, path.extname(file));
-      let { metadata } = getPostMeta(slug);
-      return {
-        metadata,
-        slug,
-      };
+    slugs.map(async (slug) => {
+      const { metadata } = getPostMeta(slug, locale);
+      return { metadata, slug };
     })
   );
 }
 
-export async function getBlogPosts() {
-  return getAllPosts(path.join(process.cwd(), "content"));
+export async function getBlogPosts(locale: Locale = DEFAULT_LOCALE) {
+  return getAllPosts(locale);
 }

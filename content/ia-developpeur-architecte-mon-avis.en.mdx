@@ -1,0 +1,96 @@
+---
+title: "AI Codes Better Than Me, and Why I'm Totally Fine With That"
+publishedAt: "2026-06-01"
+summary: "My (unapologetic) take on AI in dev: it's neither a messiah nor the great replacer, it's a tool. An evolution we don't really have the option to skip, and one that's pushing us toward an architect role. Because yes, AI codes well, you just have to stop it from going completely off the rails."
+image: "/blog/ia-developpeur-architecte.png"
+---
+
+I'll be honest: AI codes better than me on quite a few things. A sorting function, a React component, a gnarly regex at 11pm? It cranks that out faster and often cleaner than I do on a Monday morning without coffee.
+
+And you know what? I'm totally fine with that. Let me make my case, with all the seriousness the topic deserves and a healthy dose of self-deprecation along the way.
+
+---
+
+## AI Isn't a Messiah, It's a Power Drill
+
+There are two camps that exhaust me equally: the *"AI is going to replace us all, put your keyboards away"* crowd, and the *"it's all hot air, it can't even count the R's in strawberry"* crowd.
+
+Me, I see it differently: **it's a tool.** A really good power drill. Before the drill, we made holes with a screwdriver, sweating the whole time. The drill didn't replace the carpenter: it just made the guy who kept using a screwdriver on principle look ridiculous.
+
+AI is the same. It doesn't replace me. It replaces **the version of me that refuses to use it.** Crucial distinction.
+
+---
+
+## We Don't Really Get to Opt Out of Adapting (Sorry)
+
+I know, "you have to adapt" is the kind of line you'd read on a LinkedIn coffee mug. But it's true, and denying it won't slow the train down.
+
+The job is moving. Fast. What was a rare skill two years ago is now an autocomplete. The only viable strategy is to stay **as up to date as possible**: test the new models, the new tools, understand what they can do and, above all, what they *can't*.
+
+> The dev who survives isn't the strongest at algorithms. It's the one who learns fastest how to use the new tools without panicking.
+
+Refusing AI today is a bit like refusing Google in 2005 to "keep your memory sharp." Respectable. But you'll be shipping your feature next week, not me.
+
+---
+
+## My Real Job Now: Architect
+
+Here's the most interesting shift. If AI lays the bricks really well, then my value is no longer in laying bricks. It's in **the blueprint.**
+
+I spend more and more time on the questions AI doesn't ask itself:
+
+- What's the **real** business constraint behind the request?
+- Which architecture will still hold up in 6 months when the requirements have tripled?
+- Where are the security risks, the edge cases, the debt we're going to regret?
+- Do we even need to build this, or does something already exist?
+
+AI is an excellent bricklayer. But a bricklayer, however fast, doesn't decide where the load-bearing walls go. If nobody's holding the blueprint, you end up with a gorgeous bathroom... with no door.
+
+```ts
+// What AI does really well (laying the bricks)
+function debounce(fn, ms) { /* ... flawless ... */ }
+
+// What's still my job (the blueprint)
+// - Why a debounce here and not a throttle?
+// - What's the impact on UX, server load, costs?
+// - Does it scale, is it testable, is it maintainable?
+```
+
+The code is the easy part now. The **good decisions** are still the expensive part.
+
+---
+
+## How to Stop It From Going Off the Rails
+
+Because yes, left to its own devices, AI goes off the rails. Confidently, no less. It'll hand you 200 self-assured lines for a problem that needed 12, invent a library function that doesn't exist, and swear up and down that it's "best practice."
+
+My job as an architect is to **keep the through-line.** A few principles I stick to:
+
+1. **Give context, not just a task.** "Build a form" gets you nonsense. "Build a form that respects THIS design system, validates with Zod, and handles these 3 error cases" gets you something serious. AI is only as good as the brief.
+2. **Break it down.** One big vague request equals one big mess. Three small precise requests equal three controllable results.
+3. **Review every line like a PR from a brilliant but distracted junior.** The talent is there, the rigor not always. I read, I push back, I test.
+4. **Hold the invariant.** I'm the one keeping the overall coherence in mind: the conventions, the product direction. AI has the memory of an enthusiastic goldfish; keeping the thread is my job.
+
+In short: AI proposes, the architect disposes. And reviews. A lot.
+
+---
+
+## Anyone Can Build a Website Now, and That's OK
+
+Another truth that bugs some of my fellow devs: today, **Joe and Jane Average can build themselves a website** just by describing what they want. And that's great.
+
+It doesn't threaten me, for the same reason a YouTube plumbing tutorial didn't kill plumbers. Swap a washer, sure. Redo all the pipes in a building without flooding the place, you call a pro.
+
+Joe Average's "AI website" works on demo day. Then the real questions show up: how many visitors can it take? Is it secure? Is it indexed? Maintainable a year from now? GDPR compliant? Accessible? **That's where the job moves**: not toward "knowing how to type code," but toward "knowing what happens when it scales up and breaks."
+
+The barrier to entry has collapsed. The barrier to **excellence**, on the other hand, has never been higher. And that's exactly where I want to play.
+
+---
+
+## My Take, to Sum Up
+
+AI is neither my enemy nor my crutch. It's my **best intern**: ultra-fast, tireless, sometimes brilliant, sometimes completely clueless with disarming confidence. My job isn't to code faster than it: I've lost that race, and I'm at peace with it.
+
+My job is to **hold the blueprint, keep the course, and unplug the runaway mess before it ends up in prod.**
+
+The dev of tomorrow isn't the one who resists AI. It's the one who knows what to ask it, how to rein it in, and when to say "no, redo that, you went too far." In short: an architect. With a very good intern. And always a bit of coffee.

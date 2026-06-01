@@ -45,6 +45,9 @@ export type Translations = {
   blog: {
     title: string;
     description: string;
+    writtenBy: string;
+    authorTagline: string;
+    viewProfile: string;
   };
   projectsPage: {
     allProjects: string;

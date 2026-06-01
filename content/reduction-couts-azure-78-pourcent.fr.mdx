@@ -30,7 +30,7 @@ TOTAL                                 → 600$/mois
 Plusieurs constats immédiats :
 
 1. **Le plan App Service P2v3** (4 vCPU, 14 GB RAM) était totalement surdimensionné pour notre charge réelle
-2. **Azure SQL Standard S3** (100 DTUs) — notre pic de requêtes concurrentes dépassait rarement 5
+2. **Azure SQL Standard S3** (100 DTUs) : notre pic de requêtes concurrentes dépassait rarement 5
 3. **L'Application Gateway** était utilisé comme simple load balancer pour... une seule instance
 4. **Azure AD Premium** activé pour des features qu'on n'utilisait pas
 
@@ -48,7 +48,7 @@ Résultats :
 - Requêtes SQL simultanées max : **12**
 - Trafic : environ 200 requêtes/heure en heures de pointe
 
-Ces données m'ont permis de justifier chaque décision de migration auprès du management. Ne jamais optimiser à l'aveugle — les métriques d'abord.
+Ces données m'ont permis de justifier chaque décision de migration auprès du management. Ne jamais optimiser à l'aveugle : les métriques d'abord.
 
 ### Étape 2 : Migrer vers une architecture serverless hybride
 
@@ -142,16 +142,16 @@ Azure facture la bande passante sortante. En déplaçant le stockage dans la mê
 
 ## Ce que cette expérience m'a appris
 
-Le cloud est puissant mais dangereux si on n'y fait pas attention. Les fournisseurs rendent le "provisioning" trop facile — un clic et vous avez une machine à 300$/mois.
+Le cloud est puissant mais dangereux si on n'y fait pas attention. Les fournisseurs rendent le "provisioning" trop facile : un clic et vous avez une machine à 300$/mois.
 
 Les pratiques qui ont le plus d'impact :
-- **Instrumenter avant d'optimiser** — les métriques justifient les décisions
-- **Serverless pour les workloads intermittents** — vous ne payez que ce que vous consommez
-- **Right-sizing régulier** — les besoins changent, les plans doivent suivre
-- **Budget alerts** — j'ai configuré des alertes à 80% et 100% du budget mensuel
+- **Instrumenter avant d'optimiser** : les métriques justifient les décisions
+- **Serverless pour les workloads intermittents** : vous ne payez que ce que vous consommez
+- **Right-sizing régulier** : les besoins changent, les plans doivent suivre
+- **Budget alerts** : j'ai configuré des alertes à 80% et 100% du budget mensuel
 
 La réduction de 600$ à 135$/mois a libéré du budget pour d'autres initiatives. Et surtout, ça m'a donné une crédibilité technique au sein de l'équipe qui a facilité les projets suivants.
 
 ---
 
-*Vous travaillez sur une optimisation cloud similaire ? N'hésitez pas à me contacter — je suis toujours partant pour en discuter.*
+*Vous travaillez sur une optimisation cloud similaire ? N'hésitez pas à me contacter, je suis toujours partant pour en discuter.*

@@ -1,0 +1,126 @@
+---
+title: "React Native et Expo SDK 54 : mon retour d'expérience sur FitTrack"
+publishedAt: "2026-05-25"
+summary: "FitTrack est mon premier vrai projet mobile en production avec React Native et Expo SDK 54. Retour franc sur ce qui m'a plu, ce qui m'a surpris, et les choix techniques derrière l'app : navigation, stockage local, caméra et animations."
+image: "/blog/react-native-fittrack.png"
+---
+
+Je viens du web. Next.js, React, TypeScript : c'est mon terrain. Alors quand j'ai voulu construire **FitTrack**, une app de suivi d'entraînement, la question s'est posée : Swift natif, Flutter, ou React Native ?
+
+J'ai choisi **React Native avec Expo (SDK 54)**. Et après plusieurs mois dessus, je ne regrette pas. Voici pourquoi, et ce que ça implique concrètement.
+
+---
+
+## Le pari : réutiliser ce que je connais déjà
+
+L'argument numéro un de React Native pour un dev web, c'est la continuité mentale. Composants, hooks, état, props : tout est là. Je n'ai pas eu à réapprendre un paradigme.
+
+```tsx
+// Un écran FitTrack ressemble à n'importe quel composant React
+import { View, Text, Pressable } from "react-native";
+import { useState } from "react";
+
+export default function WorkoutScreen() {
+  const [sets, setSets] = useState<Set[]>([]);
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Séance du jour</Text>
+      <Pressable onPress={() => addSet()} style={styles.button}>
+        <Text style={styles.buttonText}>Ajouter une série</Text>
+      </Pressable>
+    </View>
+  );
+}
+```
+
+La différence principale : `<View>` au lieu de `<div>`, `<Text>` obligatoire pour tout texte, et du style en objets JS plutôt qu'en CSS. La courbe d'apprentissage tient sur une après-midi.
+
+---
+
+## Expo : le confort qui change tout
+
+J'aurais pu partir sur du React Native « bare ». J'ai choisi Expo, et c'est ce qui a rendu le projet faisable en solo.
+
+- **Expo Go** : scanner un QR code et voir l'app sur mon iPhone en temps réel.
+- **Modules natifs prêts à l'emploi** : caméra, haptics, stockage, sans toucher à Xcode.
+- **EAS Build** : compiler un binaire iOS dans le cloud, sans Mac dédié au build.
+
+Le SDK 54 apporte le support de **React 19** et les dernières APIs natives stabilisées. Concrètement, j'ai pu utiliser les Server Components côté logique partagée et profiter des améliorations de performance du nouveau moteur.
+
+---
+
+## Les choix techniques de FitTrack
+
+### Navigation
+
+J'ai utilisé **React Navigation** avec une structure à onglets (séances, historique, profil) plus des stacks imbriquées pour les détails.
+
+```tsx
+const Tab = createBottomTabNavigator();
+
+export function AppNavigator() {
+  return (
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
+      <Tab.Screen name="Workout" component={WorkoutStack} />
+      <Tab.Screen name="History" component={HistoryStack} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
+    </Tab.Navigator>
+  );
+}
+```
+
+### Stockage local
+
+Pas de backend au départ : FitTrack devait fonctionner hors-ligne. J'ai opté pour **AsyncStorage** pour persister les séances. Simple, suffisant pour des données structurées légères, et synchrone à lire au démarrage via un hook custom.
+
+```ts
+async function saveWorkout(workout: Workout) {
+  const raw = await AsyncStorage.getItem("workouts");
+  const list: Workout[] = raw ? JSON.parse(raw) : [];
+  list.push(workout);
+  await AsyncStorage.setItem("workouts", JSON.stringify(list));
+}
+```
+
+### Caméra et haptics
+
+**Expo Camera** sert à scanner les machines en salle (un POC d'identification d'équipement). **Expo Haptics** ajoute un retour tactile au minuteur de repos, un détail qui rend l'app vivante.
+
+```ts
+import * as Haptics from "expo-haptics";
+
+function onRestComplete() {
+  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+}
+```
+
+### Graphiques
+
+Pour visualiser la progression, j'ai dessiné les courbes avec **react-native-svg** plutôt qu'une lib lourde. Plus de contrôle, et un bundle plus léger.
+
+---
+
+## Ce qui m'a surpris
+
+**Le bon.** Le HMR de Expo est bluffant : modifier un composant et le voir mis à jour sur le téléphone en moins d'une seconde, c'est une boucle de feedback aussi rapide que sur le web.
+
+**Le moins bon.** Les performances de liste. Avec un historique chargé, une `FlatList` mal configurée saccade. Il faut soigner `keyExtractor`, `getItemLayout` et la mémoïsation des items. Sur le web on s'en sortait avec de la virtualisation magique ; ici il faut être explicite.
+
+**L'inattendu.** La gestion des dimensions d'écran et du `SafeAreaView`. L'encoche, la barre de navigation Android, le clavier qui pousse le layout : autant de cas que le web ne m'avait jamais forcé à gérer aussi finement.
+
+---
+
+## Le bilan
+
+React Native avec Expo SDK 54 m'a permis de livrer une app mobile complète, en solo, en réutilisant 80 % de mes réflexes web. Pour un produit comme FitTrack (UI riche mais pas de besoins natifs exotiques), c'est le sweet spot.
+
+Si je devais conseiller un dev web qui veut passer au mobile : commencez par Expo. Vous serez productif le premier jour, et vous descendrez vers le natif uniquement quand un vrai besoin l'exige. Dans mon cas, ce besoin n'est jamais venu.
+
+---
+
+## Pour aller plus loin
+
+- [Documentation Expo](https://docs.expo.dev/)
+- [Documentation React Native](https://reactnative.dev/)
+- [React Navigation](https://reactnavigation.org/)

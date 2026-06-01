@@ -1,0 +1,280 @@
+---
+title: "Building a homemade ATS in Python: sorting 4,000+ resumes in seconds"
+publishedAt: "2025-03-10"
+summary: "How I built an automated resume-sorting system for Royal Broker that filters 4,000+ applications in seconds with surprising accuracy, no expensive LLM required."
+image: "/blog/ats-python.png"
+---
+
+In 2023, Royal Broker posts a job opening for sales advisors. Within 48 hours: **4,200 applications** sitting in the inbox.
+
+The HR team had quite literally given up. Sorting through all that by hand would have taken weeks.
+
+My answer: a homemade ATS (Applicant Tracking System) in Python. Here is how it works.
+
+---
+
+## The actual problem
+
+The hiring process at Royal Broker looked like this:
+
+1. A candidate emails their resume to `recrutement@royalbroker.ca`
+2. Someone in HR opens each email, downloads the PDF, reads it
+3. They decide: Interview / Reject / Waitlist
+
+At 200 resumes a day, that is **impossible to keep up with**. And good profiles were slipping through the cracks.
+
+---
+
+## The system architecture
+
+The system is made up of 4 independent modules:
+
+```
+Email inbox (IMAP)
+       ↓
+[Module 1] Resume extraction (PDF → Text)
+       ↓
+[Module 2] NLP analysis & scoring
+       ↓
+[Module 3] Classification & ranking
+       ↓
+[Module 4] Dashboard + automatic actions
+```
+
+### Module 1: Resume extraction
+
+```python
+import imaplib
+import email
+import pdfplumber
+from pathlib import Path
+
+def fetch_cvs_from_email(host, user, password, folder="INBOX"):
+    """Fetch all PDF resumes from the inbox."""
+    mail = imaplib.IMAP4_SSL(host)
+    mail.login(user, password)
+    mail.select(folder)
+
+    _, message_ids = mail.search(None, 'UNSEEN')
+    cvs = []
+
+    for msg_id in message_ids[0].split():
+        _, msg_data = mail.fetch(msg_id, '(RFC822)')
+        msg = email.message_from_bytes(msg_data[0][1])
+
+        for part in msg.walk():
+            if part.get_content_type() == 'application/pdf':
+                pdf_bytes = part.get_payload(decode=True)
+                text = extract_text_from_pdf(pdf_bytes)
+                cvs.append({
+                    'sender': msg['From'],
+                    'subject': msg['Subject'],
+                    'text': text,
+                    'raw_pdf': pdf_bytes,
+                })
+
+    return cvs
+
+def extract_text_from_pdf(pdf_bytes: bytes) -> str:
+    """Extract text from a PDF given as bytes."""
+    import io
+    with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
+        return "\n".join(
+            page.extract_text() or ""
+            for page in pdf.pages
+        )
+```
+
+**Why pdfplumber rather than PyPDF2?** Better handling of tables and columns, which are common in modern resumes.
+
+### Module 2: NLP scoring
+
+The heart of the system. I went with a **TF-IDF + criteria matching** approach rather than LLMs: faster, more predictable, and free.
+
+```python
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import spacy
+import re
+
+nlp = spacy.load("fr_core_news_sm")
+
+CRITERIA = {
+    "experience_years": {
+        "pattern": r"(\d+)\s*(an|ans|année|années)\s*(d'expérience|experience)",
+        "weight": 3.0,
+    },
+    "hard_skills": {
+        "keywords": ["excel", "crm", "salesforce", "communication", "vente", "négociation"],
+        "weight": 2.0,
+    },
+    "education": {
+        "keywords": ["bac", "baccalauréat", "dec", "diplôme", "université", "college"],
+        "weight": 1.5,
+    },
+    "languages": {
+        "keywords": ["français", "anglais", "bilingue", "bilingual"],
+        "weight": 1.0,
+    },
+}
+
+def score_cv(cv_text: str, job_description: str) -> dict:
+    """Compute an overall score for a resume against the job posting."""
+    cv_text_lower = cv_text.lower()
+    scores = {}
+    total_weight = 0
+
+    # Score per criterion
+    for criterion, config in CRITERIA.items():
+        weight = config["weight"]
+        total_weight += weight
+
+        if "pattern" in config:
+            match = re.search(config["pattern"], cv_text_lower)
+            if match:
+                years = int(match.group(1))
+                scores[criterion] = min(years / 5, 1.0) * weight  # cap at 5 years = 100%
+            else:
+                scores[criterion] = 0
+
+        elif "keywords" in config:
+            found = sum(1 for kw in config["keywords"] if kw in cv_text_lower)
+            scores[criterion] = (found / len(config["keywords"])) * weight
+
+    # Semantic similarity score against the job description
+    vectorizer = TfidfVectorizer(stop_words=None)
+    try:
+        tfidf_matrix = vectorizer.fit_transform([cv_text, job_description])
+        similarity = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:2])[0][0]
+        scores["semantic_similarity"] = similarity * 2.0  # weight 2x
+        total_weight += 2.0
+    except Exception:
+        scores["semantic_similarity"] = 0
+
+    # Final score normalized to 100
+    raw_score = sum(scores.values())
+    final_score = (raw_score / total_weight) * 100
+
+    return {
+        "total": round(final_score, 1),
+        "breakdown": scores,
+    }
+```
+
+### Module 3: Automatic classification
+
+```python
+THRESHOLDS = {
+    "entretien": 65,      # Score > 65 → Interview
+    "liste_attente": 45,  # Score 45-65 → Waitlist
+    "rejet": 0,           # Score < 45 → Automatic rejection
+}
+
+def classify_candidate(score: float) -> str:
+    if score >= THRESHOLDS["entretien"]:
+        return "entretien"
+    elif score >= THRESHOLDS["liste_attente"]:
+        return "liste_attente"
+    return "rejet"
+
+def process_batch(cvs: list, job_description: str) -> list:
+    """Process a batch of resumes and return the sorted results."""
+    results = []
+    for cv in cvs:
+        score_data = score_cv(cv["text"], job_description)
+        results.append({
+            **cv,
+            "score": score_data["total"],
+            "breakdown": score_data["breakdown"],
+            "classification": classify_candidate(score_data["total"]),
+        })
+
+    return sorted(results, key=lambda x: x["score"], reverse=True)
+```
+
+### Module 4: Automatic actions
+
+For clear rejections (score < 30), an automatic, polite rejection email goes out:
+
+```python
+import smtplib
+from email.mime.text import MIMEText
+
+def send_rejection_email(to_email: str, candidate_name: str):
+    template = f"""
+Hello {candidate_name},
+
+Thank you for your interest in Royal Broker Solutions
+and for the time you put into your application.
+
+After carefully reviewing your file, we have decided not to move
+forward with your application for this position.
+
+We wish you the best of luck in your search.
+
+The Royal Broker HR team
+    """
+    msg = MIMEText(template)
+    msg["Subject"] = "Your application at Royal Broker"
+    msg["From"] = "recrutement@royalbroker.ca"
+    msg["To"] = to_email
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        server.login(SMTP_USER, SMTP_PASS)
+        server.send_message(msg)
+```
+
+---
+
+## The results
+
+Out of the **4,200 resumes** received:
+
+- **Interview** (score > 65): 187 candidates, i.e. 4.5%
+- **Waitlist** (45-65): 630 candidates, i.e. 15%
+- **Auto-reject** (< 45): 3,383 candidates, i.e. 80.5%
+- **Total processed**: 4,200 candidates (100%)
+
+Processing time: **~8 minutes** for all 4,200 resumes on a standard laptop.
+
+The HR team then had to handle **only 817 files** instead of 4,200, which is **5x less work**.
+
+### Validating accuracy
+
+I validated the system on a sample of 200 resumes that had been scored manually beforehand. Results:
+
+- **Precision on "interview"**: 88% (few false positives)
+- **Recall on "interview"**: 82% (a handful of good profiles landed in "waitlist")
+- **Critical errors** (a good profile in "reject"): < 3%
+
+The 3% critical-error threshold was acceptable for this context (very high volume, junior sales role).
+
+---
+
+## What I would do differently
+
+**1. Handling resumes in varied formats**
+
+Modern resumes come as PDFs, Word documents, sometimes even images. I handled PDFs, but adding `python-docx` + `pytesseract` (OCR) would have avoided a few unfair rejections.
+
+**2. Feedback loop**
+
+I did not implement a mechanism for HR to flag the system's mistakes, which would have allowed the thresholds to improve over time.
+
+**3. Potential biases**
+
+The TF-IDF system favors resumes with lots of text and candidates who "speak the same language" as the job description. An atypical candidate (career change, non-linear path) can be unfairly penalized.
+
+---
+
+## Conclusion
+
+A homemade ATS is not as complex as people think. With Python and a few open source libraries, you can build something functional in under a week.
+
+The real value is not in technical sophistication, but in the **reliability and transparency** of the system: the HR team needs to be able to understand why a candidate was classified a certain way.
+
+The full code is available in the [InstaHR](/en/projects) project. The ATS part is the `RecruitmentEngine` component.
+
+---
+
+*A question about the implementation? Reach out to me directly, I am happy to talk it through.*

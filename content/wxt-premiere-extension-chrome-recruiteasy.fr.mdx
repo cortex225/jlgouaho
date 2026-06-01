@@ -1,0 +1,159 @@
+---
+title: "Ma première extension Chrome avec WXT : retour d'expérience sur RecruitEasy"
+publishedAt: "2026-05-20"
+summary: "J'ai construit l'extension Chrome de RecruitEasy avec WXT après des années à galérer avec le boilerplate Manifest V3 brut. Voici pourquoi ce framework a changé ma façon de développer des extensions, et les pièges que j'ai rencontrés."
+image: "/blog/wxt-recruiteasy.png"
+---
+
+Pendant longtemps, j'ai évité de toucher aux extensions Chrome. Le souvenir d'un `manifest.json` écrit à la main, d'un build Webpack bricolé et d'un rechargement manuel à chaque modification m'avait suffi.
+
+Puis est venu le besoin réel : permettre aux recruteurs utilisateurs de **RecruitEasy** de capturer un profil candidat directement depuis LinkedIn ou une page d'offre, sans copier-coller. Une extension navigateur était la seule réponse logique.
+
+C'est là que j'ai découvert **WXT**. Premier projet d'extension de ma vie fait sérieusement, et le framework a fait toute la différence.
+
+---
+
+## Pourquoi WXT plutôt que le boilerplate brut
+
+Manifest V3 impose une architecture précise : un service worker en arrière-plan, des content scripts injectés dans la page, un popup, parfois une page d'options. En partant de zéro, on passe la première journée à câbler le build, le hot reload et le typage.
+
+WXT règle tout ça :
+
+- **Build basé sur Vite** : démarrage instantané, HMR sur le popup et les content scripts.
+- **Convention de fichiers** : `entrypoints/` génère le manifest automatiquement.
+- **Cross-browser** : la même base produit du Chrome (MV3) et du Firefox sans branchements manuels.
+- **TypeScript de bout en bout** : les APIs `browser.*` sont typées.
+
+L'argument décisif : je voulais coder la feature, pas l'outillage.
+
+---
+
+## La structure du projet
+
+Après `npx wxt@latest init`, l'arborescence est minimaliste. Voici à quoi ressemblait celle de l'extension RecruitEasy :
+
+```
+recruiteasy-extension/
+├── entrypoints/
+│   ├── background.ts        # service worker
+│   ├── popup/               # UI du popup (React)
+│   │   ├── App.tsx
+│   │   └── index.html
+│   └── content.ts           # script injecté dans LinkedIn
+├── components/
+│   └── ProfileCard.tsx
+├── utils/
+│   └── parseProfile.ts
+└── wxt.config.ts
+```
+
+Chaque fichier dans `entrypoints/` devient une entrée du manifest. Pas de `manifest.json` à maintenir : WXT le génère à partir de la config et des conventions.
+
+---
+
+## Le content script : capturer un profil
+
+Le cœur de l'extension : lire le DOM d'une page de profil et en extraire les infos pertinentes. WXT expose `defineContentScript` avec le `matches` directement déclaré dans le fichier.
+
+```ts
+// entrypoints/content.ts
+import { parseProfile } from "@/utils/parseProfile";
+
+export default defineContentScript({
+  matches: ["*://*.linkedin.com/in/*"],
+  main() {
+    // On écoute la demande venant du popup
+    browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+      if (message.type === "CAPTURE_PROFILE") {
+        const profile = parseProfile(document);
+        sendResponse({ ok: true, profile });
+      }
+      return true; // réponse asynchrone
+    });
+  },
+});
+```
+
+`defineContentScript` n'est pas un import classique : c'est une macro que WXT comprend au build pour câbler le manifest. Le `matches` ici suffit à déclarer les permissions de host. Plus besoin de les dupliquer ailleurs.
+
+---
+
+## Le popup : déclencher la capture
+
+Le popup est une petite app React. Au clic, il envoie un message au content script de l'onglet actif, puis affiche le résultat.
+
+```tsx
+// entrypoints/popup/App.tsx
+import { useState } from "react";
+
+export default function App() {
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  async function capture() {
+    setLoading(true);
+    const [tab] = await browser.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
+    const res = await browser.tabs.sendMessage(tab.id!, {
+      type: "CAPTURE_PROFILE",
+    });
+    setProfile(res.profile);
+    setLoading(false);
+  }
+
+  return (
+    <div className="w-80 p-4">
+      <button onClick={capture} disabled={loading}>
+        {loading ? "Capture…" : "Importer ce candidat"}
+      </button>
+      {profile && <ProfileCard profile={profile} />}
+    </div>
+  );
+}
+```
+
+Avec le HMR de WXT, modifier ce composant rafraîchit le popup sans recharger l'extension manuellement dans `chrome://extensions`. C'est ce détail, plus que tout, qui m'a fait gagner des heures.
+
+---
+
+## Les pièges rencontrés
+
+Tout n'a pas été lisse. Trois écueils m'ont coûté du temps :
+
+**1. Le service worker meurt.** En MV3, le background n'est plus persistant. Il se réveille sur événement et se rendort. Toute donnée en mémoire est perdue. J'ai dû déplacer l'état dans `browser.storage.local` au lieu de variables globales.
+
+**2. L'injection asynchrone du content script.** Si l'utilisateur clique sur le popup avant que LinkedIn ait fini de charger sa SPA, `sendMessage` échoue. J'ai ajouté un retry avec un court délai, et une vérification que le content script répond.
+
+```ts
+async function sendWithRetry(tabId: number, msg: unknown, tries = 3) {
+  for (let i = 0; i < tries; i++) {
+    try {
+      return await browser.tabs.sendMessage(tabId, msg);
+    } catch {
+      await new Promise((r) => setTimeout(r, 300));
+    }
+  }
+  throw new Error("Content script injoignable");
+}
+```
+
+**3. Les permissions de host.** LinkedIn change régulièrement son markup. Mon parsing reposait sur des sélecteurs CSS fragiles. J'ai fini par cibler des attributs plus stables (`data-*`, balises sémantiques) plutôt que des classes générées.
+
+---
+
+## Le bilan
+
+WXT a transformé une corvée que je redoutais en un projet fluide. La génération du manifest, le HMR et le typage des APIs navigateur enlèvent toute la friction qui m'avait dégoûté des extensions par le passé.
+
+Pour RecruitEasy, le résultat est concret : un recruteur capture un profil en un clic, et le candidat atterrit directement dans son pipeline. Le copier-coller manuel a disparu.
+
+Si vous hésitez à vous lancer dans une extension Chrome, ne commencez pas par le boilerplate brut. Commencez par WXT.
+
+---
+
+## Pour aller plus loin
+
+- [Documentation officielle WXT](https://wxt.dev/)
+- [Chrome Extensions, Manifest V3](https://developer.chrome.com/docs/extensions)

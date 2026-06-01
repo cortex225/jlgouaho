@@ -1,7 +1,7 @@
 ---
 title: "Développer un ATS maison en Python : trier 4000+ CVs en quelques secondes"
 publishedAt: "2025-03-10"
-summary: "Comment j'ai construit un système de tri de CVs automatisé pour Royal Broker, permettant de filtrer 4000+ candidatures en quelques secondes avec une précision surprenante — sans LLM coûteux."
+summary: "Comment j'ai construit un système de tri de CVs automatisé pour Royal Broker, permettant de filtrer 4000+ candidatures en quelques secondes avec une précision surprenante, sans LLM coûteux."
 image: "/blog/ats-python.png"
 ---
 
@@ -89,7 +89,7 @@ def extract_text_from_pdf(pdf_bytes: bytes) -> str:
 
 ### Module 2 : Scoring NLP
 
-Le coeur du système. J'ai opté pour une approche **TF-IDF + correspondance de critères** plutôt que des LLMs — plus rapide, plus prévisible, et gratuit.
+Le coeur du système. J'ai opté pour une approche **TF-IDF + correspondance de critères** plutôt que des LLMs : plus rapide, plus prévisible, et gratuit.
 
 ```python
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -230,16 +230,14 @@ L'équipe RH Royal Broker
 
 Sur les **4 200 CVs** reçus :
 
-| Classification | Nombre | % |
-|---|---|---|
-| Entretien (score > 65) | 187 | 4.5% |
-| Liste d'attente (45-65) | 630 | 15% |
-| Rejet auto (< 45) | 3 383 | 80.5% |
-| **Total traité** | **4 200** | **100%** |
+- **Entretien** (score > 65) : 187 candidats, soit 4,5 %
+- **Liste d'attente** (45-65) : 630 candidats, soit 15 %
+- **Rejet auto** (< 45) : 3 383 candidats, soit 80,5 %
+- **Total traité** : 4 200 candidats (100 %)
 
 Temps de traitement : **~8 minutes** pour les 4 200 CVs sur un laptop standard.
 
-L'équipe RH a ensuite eu à traiter **seulement 817 dossiers** au lieu de 4 200 — soit **5x moins de travail**.
+L'équipe RH a ensuite eu à traiter **seulement 817 dossiers** au lieu de 4 200, soit **5x moins de travail**.
 
 ### Validation de la précision
 
@@ -273,9 +271,9 @@ Le système TF-IDF favorise les CVs avec beaucoup de texte et les candidats qui 
 
 Un ATS maison n'est pas aussi complexe qu'on le croit. Avec Python et quelques bibliothèques open source, vous pouvez construire quelque chose de fonctionnel en moins d'une semaine.
 
-La vraie valeur n'est pas dans la sophistication technique, mais dans la **fiabilité et la transparence** du système — l'équipe RH doit pouvoir comprendre pourquoi un candidat a été classé d'une certaine façon.
+La vraie valeur n'est pas dans la sophistication technique, mais dans la **fiabilité et la transparence** du système : l'équipe RH doit pouvoir comprendre pourquoi un candidat a été classé d'une certaine façon.
 
-Le code complet est disponible dans le projet [InstaHR](/fr/projects) — la partie ATS est le composant `RecruitmentEngine`.
+Le code complet est disponible dans le projet [InstaHR](/fr/projects). La partie ATS est le composant `RecruitmentEngine`.
 
 ---
 

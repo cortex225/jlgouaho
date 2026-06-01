@@ -5,7 +5,7 @@ const translations: Translations = {
   hello: "Hello",
   seo: {
     tagline:
-      "Full-Stack Developer (.NET, Vue.js, Azure) based in Quebec, Canada — cloud, DevOps and automation specialist. I help companies cut cloud costs and ship faster.",
+      "Full-Stack Developer (.NET, Vue.js, Azure) based in Quebec, Canada. Cloud, DevOps and automation specialist. I help companies cut cloud costs and ship faster.",
     keywords: [
       "Full-Stack Developer Quebec",
       "Full-Stack Developer Montreal",
@@ -20,13 +20,13 @@ const translations: Translations = {
       "jlgouaho",
     ],
     homeTitle:
-      "Déto Jean-Luc Gouaho — Full-Stack Cloud & Azure Developer in Quebec",
+      "Déto Jean-Luc Gouaho : Full-Stack Cloud & Azure Developer in Quebec",
     homeDescription:
       "Full-Stack Developer specialized in .NET, Vue.js, Next.js and Azure. 3+ years of experience, 78% cloud cost reduction, Python ATS processing 4000+ resumes in seconds. Open to opportunities in Canada.",
-    projectsTitle: "Projects — Jean-Luc Gouaho Portfolio",
+    projectsTitle: "Projects : Jean-Luc Gouaho Portfolio",
     projectsDescription:
       "A collection of full-stack projects: SaaS CRM, AI-powered ATS, e-commerce platform, DevOps automation. Stack: Next.js, .NET, Vue.js, Azure, PostgreSQL, OpenAI.",
-    blogTitle: "Blog — Cloud, DevOps & Full-Stack Deep Dives",
+    blogTitle: "Blog : Cloud, DevOps & Full-Stack Deep Dives",
     blogDescription:
       "Hands-on technical articles: Azure cost optimization (-78%), Python ATS processing 4000+ resumes, serverless architecture, CI/CD and DevOps best practices.",
   },
@@ -65,6 +65,10 @@ const translations: Translations = {
   blog: {
     title: "Blog",
     description: "My thoughts on software development, life, and more.",
+    writtenBy: "Written by",
+    authorTagline:
+      "Full-stack developer based in Canada. I write about code, AI, and the products I build.",
+    viewProfile: "View my profile",
   },
   projectsPage: {
     allProjects: "All Projects",
@@ -132,7 +136,7 @@ const translations: Translations = {
     },
     contactForm: {
       title: "Let's Work Together",
-      subtitle: "Describe your project or opportunity — I reply within 24h.",
+      subtitle: "Describe your project or opportunity, I reply within 24h.",
       namePlaceholder: "Your name",
       emailPlaceholder: "your@email.com",
       messagePlaceholder: "Hi Jean-Luc, I'm reaching out about...",
@@ -655,7 +659,7 @@ const translations: Translations = {
         features: `
           <ul class="list-disc pl-4 space-y-1">
             <li><strong>Smart profile</strong>: live BMI, automatic BMR/TDEE, 5-level activity selector, adaptive goal suggestion with macros recomputed in real time</li>
-            <li><strong>Conversational AI coach</strong> with full context (profile + BMI + 7-day history + per-muscle volume) — markdown rendered</li>
+            <li><strong>Conversational AI coach</strong> with full context (profile + BMI + 7-day history + per-muscle volume), markdown rendered</li>
             <li><strong>AI workout generator</strong>: Home/Gym selector, multi-select target muscles, free-text intent prompt, forced picking inside the 873-exercise catalog</li>
             <li><strong>Exercise library</strong>: search + multi-select filters (muscles, equipment, level, location), animated 2-frame GIFs on white catalog-style backgrounds</li>
             <li><strong>Manual workout builder</strong>: filtered exercise picker, per-exercise sets/reps/rest, reusable saved workouts with edit/duplicate/delete</li>
@@ -693,7 +697,7 @@ const translations: Translations = {
               <h5 class="font-medium">📊 Custom SVG spider chart, no heavy chart lib</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> visualize training volume per muscle group with time filters.<br>
-                <span class="font-semibold">Solution:</span> custom SVG component (react-native-svg) with 8 axes grouping the 17 low-level muscles, concentric grid and filled polygon — ~120 lines, zero additional chart dependency.
+                <span class="font-semibold">Solution:</span> custom SVG component (react-native-svg) with 8 axes grouping the 17 low-level muscles, concentric grid and filled polygon, ~120 lines, zero additional chart dependency.
               </p>
             </div>
           </div>

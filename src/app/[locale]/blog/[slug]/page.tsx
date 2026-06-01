@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Calendar, List, BookOpen } from "lucide-react";
+import { AuthorByline, AuthorCard } from "@/components/author-card";
 
 const BASE_URL = "https://www.jlgouaho.com";
 
@@ -22,7 +23,7 @@ export async function generateMetadata({
   };
 }): Promise<Metadata | undefined> {
   const { slug, locale } = params;
-  let post = await getPost(slug);
+  let post = await getPost(slug, locale);
 
   let {
     title,
@@ -107,13 +108,14 @@ export default async function Blog({
   };
 }) {
   const { slug, locale } = params;
-  let post = await getPost(slug);
+  const typedLocale = (locale === 'fr' ? 'fr' : 'en') as 'en' | 'fr';
+  let post = await getPost(slug, typedLocale);
 
   if (!post) {
     notFound();
   }
 
-  const allPosts = await getBlogPosts();
+  const allPosts = await getBlogPosts(typedLocale);
   const sortedPosts = allPosts
     .sort((a, b) => new Date(b.metadata.publishedAt).getTime() - new Date(a.metadata.publishedAt).getTime())
     .filter(p => p.slug !== slug)
@@ -122,7 +124,6 @@ export default async function Blog({
   const headings = extractHeadings(post.source);
   const contentWithIds = addIdsToHeadings(post.source);
   const isFrench = locale === 'fr';
-  const typedLocale = (locale === 'fr' ? 'fr' : 'en') as 'en' | 'fr';
   const data = getData(typedLocale);
   const inLanguage = isFrench ? 'fr-CA' : 'en-CA';
   const postUrl = `${BASE_URL}/${typedLocale}/blog/${post.slug}`;
@@ -157,6 +158,13 @@ export default async function Blog({
       "@type": "Person",
       name: data.name,
       url: `${BASE_URL}/${typedLocale}`,
+      image: `${BASE_URL}${data.avatarUrl}`,
+      sameAs: Object.values(data.contact.social)
+        .map((s: any) => s.url)
+        .filter(
+          (u: string) =>
+            u && u.startsWith("http") && !u.includes("jlgouaho.com")
+        ),
     },
     publisher: {
       "@type": "Person",
@@ -218,6 +226,14 @@ export default async function Blog({
           {/* Main Content */}
           <article className="lg:col-span-8">
             <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl rounded-[2rem] p-8 md:p-10 border border-white/80 dark:border-slate-700/50 shadow-xl">
+              {/* Cover Image */}
+              {post.metadata.image && (
+                <img
+                  src={post.metadata.image}
+                  alt={post.metadata.title}
+                  className="w-full aspect-[1200/630] object-cover rounded-[1.5rem] mb-8 border border-white/80 dark:border-slate-700/50 shadow-lg"
+                />
+              )}
               {/* Header */}
               <header className="mb-8">
                 <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight">
@@ -233,6 +249,9 @@ export default async function Blog({
                     <span>5 {labels.readingTime}</span>
                   </div>
                 </div>
+                <div className="mt-5 pt-5 border-t border-slate-200/70 dark:border-slate-700/50">
+                  <AuthorByline locale={typedLocale} />
+                </div>
               </header>
 
               {/* Content */}
@@ -240,6 +259,11 @@ export default async function Blog({
                 className="prose dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-a:text-indigo-600 dark:prose-a:text-indigo-400 prose-a:no-underline hover:prose-a:underline"
                 dangerouslySetInnerHTML={{ __html: contentWithIds }}
               />
+            </div>
+
+            {/* Author (mobile only — sidebar handles desktop) */}
+            <div className="mt-8 lg:hidden">
+              <AuthorCard locale={typedLocale} />
             </div>
 
             {/* Related Articles */}
@@ -255,6 +279,13 @@ export default async function Blog({
                       href={`/${locale}/blog/${relatedPost.slug}`}
                       className="group block bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl rounded-[2rem] p-6 border border-white/80 dark:border-slate-700/50 shadow-lg hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300"
                     >
+                      {relatedPost.metadata.image && (
+                        <img
+                          src={relatedPost.metadata.image}
+                          alt={relatedPost.metadata.title}
+                          className="w-full aspect-[1200/630] object-cover rounded-[1.25rem] mb-4 border border-white/80 dark:border-slate-700/50"
+                        />
+                      )}
                       <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors mb-2 line-clamp-2">
                         {relatedPost.metadata.title}
                       </h3>
@@ -276,32 +307,36 @@ export default async function Blog({
             )}
           </article>
 
-          {/* Sidebar - Table of Contents */}
-          {headings.length > 0 && (
-            <aside className="hidden lg:block lg:col-span-4">
-              <div className="sticky top-8 bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl rounded-[2rem] p-6 border border-white/80 dark:border-slate-700/50 shadow-xl">
-                <div className="flex items-center gap-2 mb-4 text-slate-900 dark:text-white">
-                  <List size={18} className="text-indigo-600 dark:text-indigo-400" />
-                  <h3 className="font-bold">{labels.tableOfContents}</h3>
+          {/* Sidebar - Table of Contents + Author */}
+          <aside className="hidden lg:block lg:col-span-4">
+            <div className="sticky top-8 space-y-6">
+              {headings.length > 0 && (
+                <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl rounded-[2rem] p-6 border border-white/80 dark:border-slate-700/50 shadow-xl">
+                  <div className="flex items-center gap-2 mb-4 text-slate-900 dark:text-white">
+                    <List size={18} className="text-indigo-600 dark:text-indigo-400" />
+                    <h3 className="font-bold">{labels.tableOfContents}</h3>
+                  </div>
+                  <nav className="space-y-2">
+                    {headings.map((heading, index) => (
+                      <a
+                        key={index}
+                        href={`#${heading.id}`}
+                        className={`block text-sm transition-colors hover:text-indigo-600 dark:hover:text-indigo-400 ${
+                          heading.level === 2
+                            ? 'text-slate-600 dark:text-slate-300 font-medium'
+                            : 'text-slate-400 dark:text-slate-500 pl-4'
+                        }`}
+                      >
+                        {heading.text}
+                      </a>
+                    ))}
+                  </nav>
                 </div>
-                <nav className="space-y-2">
-                  {headings.map((heading, index) => (
-                    <a
-                      key={index}
-                      href={`#${heading.id}`}
-                      className={`block text-sm transition-colors hover:text-indigo-600 dark:hover:text-indigo-400 ${
-                        heading.level === 2
-                          ? 'text-slate-600 dark:text-slate-300 font-medium'
-                          : 'text-slate-400 dark:text-slate-500 pl-4'
-                      }`}
-                    >
-                      {heading.text}
-                    </a>
-                  ))}
-                </nav>
-              </div>
-            </aside>
-          )}
+              )}
+
+              <AuthorCard locale={typedLocale} compact />
+            </div>
+          </aside>
         </div>
       </div>
     </div>

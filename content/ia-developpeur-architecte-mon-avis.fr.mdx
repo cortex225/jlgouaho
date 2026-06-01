@@ -1,0 +1,96 @@
+---
+title: "L'IA code mieux que moi, et pourquoi ça m'arrange"
+publishedAt: "2026-06-01"
+summary: "Mon avis (assumé) sur l'IA dans le dev : ce n'est ni un messie ni le grand remplaçant, c'est un outil. Une évolution qu'on n'a pas le choix d'adopter, et qui nous pousse vers un rôle d'architecte. Parce que oui, l'IA code bien, encore faut-il l'empêcher de partir en cacahuète."
+image: "/blog/ia-developpeur-architecte.png"
+---
+
+Je vais être honnête : l'IA code mieux que moi sur pas mal de trucs. Une fonction de tri, un composant React, une regex tordue à 23h ? Elle sort ça plus vite et souvent plus proprement que moi un lundi matin sans café.
+
+Et vous savez quoi ? Ça m'arrange. Laissez-moi argumenter, avec le sérieux que mérite le sujet et un peu d'autodérision au passage.
+
+---
+
+## L'IA n'est pas un messie, c'est une perceuse
+
+Il y a deux camps qui m'épuisent également : les *« l'IA va tous nous remplacer, rangez vos claviers »* et les *« c'est du flan, ça ne sait même pas compter les R dans framboise »*.
+
+Moi je vois ça autrement : **c'est un outil.** Une très bonne perceuse. Avant la perceuse, on faisait des trous au tournevis en suant. La perceuse n'a pas remplacé le menuisier : elle a juste rendu ridicule celui qui continuait au tournevis par principe.
+
+L'IA, c'est pareil. Elle ne me remplace pas. Elle remplace **la version de moi qui refuse de l'utiliser.** Nuance capitale.
+
+---
+
+## On n'a pas le choix de s'adapter (désolé)
+
+Je sais, « il faut s'adapter » c'est le genre de phrase qu'on lit sur un mug LinkedIn. Mais c'est vrai, et le nier ne ralentira pas le train.
+
+Le métier bouge. Vite. Ce qui était une compétence rare il y a deux ans est devenu une autocomplétion aujourd'hui. La seule stratégie viable, c'est de rester **le plus à jour possible** : tester les nouveaux modèles, les nouveaux outils, comprendre ce qu'ils savent faire et, surtout, ce qu'ils ne savent *pas* faire.
+
+> Le dev qui survit n'est pas le plus fort en algo. C'est celui qui apprend le plus vite à se servir des nouveaux outils sans paniquer.
+
+Refuser l'IA aujourd'hui, c'est un peu comme refuser Google en 2005 pour « garder sa mémoire affûtée ». Respectable. Mais tu vas livrer ta feature la semaine prochaine, pas moi.
+
+---
+
+## Mon vrai job, maintenant : architecte
+
+Voilà le glissement le plus intéressant. Si l'IA pose les briques très bien, alors ma valeur n'est plus dans la pose de briques. Elle est dans **le plan.**
+
+Je passe de plus en plus de temps sur les questions que l'IA ne se pose pas toute seule :
+
+- Quelle est la **vraie** contrainte métier derrière la demande ?
+- Quelle architecture tiendra dans 6 mois quand les besoins auront triplé ?
+- Où sont les risques de sécurité, les cas limites, la dette qu'on va regretter ?
+- Est-ce qu'on a même besoin de coder ça, ou est-ce qu'un truc existe déjà ?
+
+L'IA est un excellent maçon. Mais un maçon, aussi rapide soit-il, ne décide pas où mettre les murs porteurs. Si personne ne tient le plan, on se retrouve avec une magnifique salle de bain… sans porte.
+
+```ts
+// Ce que l'IA fait très bien (la pose de briques)
+function debounce(fn, ms) { /* ... impeccable ... */ }
+
+// Ce qui reste mon job (le plan)
+// - Pourquoi un debounce ici et pas un throttle ?
+// - Quel impact sur l'UX, la charge serveur, les coûts ?
+// - Est-ce que ça scale, est-ce testable, est-ce maintenable ?
+```
+
+Le code, c'est la partie facile maintenant. Les **bonnes décisions**, c'est toujours la partie chère.
+
+---
+
+## Comment l'empêcher de partir en cacahuète
+
+Parce que oui, livrée à elle-même, l'IA part en cacahuète. Avec assurance, en plus. Elle te pondra 200 lignes confiantes pour un problème qui en demandait 12, inventera une fonction de librairie qui n'existe pas, et te jurera que c'est « best practice ».
+
+Mon rôle d'architecte, c'est de **garder la ligne directrice.** Quelques principes que j'applique :
+
+1. **Donner le contexte, pas juste la tâche.** « Fais un formulaire » donne du n'importe quoi. « Fais un formulaire qui respecte CE design system, valide avec Zod, et gère ces 3 cas d'erreur » donne du sérieux. L'IA est aussi bonne que le brief.
+2. **Découper.** Une grosse demande floue = grosse cacahuète. Trois petites demandes précises = trois résultats contrôlables.
+3. **Revoir chaque ligne comme une PR de junior brillant mais distrait.** Le talent est là, la rigueur pas toujours. Je lis, je challenge, je teste.
+4. **Tenir l'invariant.** C'est moi qui garde en tête la cohérence globale, les conventions, la direction du produit. L'IA a la mémoire d'un poisson rouge enthousiaste ; le fil rouge, c'est mon boulot.
+
+En gros : l'IA propose, l'architecte dispose. Et relit. Beaucoup.
+
+---
+
+## Tout le monde peut faire un site maintenant, et c'est OK
+
+Autre vérité qui dérange certains confrères : aujourd'hui, **Mr et Mme Tout-le-Monde peuvent se faire un site web** en décrivant ce qu'ils veulent. Et c'est très bien.
+
+Ça ne me menace pas, pour la même raison qu'un tuto YouTube de plomberie n'a pas tué les plombiers. Changer un joint, oui. Refaire toute la tuyauterie d'un immeuble sans tout inonder, on rappelle un pro.
+
+Le « site IA » de M. Tout-le-Monde marche le jour de la démo. Puis arrivent les vraies questions : ça tient combien de visiteurs ? C'est sécurisé ? Référencé ? Maintenable dans un an ? Conforme au RGPD ? Accessible ? **C'est là que le métier se déplace** : pas vers « savoir taper du code », mais vers « savoir ce qui se passe quand ça grossit et que ça casse ».
+
+La barrière à l'entrée s'est effondrée. La barrière à l'**excellence**, elle, n'a jamais été aussi haute. Et c'est exactement là que je veux jouer.
+
+---
+
+## Mon avis, pour résumer
+
+L'IA n'est ni mon ennemie ni ma béquille. C'est mon **meilleur stagiaire** : ultra-rapide, infatigable, parfois génial, parfois complètement à côté de la plaque avec un aplomb désarmant. Mon travail n'est pas de coder plus vite qu'elle : j'ai perdu cette course, et sereinement.
+
+Mon travail, c'est de **tenir le plan, garder le cap, et débrancher la cacahuète avant qu'elle finisse en prod.**
+
+Le dev de demain n'est pas celui qui résiste à l'IA. C'est celui qui sait quoi lui demander, comment la cadrer, et quand dire « non, refais, t'es parti trop loin ». Bref : un architecte. Avec un très bon stagiaire. Et toujours un peu de café.

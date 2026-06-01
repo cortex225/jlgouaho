@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, BookOpen, ArrowRight, Calendar } from 'lucide-react';
 import { ModeToggle } from '@/components/mode-toggle';
+import { AuthorByline, AuthorCard } from '@/components/author-card';
 
 const BASE_URL = "https://www.jlgouaho.com";
 
@@ -55,7 +56,7 @@ export async function generateMetadata({
 }
 
 export default async function BlogPage({ params: { locale } }: { params: { locale: "en" | "fr" } }) {
-  const posts = await getBlogPosts();
+  const posts = await getBlogPosts(locale);
   const data = getData(locale);
 
   const sorted = posts.sort((a, b) =>
@@ -119,7 +120,7 @@ export default async function BlogPage({ params: { locale } }: { params: { local
       />
       <div className="fixed inset-0 animated-bg z-0 pointer-events-none" />
 
-      <div className="w-full max-w-4xl mx-auto p-4 pb-24 md:p-8 md:pb-24 lg:p-12 lg:pb-24 relative z-10">
+      <div className="w-full max-w-7xl mx-auto p-4 pb-24 md:p-8 md:pb-24 lg:p-12 lg:pb-24 relative z-10">
 
         {/* Header */}
         <div className="mb-12 flex items-center justify-between">
@@ -144,40 +145,53 @@ export default async function BlogPage({ params: { locale } }: { params: { local
           <p className="text-lg text-slate-500 dark:text-slate-400 max-w-xl mx-auto">
             {labels.description}
           </p>
+          <div className="flex justify-center mt-6">
+            <AuthorByline locale={locale} />
+          </div>
         </div>
 
         {/* Posts */}
-        <div className="space-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {sorted.map((post) => (
             <Link
               key={post.slug}
               href={`/${locale}/blog/${post.slug}`}
-              className="group block bg-white dark:bg-slate-900 rounded-[2rem] p-7 border border-white dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300"
+              className="group flex flex-col bg-white dark:bg-slate-900 rounded-[1.75rem] p-5 border border-white dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 hover:-translate-y-1 transition-all duration-300"
             >
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1">
-                  <h2 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors mb-3">
-                    {post.metadata.title}
-                  </h2>
-                  <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-4 line-clamp-2">
-                    {post.metadata.summary}
-                  </p>
-                  <div className="flex items-center gap-2 text-xs text-slate-400 font-medium">
-                    <Calendar size={12} />
-                    <span>
-                      {new Date(post.metadata.publishedAt).toLocaleDateString(
-                        locale === 'fr' ? 'fr-CA' : 'en-CA',
-                        { year: 'numeric', month: 'long', day: 'numeric' }
-                      )}
-                    </span>
-                  </div>
+              {post.metadata.image && (
+                <img
+                  src={post.metadata.image}
+                  alt={post.metadata.title}
+                  className="w-full aspect-[1200/630] object-cover rounded-[1.25rem] mb-4 border border-slate-100 dark:border-slate-800"
+                />
+              )}
+              <h2 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors mb-2 line-clamp-2">
+                {post.metadata.title}
+              </h2>
+              <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-4 line-clamp-3">
+                {post.metadata.summary}
+              </p>
+              <div className="mt-auto flex items-center justify-between">
+                <div className="flex items-center gap-1.5 text-xs text-slate-400 font-medium">
+                  <Calendar size={12} />
+                  <span>
+                    {new Date(post.metadata.publishedAt).toLocaleDateString(
+                      locale === 'fr' ? 'fr-CA' : 'en-CA',
+                      { year: 'numeric', month: 'short', day: 'numeric' }
+                    )}
+                  </span>
                 </div>
-                <div className="shrink-0 w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:bg-indigo-100 group-hover:text-indigo-600 dark:group-hover:bg-indigo-900/30 dark:group-hover:text-indigo-400 transition-all">
-                  <ArrowRight size={18} className="group-hover:translate-x-0.5 transition-transform" />
+                <div className="shrink-0 w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:bg-indigo-100 group-hover:text-indigo-600 dark:group-hover:bg-indigo-900/30 dark:group-hover:text-indigo-400 transition-all">
+                  <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </div>
             </Link>
           ))}
+        </div>
+
+        {/* Author */}
+        <div className="mt-12 max-w-3xl mx-auto">
+          <AuthorCard locale={locale} />
         </div>
 
       </div>

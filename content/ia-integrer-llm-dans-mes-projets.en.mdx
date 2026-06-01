@@ -1,0 +1,225 @@
+---
+title: "AI in my projects: what I learned shipping LLMs to production"
+publishedAt: "2026-05-28"
+summary: "From the ATS at Royal Broker to FitTrack and RecruitEasy, I've integrated LLMs into several real products. OpenAI SDK, API keys, quotas and rate limits, picking the model for the job, inference vs relevance, OpenRouter: a hands-on take on shipping AI without turning a magic demo into a money pit."
+image: "/blog/ia-llm-production.png"
+---
+
+AI is everywhere in the tech conversation. In my day-to-day as a developer, it has become one tool among many: powerful, but something you have to use in the right doses. After integrating it into several projects (RecruitEasy, FitTrack, my homemade ATS), here is an honest take, far from the hype.
+
+---
+
+## The first lesson: not everything needs an LLM
+
+My best AI memory uses... no LLM at all. The ATS I built at Royal Broker sorted 4,000+ resumes with classic NLP: keyword extraction, weighted scoring, ranking. Fast, deterministic, free.
+
+I could have thrown every resume at GPT-4. It would have worked. But at 200 applications a day, the API bill would have exploded, and the latency would have made real-time sorting unusable.
+
+> **A rule I hold myself to:** if a regex, a heuristic, or a lightweight model does the job, the LLM is a waste. You bring it out when the task demands understanding unstructured language.
+
+---
+
+## When the LLM becomes essential
+
+Where generative AI really shines is the ambiguity of human language. In RecruitEasy, I use the OpenAI API to turn a job description into structured matching criteria.
+
+```ts
+const completion = await openai.chat.completions.create({
+  model: "gpt-4o-mini",
+  response_format: { type: "json_object" },
+  messages: [
+    {
+      role: "system",
+      content:
+        "Extract the required skills, experience level and contract type. Respond in strict JSON.",
+    },
+    { role: "user", content: jobDescription },
+  ],
+});
+
+const criteria = JSON.parse(completion.choices[0].message.content!);
+```
+
+Two details that saved me in production:
+
+- **`response_format: json_object`**: no more responses drifting from the expected format and breaking the parsing.
+- **The `mini` model**: for structured extraction, the big model is pointless. The mini costs a fraction and responds faster.
+
+---
+
+## The OpenAI SDK and the API key
+
+In practice, it all starts with the official SDK and an API key. Installation is trivial, but it's key management that separates a POC from a real product.
+
+```ts
+import OpenAI from "openai";
+
+// The key must NEVER be hardcoded or exposed on the client.
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+```
+
+Three rules I enforce on API keys:
+
+- **Server-side only.** A key in a front-end bundle is a guaranteed leak. All my LLM calls go through an API route (Next.js Route Handler, ASP.NET controller), never from the browser.
+- **Environment variables + secret manager.** Locally, `.env.local` (gitignored). In production, Vercel secrets / encrypted environment variables. The key never appears anywhere in versioned code.
+- **One key per environment.** Dev, staging and prod have distinct keys. If one leaks, I revoke it without affecting the others, and I can immediately see which environment is consuming what.
+
+---
+
+## Quotas, rate limits and error handling
+
+This is the classic trap when scaling up. An API key isn't an unlimited tap: OpenAI applies **quotas** (monthly budget, *usage tiers*) and **rate limits** expressed in RPM (requests per minute) and TPM (tokens per minute).
+
+When you go over, the API replies `429 Too Many Requests`. In production, it's bound to happen one day: a traffic spike, a poorly paced batch. Without handling, it's an error the user sees.
+
+My defense: a **retry with exponential backoff** on 429s and transient errors.
+
+```ts
+async function callWithRetry(fn: () => Promise<T>, tries = 4): Promise<T> {
+  for (let i = 0; i < tries; i++) {
+    try {
+      return await fn();
+    } catch (err: any) {
+      // 429 = rate limit, 5xx = transient server-side error
+      if (![429, 500, 502, 503].includes(err.status) || i === tries - 1) {
+        throw err;
+      }
+      const wait = 2 ** i * 500 + Math.random() * 200; // backoff + jitter
+      await new Promise((r) => setTimeout(r, wait));
+    }
+  }
+  throw new Error("unreachable");
+}
+```
+
+To that I add two budget guardrails:
+
+- **A spending cap (*usage limit*)** configured in the OpenAI dashboard, so a runaway bug doesn't drain the card.
+- **A per-user token counter** on RecruitEasy, to bill fairly (via Stripe) and cut off abuse.
+
+---
+
+## Choosing the right model for the job
+
+The beginner mistake is using the most powerful model everywhere. In reality, each task has its optimal model. Here's how I reason, depending on the need:
+
+- **Structured extraction / classification** -> small fast model (`mini`, `nano`). E.g. parsing a job posting into JSON.
+- **Conversation, writing, summarizing** -> general-purpose model (`gpt-4o`, `gpt-4.1`). E.g. replies to candidates, profile summaries.
+- **Complex, multi-step reasoning** -> *reasoning* model (the `o` series). E.g. fine-grained candidate-to-role matching with justification.
+- **Semantic search** -> an **embeddings** model (`text-embedding-3`). E.g. finding the resumes closest to a query.
+- **Vision / document reading** -> multimodal model. E.g. reading a scanned resume, identifying a machine in FitTrack.
+- **Image generation** -> diffusion model (FLUX, etc.). E.g. exercise illustrations.
+
+The logic: **you move up a tier only when the task justifies it.** 90% of my calls run on small models. The reasoning models, slower and more expensive, I reserve for cases where the quality of the decision matters more than latency.
+
+---
+
+## Inference vs relevance: the "bigger = better" trap
+
+This is the least intuitive lesson. A bigger model isn't automatically more *relevant* to my case. You have to separate two things:
+
+- **Inference**: the model's raw capability, measured by benchmarks. The bigger the model, the more it "knows" and the further it reasons.
+- **Relevance**: the quality of the response *for my specific task*, in my context.
+
+But relevance depends far more on the **prompt and the context provided** than on the size of the model. A well-guided `mini`, with a good system prompt and the right data in context, often beats a poorly briefed big model, at a fraction of the cost and latency.
+
+> My instinct: before moving up a model tier, I improve the prompt and the context first. Nine times out of ten, the problem wasn't the model's power, but what I was feeding it.
+
+The right tradeoff is a triangle of **cost / latency / quality**. For real-time extraction, I favor latency and cost (small model). For a critical decision made once, I favor quality (reasoning model). There is no "default" model: there's a model suited to each call.
+
+---
+
+## OpenRouter: don't marry a single provider
+
+Depending 100% on OpenAI is a risk: prices change, a model gets deprecated, the API goes down, or there's simply a better model elsewhere (Anthropic, Google, Mistral, open source models, etc.).
+
+That's where **OpenRouter** comes in. It's a single gateway, **compatible with the OpenAI SDK**, that routes my requests to dozens of models from different providers. In practice, I just change the base URL and the model name:
+
+```ts
+const router = new OpenAI({
+  baseURL: "https://openrouter.ai/api/v1",
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
+
+const res = await router.chat.completions.create({
+  model: "anthropic/claude-sonnet-4.5", // or "google/gemini-2.5", "mistralai/..."
+  messages: [{ role: "user", content: prompt }],
+});
+```
+
+What it gives me:
+
+- **One integration, many models**: I test and compare without rewriting my code.
+- **Fallback**: if a provider goes down or saturates, OpenRouter switches to another. No more single point of failure.
+- **Cost optimization**: for each task, I pick the model with the best relevance-to-price ratio, regardless of the provider.
+- **No lock-in**: I keep the freedom to migrate.
+
+The tradeoff: a bit of extra latency and a dependency on a middleman. For critical, very high-volume calls, I sometimes stay direct with the provider. But to experiment and keep my options open, OpenRouter has become my default entry point.
+
+---
+
+## Caching: your best friend against the bill
+
+The same question comes up often. Re-paying for an LLM call to get an identical result is throwing money away. On RecruitEasy, I put **Redis (via Upstash)** in front of every expensive call.
+
+```ts
+async function getCriteria(jobDescription: string) {
+  const key = `criteria:${hash(jobDescription)}`;
+  const cached = await redis.get(key);
+  if (cached) return cached;
+
+  const criteria = await callLLM(jobDescription);
+  await redis.set(key, criteria, { ex: 60 * 60 * 24 * 7 }); // 7 days
+  return criteria;
+}
+```
+
+The impact is immediate: on reused job descriptions, the cache hit rate goes over 60%, and the API bill drops by just as much.
+
+---
+
+## Multimodal generation in FitTrack
+
+In FitTrack, I went beyond text. I use **Gemini 2.5** to generate personalized training plans from the user's goals, and **FLUX (via Cloudflare)** to generate exercise illustrations.
+
+The main takeaway: image generation is slow and expensive. I never trigger it in real time while the user waits. I precompute in the background and serve from a cache. The user never sees the delay.
+
+---
+
+## The pitfalls I ran into
+
+**1. Structured hallucination.** Even with an enforced JSON format, an LLM can invent a plausible but wrong value. I always validate the output against a schema (Zod) before using it.
+
+```ts
+const CriteriaSchema = z.object({
+  skills: z.array(z.string()),
+  experienceYears: z.number().int().min(0),
+  contractType: z.enum(["CDI", "CDD", "Freelance", "Stage"]),
+});
+
+const parsed = CriteriaSchema.safeParse(raw);
+if (!parsed.success) {
+  // fallback or retry
+}
+```
+
+**2. Perceived latency.** An LLM call that takes 3 seconds kills the experience if the user is staring at a spinner. Streaming the responses (token by token) radically changes the perception.
+
+**3. Cost that drifts silently.** Without monitoring, you discover the bill at the end of the month. I instrument every call to track tokens consumed and cost per feature.
+
+---
+
+## My approach today
+
+Generative AI is neither magic nor something to run from. It's a building block with clear constraints: cost, latency, non-determinism. I integrate it when it solves a real language or generation problem, and I systematically surround it with guardrails: caching, schema validation, fallback, monitoring.
+
+The trap isn't using AI. It's using it everywhere, without measuring. The good developer instinct stays the same as before: pick the tool suited to the problem, not the most impressive one.
+
+---
+
+## Further reading
+
+- [OpenAI SDK and API](https://platform.openai.com/docs/)
+- [OpenRouter documentation](https://openrouter.ai/docs)

@@ -1,0 +1,225 @@
+---
+title: "L'IA dans mes projets : ce que j'ai appris en intégrant des LLM en production"
+publishedAt: "2026-05-28"
+summary: "De l'ATS chez Royal Broker à FitTrack et RecruitEasy, j'ai intégré des LLM dans plusieurs produits réels. SDK OpenAI, clés API, quotas et rate limits, choix du modèle selon l'usage, inférence vs pertinence, OpenRouter : un retour concret pour intégrer l'IA sans transformer une démo magique en gouffre de coûts."
+image: "/blog/ia-llm-production.png"
+---
+
+L'IA est partout dans le discours tech. Dans mon quotidien de développeur, elle est devenue un outil parmi d'autres, puissant mais qu'il faut savoir doser. Après l'avoir intégrée dans plusieurs projets (RecruitEasy, FitTrack, mon ATS maison), voici un retour honnête, loin du hype.
+
+---
+
+## La première leçon : tout n'a pas besoin d'un LLM
+
+Mon meilleur souvenir d'IA n'utilise… aucun LLM. L'ATS que j'ai construit chez Royal Broker triait 4000+ CVs avec du NLP classique : extraction de mots-clés, scoring pondéré, classement. Rapide, déterministe, gratuit.
+
+J'aurais pu balancer chaque CV dans GPT-4. Ça aurait marché. Mais à 200 candidatures par jour, la facture API aurait explosé, et la latence aurait rendu le tri inutilisable en temps réel.
+
+> **Règle que je m'applique :** si une regex, une heuristique ou un modèle léger fait le job, le LLM est du gaspillage. On le sort quand la tâche exige de la compréhension du langage non structuré.
+
+---
+
+## Quand le LLM devient indispensable
+
+Là où l'IA générative brille vraiment, c'est sur l'ambiguïté du langage humain. Dans RecruitEasy, j'utilise l'API OpenAI pour transformer une description de poste en critères de matching structurés.
+
+```ts
+const completion = await openai.chat.completions.create({
+  model: "gpt-4o-mini",
+  response_format: { type: "json_object" },
+  messages: [
+    {
+      role: "system",
+      content:
+        "Extrais les compétences requises, le niveau d'expérience et le type de contrat. Réponds en JSON strict.",
+    },
+    { role: "user", content: jobDescription },
+  ],
+});
+
+const criteria = JSON.parse(completion.choices[0].message.content!);
+```
+
+Deux détails qui m'ont sauvé en production :
+
+- **`response_format: json_object`** : fini les réponses qui dévient du format attendu et cassent le parsing.
+- **Le modèle `mini`** : pour de l'extraction structurée, le gros modèle est inutile. Le mini coûte une fraction et répond plus vite.
+
+---
+
+## Le SDK OpenAI et la clé API
+
+Concrètement, tout commence par le SDK officiel et une clé API. L'installation est triviale, mais c'est la gestion de la clé qui sépare un POC d'un vrai produit.
+
+```ts
+import OpenAI from "openai";
+
+// La clé NE doit JAMAIS être en dur ni exposée côté client.
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+```
+
+Trois règles que je m'impose sur les clés API :
+
+- **Côté serveur uniquement.** Une clé dans un bundle front-end, c'est une fuite garantie. Tous mes appels LLM passent par une route API (Next.js Route Handler, ASP.NET controller), jamais depuis le navigateur.
+- **Variables d'environnement + secret manager.** En local, `.env.local` (ignoré par git). En prod, les secrets Vercel / variables d'environnement chiffrées. La clé n'apparaît nulle part dans le code versionné.
+- **Une clé par environnement.** Dev, staging et prod ont des clés distinctes. Si l'une fuite, je la révoque sans impacter les autres, et je vois immédiatement quel environnement consomme quoi.
+
+---
+
+## Quotas, rate limits et gestion des erreurs
+
+C'est le piège classique du passage à l'échelle. Une clé API n'est pas un robinet illimité : OpenAI applique des **quotas** (budget mensuel, *usage tiers*) et des **rate limits** exprimés en RPM (requêtes/minute) et TPM (tokens/minute).
+
+Quand on dépasse, l'API répond `429 Too Many Requests`. En production, ça arrive forcément un jour : un pic de trafic, un batch mal cadencé. Sans gestion, c'est une erreur visible par l'utilisateur.
+
+Ma parade : un **retry avec backoff exponentiel** sur les 429 et les erreurs transitoires.
+
+```ts
+async function callWithRetry(fn: () => Promise<T>, tries = 4): Promise<T> {
+  for (let i = 0; i < tries; i++) {
+    try {
+      return await fn();
+    } catch (err: any) {
+      // 429 = rate limit, 5xx = erreur transitoire côté serveur
+      if (![429, 500, 502, 503].includes(err.status) || i === tries - 1) {
+        throw err;
+      }
+      const wait = 2 ** i * 500 + Math.random() * 200; // backoff + jitter
+      await new Promise((r) => setTimeout(r, wait));
+    }
+  }
+  throw new Error("unreachable");
+}
+```
+
+À cela j'ajoute deux garde-fous côté budget :
+
+- **Une limite de dépense (*usage limit*)** configurée dans le dashboard OpenAI, pour qu'un bug en boucle ne vide pas la carte.
+- **Un compteur de tokens par utilisateur** sur RecruitEasy, pour facturer équitablement (via Stripe) et couper les abus.
+
+---
+
+## Choisir le bon modèle selon l'usage
+
+L'erreur de débutant, c'est d'utiliser le modèle le plus puissant partout. En réalité, chaque tâche a son modèle optimal. Voici comment je raisonne, selon le besoin :
+
+- **Extraction / classification structurée** → petit modèle rapide (`mini`, `nano`). Ex. : parser une offre d'emploi en JSON.
+- **Conversation, rédaction, résumé** → modèle généraliste (`gpt-4o`, `gpt-4.1`). Ex. : réponses aux candidats, résumés de profil.
+- **Raisonnement complexe, multi-étapes** → modèle de *reasoning* (série `o`). Ex. : matching fin candidat ↔ poste avec justification.
+- **Recherche sémantique** → modèle d'**embeddings** (`text-embedding-3`). Ex. : retrouver les CVs proches d'une requête.
+- **Vision / lecture de documents** → modèle multimodal. Ex. : lire un CV scanné, identifier une machine dans FitTrack.
+- **Génération d'images** → modèle de diffusion (FLUX, etc.). Ex. : illustrations d'exercices.
+
+La logique : **on monte en gamme uniquement quand la tâche le justifie.** 90 % de mes appels tournent sur des petits modèles. Les modèles de raisonnement, plus lents et plus chers, je les réserve aux cas où la qualité de la décision prime sur la latence.
+
+---
+
+## Inférence vs pertinence : le piège du « plus gros = mieux »
+
+C'est la leçon la moins intuitive. Un modèle plus gros n'est pas automatiquement plus *pertinent* pour mon cas. Il faut distinguer deux choses :
+
+- **L'inférence** : la capacité brute du modèle, mesurée par les benchmarks. Plus le modèle est gros, plus il « sait » de choses et raisonne loin.
+- **La pertinence** : la qualité de la réponse *pour ma tâche précise*, dans mon contexte.
+
+Or la pertinence dépend bien plus du **prompt et du contexte fourni** que de la taille du modèle. Un `mini` bien guidé, avec un bon system prompt et les bonnes données en contexte, bat souvent un gros modèle mal briefé, pour une fraction du coût et de la latence.
+
+> Mon réflexe : avant de monter en gamme de modèle, j'améliore d'abord le prompt et le contexte. Neuf fois sur dix, le problème n'était pas la puissance du modèle, mais ce que je lui donnais à manger.
+
+Le bon arbitrage est un triangle **coût / latence / qualité**. Pour une extraction temps réel, je privilégie latence et coût (petit modèle). Pour une décision critique faite une fois, je privilégie la qualité (modèle de raisonnement). Il n'y a pas de modèle « par défaut » : il y a un modèle adapté à chaque appel.
+
+---
+
+## OpenRouter : ne pas se marier à un seul fournisseur
+
+Dépendre à 100 % d'OpenAI, c'est un risque : prix qui change, modèle déprécié, panne d'API, ou simplement un meilleur modèle ailleurs (Anthropic, Google, Mistral, modèles open source…).
+
+C'est là qu'**OpenRouter** entre en jeu. C'est une passerelle unique, **compatible avec le SDK OpenAI**, qui route mes requêtes vers des dizaines de modèles de fournisseurs différents. Concrètement, je change juste l'URL de base et le nom du modèle :
+
+```ts
+const router = new OpenAI({
+  baseURL: "https://openrouter.ai/api/v1",
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
+
+const res = await router.chat.completions.create({
+  model: "anthropic/claude-sonnet-4.5", // ou "google/gemini-2.5", "mistralai/..."
+  messages: [{ role: "user", content: prompt }],
+});
+```
+
+Ce que ça m'apporte :
+
+- **Une seule intégration, plusieurs modèles** : je teste et compare sans réécrire mon code.
+- **Du fallback** : si un fournisseur tombe ou sature, OpenRouter bascule sur un autre. Plus de single point of failure.
+- **De l'optimisation de coût** : pour chaque tâche, je choisis le modèle au meilleur ratio pertinence/prix, peu importe le fournisseur.
+- **Pas de lock-in** : je garde la liberté de migrer.
+
+Le compromis : une légère latence supplémentaire et une dépendance à un intermédiaire. Pour les appels critiques à très haut volume, je reste parfois en direct chez le fournisseur. Mais pour expérimenter et garder mes options ouvertes, OpenRouter est devenu mon point d'entrée par défaut.
+
+---
+
+## Le cache : votre meilleur ami contre la facture
+
+La même question revient souvent. Re-payer un appel LLM pour un résultat identique, c'est jeter de l'argent. Sur RecruitEasy, j'ai mis **Redis (via Upstash)** devant chaque appel coûteux.
+
+```ts
+async function getCriteria(jobDescription: string) {
+  const key = `criteria:${hash(jobDescription)}`;
+  const cached = await redis.get(key);
+  if (cached) return cached;
+
+  const criteria = await callLLM(jobDescription);
+  await redis.set(key, criteria, { ex: 60 * 60 * 24 * 7 }); // 7 jours
+  return criteria;
+}
+```
+
+L'impact est immédiat : sur des descriptions de poste réutilisées, le taux de cache hit dépasse 60 %, et la facture API fond d'autant.
+
+---
+
+## La génération multimodale dans FitTrack
+
+Dans FitTrack, je suis allé plus loin que le texte. J'utilise **Gemini 2.5** pour générer des plans d'entraînement personnalisés à partir des objectifs de l'utilisateur, et **FLUX (via Cloudflare)** pour générer des illustrations d'exercices.
+
+L'enseignement principal : la génération d'images est lente et coûteuse. Je ne la déclenche jamais en temps réel pendant que l'utilisateur attend. Je précalcule en arrière-plan et je sers depuis un cache. L'utilisateur ne voit jamais le délai.
+
+---
+
+## Les pièges que j'ai rencontrés
+
+**1. L'hallucination structurée.** Même avec un format JSON imposé, un LLM peut inventer une valeur plausible mais fausse. Je valide toujours la sortie contre un schéma (Zod) avant de l'utiliser.
+
+```ts
+const CriteriaSchema = z.object({
+  skills: z.array(z.string()),
+  experienceYears: z.number().int().min(0),
+  contractType: z.enum(["CDI", "CDD", "Freelance", "Stage"]),
+});
+
+const parsed = CriteriaSchema.safeParse(raw);
+if (!parsed.success) {
+  // fallback ou nouvelle tentative
+}
+```
+
+**2. La latence perçue.** Un appel LLM qui prend 3 secondes tue l'expérience si l'utilisateur fixe un spinner. Le streaming des réponses (token par token) change radicalement la perception.
+
+**3. Le coût qui dérive en silence.** Sans monitoring, on découvre la facture à la fin du mois. J'instrumente chaque appel pour suivre tokens consommés et coût par fonctionnalité.
+
+---
+
+## Mon approche aujourd'hui
+
+L'IA générative n'est ni magique ni à fuir. C'est une brique avec des contraintes claires : coût, latence, non-déterminisme. Je l'intègre quand elle résout un vrai problème de langage ou de génération, et je l'entoure systématiquement de garde-fous : cache, validation de schéma, fallback, monitoring.
+
+Le piège n'est pas d'utiliser l'IA. C'est de l'utiliser partout, sans mesurer. Le bon réflexe de développeur reste le même qu'avant : choisir l'outil adapté au problème, pas le plus impressionnant.
+
+---
+
+## Pour aller plus loin
+
+- [SDK et API OpenAI](https://platform.openai.com/docs/)
+- [Documentation OpenRouter](https://openrouter.ai/docs)
