@@ -318,6 +318,7 @@ export function getData(locale: "en" | "fr" = "fr") {
           "Expo Notifications",
           "Expo Haptics",
         ],
+        video: "/projects/spinvibe/preview.mp4",
         images: [
           "/projects/spinvibe/01-roue-1.jpg",
           "/projects/spinvibe/03-resultat.jpg",
@@ -331,11 +332,6 @@ export function getData(locale: "en" | "fr" = "fr") {
             type: "Website",
             href: "https://spinvibe.app",
             icon: <Icons.globe className="size-3" />,
-          },
-          {
-            type: "Github",
-            href: "https://github.com/cortex225/duo",
-            icon: <Icons.github className="h-4 w-4" />,
           },
         ],
       },
