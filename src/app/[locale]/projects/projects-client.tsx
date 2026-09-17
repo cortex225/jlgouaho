@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {
-    Code, ArrowLeft, ExternalLink, Github
+    Code, ArrowLeft, ExternalLink, Github, LayoutGrid, Waypoints
 } from 'lucide-react';
 import { getData } from '@/data/resume';
 import Link from 'next/link';
@@ -11,12 +11,16 @@ import { ModeToggle } from '@/components/mode-toggle';
 import { useI18n } from '@/app/locales/client';
 
 import { ProjectModal } from '@/components/project-modal';
+import { TechGraph } from '@/components/tech-graph';
 
 export default function ProjectsClient({ params: { locale } }: { params: { locale: string } }) {
     const t = useI18n();
     const DATA = getData(locale as 'en' | 'fr');
     const [selectedCategories, setSelectedCategories] = React.useState<string[]>(['All']);
     const [selectedProject, setSelectedProject] = React.useState<any>(null);
+    const [view, setView] = React.useState<'grid' | 'graph'>('grid');
+    const isFrench = locale === 'fr';
+    const openProject = React.useCallback((project: any) => setSelectedProject(project), []);
 
     // Only technologies shared by at least two projects make useful filters;
     // "All" always comes first, then by frequency.
@@ -92,6 +96,43 @@ export default function ProjectsClient({ params: { locale } }: { params: { local
                     </p>
                 </div>
 
+                {/* View switcher */}
+                <div role="tablist" aria-label={isFrench ? 'Affichage' : 'View'} className="flex justify-center mb-8">
+                    <div className="inline-flex p-1 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                        {([
+                            { id: 'grid', icon: LayoutGrid, label: isFrench ? 'Grille' : 'Grid' },
+                            { id: 'graph', icon: Waypoints, label: 'Constellation' },
+                        ] as const).map(({ id, icon: Icon, label }) => (
+                            <button
+                                key={id}
+                                type="button"
+                                role="tab"
+                                aria-selected={view === id}
+                                onClick={() => setView(id)}
+                                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                                    view === id
+                                        ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/30'
+                                        : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                                }`}
+                            >
+                                <Icon size={16} /> {label}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {view === 'graph' && (
+                    <section aria-label="Constellation" className="mb-12 animate-in fade-in duration-500">
+                        <p className="text-center text-sm text-slate-500 dark:text-slate-400 max-w-2xl mx-auto mb-6">
+                            {isFrench
+                                ? 'Chaque projet est relié aux technologies qu\'il utilise. Les technos partagées rapprochent les projets entre eux. Clique un projet pour ouvrir sa fiche, une techno pour voir où elle est utilisée.'
+                                : 'Each project is linked to the technologies it uses. Shared technologies pull projects together. Click a project to open it, a technology to see where it is used.'}
+                        </p>
+                        <TechGraph projects={DATA.projects} locale={locale} onSelectProject={openProject} />
+                    </section>
+                )}
+
+                <div className={view === 'graph' ? 'hidden' : ''}>
                 {/* Filters */}
                 <div role="group" aria-label={locale === 'fr' ? 'Filtrer par technologie' : 'Filter by technology'} className="flex flex-wrap justify-center gap-2 mb-4">
                     {categories.map((category) => (
@@ -192,6 +233,8 @@ export default function ProjectsClient({ params: { locale } }: { params: { local
                             </div>
                         </article>
                     ))}
+                </div>
+
                 </div>
 
                 {/* Footer CTA */}
