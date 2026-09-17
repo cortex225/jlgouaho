@@ -12,6 +12,7 @@ import { useI18n } from '@/app/locales/client';
 
 import { ProjectModal } from '@/components/project-modal';
 import { TechGraph } from '@/components/tech-graph';
+import { expandStack } from '@/data/tech-graph';
 
 export default function ProjectsClient({ params: { locale } }: { params: { locale: string } }) {
     const t = useI18n();
@@ -22,19 +23,24 @@ export default function ProjectsClient({ params: { locale } }: { params: { local
     const isFrench = locale === 'fr';
     const openProject = React.useCallback((project: any) => setSelectedProject(project), []);
 
+    // Stacks with implied technologies (Next.js ⇒ React ⇒ JavaScript…), shared
+    // by the grid filters and the graph so both agree on what "uses JavaScript" means.
+    const stacks = React.useMemo(
+        () => DATA.projects.map(project => expandStack(project.technologies)),
+        [DATA.projects]
+    );
+
     // Only technologies shared by at least two projects make useful filters;
     // "All" always comes first, then by frequency.
     const categories = React.useMemo(() => {
         const counts = new Map<string, number>();
-        DATA.projects.forEach(project => {
-            (project.technologies as readonly string[]).forEach(tech => counts.set(tech, (counts.get(tech) ?? 0) + 1));
-        });
+        stacks.forEach(stack => stack.forEach(tech => counts.set(tech, (counts.get(tech) ?? 0) + 1)));
         const shared = Array.from(counts.entries())
             .filter(([, n]) => n >= 2)
             .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
             .map(([tech]) => tech);
         return ['All', ...shared];
-    }, [DATA.projects]);
+    }, [stacks]);
 
     const toggleCategory = (category: string) => {
         setSelectedCategories(prev => {
@@ -62,10 +68,19 @@ export default function ProjectsClient({ params: { locale } }: { params: { local
         if (selectedCategories.includes('All')) return DATA.projects;
 
         // AND logic: Project must contain ALL selected categories
-        return DATA.projects.filter(project =>
-            selectedCategories.every(cat => (project.technologies as readonly string[]).includes(cat))
+        return DATA.projects.filter((_, i) =>
+            selectedCategories.every(cat => stacks[i].includes(cat))
         );
-    }, [DATA.projects, selectedCategories]);
+    }, [DATA.projects, stacks, selectedCategories]);
+
+    const selectedTechs = React.useMemo(
+        () => selectedCategories.filter(c => c !== 'All'),
+        [selectedCategories]
+    );
+    // Stable identity on purpose: toggleCategory only uses functional setState,
+    // and a new callback would reset the graph layout on every render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const toggleTech = React.useCallback((tech: string) => toggleCategory(tech), []);
 
     return (
         <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 font-sans relative selection:bg-indigo-100 selection:text-indigo-900">
@@ -121,19 +136,7 @@ export default function ProjectsClient({ params: { locale } }: { params: { local
                     </div>
                 </div>
 
-                {view === 'graph' && (
-                    <section aria-label="Constellation" className="mb-12 animate-in fade-in duration-500">
-                        <p className="text-center text-sm text-slate-500 dark:text-slate-400 max-w-2xl mx-auto mb-6">
-                            {isFrench
-                                ? 'Chaque projet est relié aux technologies qu\'il utilise. Les technos partagées rapprochent les projets entre eux. Clique un projet pour ouvrir sa fiche, une techno pour voir où elle est utilisée.'
-                                : 'Each project is linked to the technologies it uses. Shared technologies pull projects together. Click a project to open it, a technology to see where it is used.'}
-                        </p>
-                        <TechGraph projects={DATA.projects} locale={locale} onSelectProject={openProject} />
-                    </section>
-                )}
-
-                <div className={view === 'graph' ? 'hidden' : ''}>
-                {/* Filters */}
+                {/* Filters (shared by both views) */}
                 <div role="group" aria-label={locale === 'fr' ? 'Filtrer par technologie' : 'Filter by technology'} className="flex flex-wrap justify-center gap-2 mb-4">
                     {categories.map((category) => (
                         <button
@@ -155,6 +158,25 @@ export default function ProjectsClient({ params: { locale } }: { params: { local
                 <p className="text-center text-xs font-semibold text-slate-400 mb-10" aria-live="polite">
                     {filteredProjects.length} {locale === 'fr' ? (filteredProjects.length > 1 ? 'projets' : 'projet') : (filteredProjects.length > 1 ? 'projects' : 'project')}
                 </p>
+
+                {view === 'graph' && (
+                    <section aria-label="Constellation" className="mb-12 animate-in fade-in duration-500">
+                        <p className="text-center text-sm text-slate-500 dark:text-slate-400 max-w-2xl mx-auto mb-6">
+                            {isFrench
+                                ? 'Carrés : projets. Cercles : technologies, d\'autant plus grands qu\'elles sont utilisées dans de projets (Next.js compte aussi React et JavaScript). Clique un projet pour ouvrir sa fiche, une techno pour filtrer.'
+                                : 'Squares: projects. Circles: technologies, larger the more projects use them (Next.js also counts React and JavaScript). Click a project to open it, a technology to filter.'}
+                        </p>
+                        <TechGraph
+                            projects={DATA.projects}
+                            locale={locale}
+                            selectedTechs={selectedTechs}
+                            onToggleTech={toggleTech}
+                            onSelectProject={openProject}
+                        />
+                    </section>
+                )}
+
+                <div className={view === 'graph' ? 'hidden' : ''}>
 
                 {/* Projects Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
