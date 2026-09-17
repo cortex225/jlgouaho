@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getData } from "@/data/resume";
 import { ArrowRight } from "lucide-react";
 
@@ -21,9 +22,11 @@ export function AuthorByline({ locale }: { locale: "en" | "fr" }) {
       href={`/${locale}`}
       className="group inline-flex items-center gap-2.5 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
     >
-      <img
+      <Image
         src={data.avatarUrl}
         alt={data.name}
+        width={32}
+        height={32}
         className="w-8 h-8 rounded-full object-cover border border-white dark:border-slate-700 shadow-sm"
       />
       <span className="text-sm font-semibold">{data.name}</span>
@@ -62,9 +65,11 @@ export function AuthorCard({
         }
       >
         <Link href={`/${locale}`} className="shrink-0">
-          <img
+          <Image
             src={data.avatarUrl}
             alt={data.name}
+            width={80}
+            height={80}
             className={`rounded-2xl object-cover border border-white dark:border-slate-700 shadow-md ${
               compact ? "w-16 h-16" : "w-20 h-20"
             }`}

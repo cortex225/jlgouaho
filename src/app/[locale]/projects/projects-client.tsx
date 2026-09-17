@@ -18,12 +18,18 @@ export default function ProjectsClient({ params: { locale } }: { params: { local
     const [selectedCategories, setSelectedCategories] = React.useState<string[]>(['All']);
     const [selectedProject, setSelectedProject] = React.useState<any>(null);
 
+    // Only technologies shared by at least two projects make useful filters;
+    // "All" always comes first, then by frequency.
     const categories = React.useMemo(() => {
-        const techs = new Set<string>();
+        const counts = new Map<string, number>();
         DATA.projects.forEach(project => {
-            (project.technologies as readonly string[]).forEach(tech => techs.add(tech));
+            (project.technologies as readonly string[]).forEach(tech => counts.set(tech, (counts.get(tech) ?? 0) + 1));
         });
-        return ['All', ...Array.from(techs)].sort();
+        const shared = Array.from(counts.entries())
+            .filter(([, n]) => n >= 2)
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+            .map(([tech]) => tech);
+        return ['All', ...shared];
     }, [DATA.projects]);
 
     const toggleCategory = (category: string) => {
@@ -87,10 +93,12 @@ export default function ProjectsClient({ params: { locale } }: { params: { local
                 </div>
 
                 {/* Filters */}
-                <div className="flex flex-wrap justify-center gap-2 mb-12">
+                <div role="group" aria-label={locale === 'fr' ? 'Filtrer par technologie' : 'Filter by technology'} className="flex flex-wrap justify-center gap-2 mb-4">
                     {categories.map((category) => (
                         <button
                             key={category}
+                            type="button"
+                            aria-pressed={selectedCategories.includes(category)}
                             onClick={() => toggleCategory(category)}
                             className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 border ${
                                 selectedCategories.includes(category)
@@ -103,14 +111,27 @@ export default function ProjectsClient({ params: { locale } }: { params: { local
                     ))}
                 </div>
 
+                <p className="text-center text-xs font-semibold text-slate-400 mb-10" aria-live="polite">
+                    {filteredProjects.length} {locale === 'fr' ? (filteredProjects.length > 1 ? 'projets' : 'projet') : (filteredProjects.length > 1 ? 'projects' : 'project')}
+                </p>
+
                 {/* Projects Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     {filteredProjects.map((project, i) => (
-                        <div
-                            key={i}
+                        <article
+                            key={project.title}
+                            role="button"
+                            tabIndex={0}
+                            aria-labelledby={`project-card-${i}`}
                             onClick={() => setSelectedProject(project)}
-                            className="group bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-white dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300 flex flex-col h-full animate-in fade-in zoom-in duration-500 fill-mode-both cursor-pointer"
-                            style={{ animationDelay: `${i * 100}ms` }}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    setSelectedProject(project);
+                                }
+                            }}
+                            className="group bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-white dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300 flex flex-col h-full animate-in fade-in zoom-in duration-500 fill-mode-both cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                            style={{ animationDelay: `${Math.min(i, 8) * 80}ms` }}
                         >
 
                             {(project as any).video ? (
@@ -121,6 +142,8 @@ export default function ProjectsClient({ params: { locale } }: { params: { local
                                         loop
                                         muted
                                         playsInline
+                                        preload="metadata"
+                                        aria-label={`${project.title} : ${locale === 'fr' ? 'démo vidéo' : 'video demo'}`}
                                         className="w-full h-full object-cover object-top"
                                     />
                                 </div>
@@ -128,8 +151,9 @@ export default function ProjectsClient({ params: { locale } }: { params: { local
                                     <div className="rounded-xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800 mb-6 group-hover:scale-[1.02] transition-transform duration-500 h-48 relative">
                                     <Image
                                         src={project.images[0]}
-                                        alt={project.title}
+                                        alt={`${project.title} : ${locale === 'fr' ? 'aperçu' : 'preview'}`}
                                         fill
+                                        sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 100vw"
                                         className="object-cover object-top"
                                     />
                                 </div>
@@ -140,11 +164,11 @@ export default function ProjectsClient({ params: { locale } }: { params: { local
                             )}
 
                             <div className="flex justify-between items-start mb-4">
-                                <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{project.title}</h3>
+                                <h3 id={`project-card-${i}`} className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{project.title}</h3>
                                 <div className="flex gap-2">
                                     {project.links.map((link, k) => (
                                         <div key={k} onClick={(e) => e.stopPropagation()} className="contents">
-                                            <a href={link.href} target="_blank" rel="noopener noreferrer" className="p-2 bg-slate-50 dark:bg-slate-800 rounded-full text-slate-400 hover:bg-indigo-100 hover:text-indigo-600 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-400 transition-colors">
+                                            <a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} : ${link.type}`} className="p-2 bg-slate-50 dark:bg-slate-800 rounded-full text-slate-400 hover:bg-indigo-100 hover:text-indigo-600 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-400 transition-colors">
                                                 {link.type.includes('Github') ? <Github size={16} /> : <ExternalLink size={16} />}
                                             </a>
                                         </div>
@@ -166,19 +190,19 @@ export default function ProjectsClient({ params: { locale } }: { params: { local
                                     </span>
                                 )}
                             </div>
-                        </div>
+                        </article>
                     ))}
                 </div>
 
                 {/* Footer CTA */}
                 <div className="mt-20 text-center">
                     <p className="text-slate-500 dark:text-slate-400 mb-6">{t('projectsPage.haveIdea')}</p>
-                     <button
-                        onClick={() => window.open(`mailto:${DATA.contact.email}`)}
-                        className="bg-indigo-600 hover:bg-indigo-500 text-white text-lg font-bold py-4 px-8 rounded-full shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/30 hover:-translate-y-1 transition-all"
+                     <a
+                        href={`mailto:${DATA.contact.email}`}
+                        className="inline-block bg-indigo-600 hover:bg-indigo-500 text-white text-lg font-bold py-4 px-8 rounded-full shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/30 hover:-translate-y-1 transition-all"
                     >
                         {t('projectsPage.letsDiscuss')}
-                    </button>
+                    </a>
                 </div>
 
                 <ProjectModal

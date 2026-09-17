@@ -238,3 +238,171 @@ code[data-line-numbers-max-digits="2"] > [data-line]::before {
 code[data-line-numbers-max-digits="3"] > [data-line]::before {
   width: 3rem;
 }
+
+/* Accessibility */
+html {
+  scroll-behavior: smooth;
+}
+
+:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animated-bg,
+  .animate-ping,
+  .animate-pulse {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* ---------- Wow effects ---------- */
+
+/* Pointer-following glow on cards (position set by <Spotlight />) */
+[data-spotlight] {
+  position: relative;
+  overflow: hidden;
+}
+[data-spotlight]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    hsl(226 70% 55% / 0.14),
+    transparent 60%
+  );
+  z-index: 0;
+}
+.dark [data-spotlight]::before {
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    hsl(226 80% 65% / 0.18),
+    transparent 60%
+  );
+}
+[data-spotlight]:hover::before {
+  opacity: 1;
+}
+[data-spotlight] > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Rotating conic ring around the avatar */
+@property --ring-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+.avatar-ring {
+  position: relative;
+  border-radius: 9999px;
+  padding: 4px;
+  background: conic-gradient(
+    from var(--ring-angle),
+    #6366f1,
+    #22d3ee,
+    #a855f7,
+    #6366f1
+  );
+  animation: ring-spin 6s linear infinite;
+  box-shadow: 0 0 40px -10px hsl(226 70% 55% / 0.6);
+}
+@keyframes ring-spin {
+  to {
+    --ring-angle: 360deg;
+  }
+}
+
+/* Soft breathing glow behind the profile card */
+.hero-glow::after {
+  content: '';
+  position: absolute;
+  inset: -40px;
+  z-index: -1;
+  border-radius: 3rem;
+  background: radial-gradient(60% 50% at 50% 0%, hsl(226 70% 55% / 0.25), transparent 70%);
+  filter: blur(30px);
+  animation: glow-breathe 7s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes glow-breathe {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+
+/* Shine sweep on primary buttons */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+.btn-shine:hover::after {
+  left: 125%;
+}
+
+/* Section headings get a gradient underline that draws on hover */
+.section-title {
+  position: relative;
+  display: inline-flex;
+}
+
+/* Blog / project images: gentle zoom on hover */
+.zoom-media {
+  overflow: hidden;
+}
+.zoom-media img,
+.zoom-media video {
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .zoom-media img,
+.group:hover .zoom-media video {
+  transform: scale(1.04);
+}
+
+/* Floating drift for the ambient blobs (dark sections) */
+@keyframes float-slow {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(12px, -18px, 0); }
+}
+.float-slow {
+  animation: float-slow 12s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar-ring,
+  .hero-glow::after,
+  .float-slow {
+    animation: none !important;
+  }
+  [data-spotlight]::before {
+    display: none;
+  }
+}

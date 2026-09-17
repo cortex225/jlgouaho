@@ -51,9 +51,9 @@ export function TestimonialsSlider({ locale, testimonials }: TestimonialsSliderP
             className="min-w-full shrink-0 px-1"
           >
             <div className="bg-white dark:bg-slate-900 rounded-[2rem] p-7 border border-white dark:border-slate-800 shadow-sm relative overflow-hidden">
-              <div className="absolute top-4 right-6 text-8xl font-serif text-slate-100 dark:text-slate-800 leading-none select-none pointer-events-none">"</div>
+              <div className="absolute top-4 right-6 text-8xl font-serif text-slate-100 dark:text-slate-800 leading-none select-none pointer-events-none">&ldquo;</div>
               <p className="text-slate-600 dark:text-slate-300 text-base leading-relaxed mb-6 relative z-10 italic">
-                "{locale === 'fr' ? testimonial.quote.fr : testimonial.quote.en}"
+                &ldquo;{locale === 'fr' ? testimonial.quote.fr : testimonial.quote.en}&rdquo;
               </p>
               <div className="flex items-center gap-4">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800 shrink-0 border-2 border-slate-200 dark:border-slate-700">

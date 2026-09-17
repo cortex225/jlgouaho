@@ -7,16 +7,31 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 
-type Metadata = {
+export type PostMetadata = {
   title: string;
   publishedAt: string;
+  updatedAt?: string;
   summary: string;
   image?: string;
+  tags?: string[];
+};
+
+export type PostSummary = {
+  slug: string;
+  metadata: PostMetadata;
+  readingTime: number;
+  wordCount: number;
+};
+
+export type Post = PostSummary & {
+  source: string;
+  raw: string;
 };
 
 type Locale = "en" | "fr";
 const CONTENT_DIR = path.join(process.cwd(), "content");
 const DEFAULT_LOCALE: Locale = "fr";
+const WORDS_PER_MINUTE = 200;
 
 function getMDXFiles(dir: string) {
   return fs.readdirSync(dir).filter((file) => path.extname(file) === ".mdx");
@@ -30,10 +45,37 @@ function parseFileName(file: string) {
 }
 
 // Resolve the file for a slug in the requested locale, falling back to the default.
-function resolveFilePath(slug: string, locale: Locale) {
+// Returns null when the post does not exist in any locale.
+function resolveFilePath(slug: string, locale: Locale): string | null {
+  // Guard against path traversal from the URL segment.
+  if (!/^[a-z0-9-]+$/i.test(slug)) return null;
   const localized = path.join(CONTENT_DIR, `${slug}.${locale}.mdx`);
   if (fs.existsSync(localized)) return localized;
-  return path.join(CONTENT_DIR, `${slug}.${DEFAULT_LOCALE}.mdx`);
+  const fallback = path.join(CONTENT_DIR, `${slug}.${DEFAULT_LOCALE}.mdx`);
+  return fs.existsSync(fallback) ? fallback : null;
+}
+
+export function countWords(markdown: string) {
+  return markdown
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/[#*_>`\[\]()!-]/g, " ")
+    .split(/\s+/)
+    .filter(Boolean).length;
+}
+
+export function readingTimeMinutes(wordCount: number) {
+  return Math.max(1, Math.round(wordCount / WORDS_PER_MINUTE));
+}
+
+// URL-safe anchor ids that keep accented words readable ("étape-1" instead of "tape-1").
+export function slugifyHeading(text: string) {
+  return text
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/&[a-z]+;|&#\d+;/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
 }
 
 export async function markdownToHTML(markdown: string) {
@@ -54,40 +96,49 @@ export async function markdownToHTML(markdown: string) {
   return p.toString();
 }
 
-export async function getPost(slug: string, locale: Locale = DEFAULT_LOCALE) {
+export async function getPost(
+  slug: string,
+  locale: Locale = DEFAULT_LOCALE
+): Promise<Post | null> {
   const filePath = resolveFilePath(slug, locale);
-  let source = fs.readFileSync(filePath, "utf-8");
-  const { content: rawContent, data: metadata } = matter(source);
+  if (!filePath) return null;
+  const source = fs.readFileSync(filePath, "utf-8");
+  const { content: rawContent, data } = matter(source);
   const content = await markdownToHTML(rawContent);
+  const wordCount = countWords(rawContent);
   return {
     source: content,
-    metadata,
+    raw: rawContent,
+    metadata: data as PostMetadata,
     slug,
+    wordCount,
+    readingTime: readingTimeMinutes(wordCount),
   };
 }
 
-export function getPostMeta(slug: string, locale: Locale = DEFAULT_LOCALE) {
+export function getPostMeta(
+  slug: string,
+  locale: Locale = DEFAULT_LOCALE
+): PostSummary | null {
   const filePath = resolveFilePath(slug, locale);
-  let source = fs.readFileSync(filePath, "utf-8");
-  const { data: metadata } = matter(source);
+  if (!filePath) return null;
+  const source = fs.readFileSync(filePath, "utf-8");
+  const { data, content } = matter(source);
+  const wordCount = countWords(content);
   return {
-    metadata,
+    metadata: data as PostMetadata,
     slug,
+    wordCount,
+    readingTime: readingTimeMinutes(wordCount),
   };
 }
 
-async function getAllPosts(locale: Locale) {
+export async function getBlogPosts(locale: Locale = DEFAULT_LOCALE): Promise<PostSummary[]> {
   const slugs = Array.from(
     new Set(getMDXFiles(CONTENT_DIR).map((file) => parseFileName(file).slug))
   );
-  return Promise.all(
-    slugs.map(async (slug) => {
-      const { metadata } = getPostMeta(slug, locale);
-      return { metadata, slug };
-    })
-  );
-}
-
-export async function getBlogPosts(locale: Locale = DEFAULT_LOCALE) {
-  return getAllPosts(locale);
+  return slugs
+    .map((slug) => getPostMeta(slug, locale))
+    .filter((p): p is PostSummary => p !== null)
+    .sort((a, b) => (a.metadata.publishedAt < b.metadata.publishedAt ? 1 : -1));
 }

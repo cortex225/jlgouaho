@@ -36,6 +36,22 @@ const translations: Translations = {
     status: "Open to Work",
     techStack: "Tech Stack",
   },
+  nav: {
+    home: "Profile",
+    projects: "Projects",
+    blog: "Blog",
+    resume: "Resume (PDF)",
+    contact: "Contact",
+  },
+  highlights: {
+    title: "At a glance",
+    items: [
+      { value: "3+", label: "years of full-stack experience" },
+      { value: "-78%", label: "Azure costs at Royal Broker" },
+      { value: "4,000+", label: "resumes sorted in seconds by my Python ATS" },
+      { value: "10+", label: "shipped projects (SaaS, mobile, AI)" },
+    ],
+  },
   common: {
     overview: "Overview",
     features: "Key Features",
@@ -64,7 +80,7 @@ const translations: Translations = {
   },
   blog: {
     title: "Blog",
-    description: "My thoughts on software development, life, and more.",
+    description: "Hands-on field reports on Azure cloud, .NET, Next.js, React Native and AI in production.",
     writtenBy: "Written by",
     authorTagline:
       "Full-stack developer based in Canada. I write about code, AI, and the products I build.",

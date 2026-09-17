@@ -8,6 +8,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
+import { ogImageUrl } from "@/lib/seo";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -17,6 +18,13 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 const BASE_URL = "https://www.jlgouaho.com";
+const LOCALES = ["fr", "en"] as const;
+
+// Pre-render both locales at build time (static HTML, fast TTFB, cacheable).
+export function generateStaticParams() {
+  return LOCALES.map((locale) => ({ locale }));
+}
+export const dynamicParams = false;
 
 export const generateMetadata = ({
   params: { locale },
@@ -26,6 +34,12 @@ export const generateMetadata = ({
   const data = getData(locale);
   const canonicalUrl = `${BASE_URL}/${locale}`;
   const t = data.i18n;
+  const ogImage = ogImageUrl({
+    title: data.name,
+    subtitle: t.hero.title,
+    kind: "home",
+    locale,
+  });
 
   return {
     metadataBase: new URL(BASE_URL),
@@ -61,10 +75,10 @@ export const generateMetadata = ({
       username: "jlgouaho",
       images: [
         {
-          url: `${BASE_URL}/me.png`,
-          width: 800,
-          height: 800,
-          alt: `${data.name} — ${t.hero.title}`,
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: `${data.name} : ${t.hero.title}`,
         },
       ],
     },
@@ -85,7 +99,7 @@ export const generateMetadata = ({
       card: "summary_large_image",
       creator: "@jlgouaho",
       site: "@jlgouaho",
-      images: [`${BASE_URL}/me.png`],
+      images: [ogImage],
     },
     verification: {
       google: "3fa472ef9a36100d",
@@ -229,7 +243,7 @@ export default function RootLayout({
       className={plusJakartaSans.variable}
     >
       <head>
-        <link rel="preconnect" href="https://cwxxwhrcxhafmhhqszgm.supabase.co" crossOrigin="anonymous" />
+        {/* Project demo videos are served from R2 */}
         <link rel="preconnect" href="https://pub-c0874d8393bb493ea002a55cbc71d1ab.r2.dev" crossOrigin="anonymous" />
         {/* Anti-FOUC: applique le thème avant que React hydrate pour éviter le flash */}
         <Script
