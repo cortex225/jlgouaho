@@ -241,6 +241,13 @@ export type Translations = {
         challenges: string;
         conclusion: string;
       };
+      spinVibe: {
+        description: string;
+        overview: string;
+        features: string;
+        challenges: string;
+        conclusion: string;
+      };
     };
     contact: {
       title: string;
