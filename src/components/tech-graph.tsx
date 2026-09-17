@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
-import { X } from 'lucide-react';
+import { CATEGORY_LABEL, categoryOf, expandStack, type TechCategory } from '@/data/tech-graph';
 
 type GraphProject = {
   title: string;
@@ -16,13 +16,14 @@ type Node = {
   kind: 'project' | 'tech';
   label: string;
   short: string;
+  category?: TechCategory;
+  usage: number;
   r: number;
   x: number;
   y: number;
   vx: number;
   vy: number;
   project?: GraphProject;
-  degree: number;
   /** Half label width in px, so nodes stay far enough from the edges for their label. */
   lw: number;
 };
@@ -30,13 +31,27 @@ type Node = {
 type Props = {
   projects: readonly GraphProject[];
   locale: string;
+  /** Technologies currently selected in the page filters (canonical names). */
+  selectedTechs: readonly string[];
+  onToggleTech: (tech: string) => void;
   onSelectProject: (project: GraphProject) => void;
 };
 
-const PALETTE = {
-  light: { bg: '#f8fafc', project: '#4f46e5', projectHot: '#3730a3', projectText: '#ffffff', tech: '#cbd5e1', techHot: '#4f46e5', label: '#0f172a', techLabel: '#475569', link: 'rgba(79,70,229,0.16)', linkHot: 'rgba(79,70,229,0.9)', dim: 0.25 },
-  dark: { bg: '#0b1220', project: '#818cf8', projectHot: '#c7d2fe', projectText: '#0b1220', tech: '#334155', techHot: '#818cf8', label: '#e2e8f0', techLabel: '#94a3b8', link: 'rgba(129,140,248,0.16)', linkHot: 'rgba(129,140,248,0.95)', dim: 0.22 },
+const CATEGORY_COLOR: Record<TechCategory, { light: string; dark: string }> = {
+  language: { light: '#d97706', dark: '#fbbf24' },
+  framework: { light: '#2563eb', dark: '#60a5fa' },
+  database: { light: '#059669', dark: '#34d399' },
+  cloud: { light: '#0891b2', dark: '#22d3ee' },
+  library: { light: '#64748b', dark: '#94a3b8' },
+  service: { light: '#db2777', dark: '#f472b6' },
 };
+
+const THEME = {
+  light: { project: '#4f46e5', projectHot: '#312e81', projectText: '#ffffff', label: '#0f172a', techLabel: '#475569', link: 'rgba(100,116,139,0.18)', linkHot: 'rgba(79,70,229,0.9)' },
+  dark: { project: '#6366f1', projectHot: '#c7d2fe', projectText: '#ffffff', label: '#f1f5f9', techLabel: '#94a3b8', link: 'rgba(148,163,184,0.14)', linkHot: 'rgba(165,180,252,0.95)' },
+};
+
+const ORDER: TechCategory[] = ['language', 'framework', 'database', 'cloud', 'library', 'service'];
 
 function initials(title: string) {
   const words = title.replace(/[^\p{L}\p{N} ]/gu, ' ').trim().split(/\s+/);
@@ -45,36 +60,57 @@ function initials(title: string) {
   return (caps && caps.length >= 2 ? caps.slice(0, 2).join('') : title.slice(0, 2)).toUpperCase();
 }
 
+function roundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, s: number, r: number) {
+  const h = s / 2;
+  ctx.beginPath();
+  ctx.moveTo(x - h + r, y - h);
+  ctx.arcTo(x + h, y - h, x + h, y + h, r);
+  ctx.arcTo(x + h, y + h, x - h, y + h, r);
+  ctx.arcTo(x - h, y + h, x - h, y - h, r);
+  ctx.arcTo(x - h, y - h, x + h, y - h, r);
+  ctx.closePath();
+}
+
 /**
  * Force-directed graph of every project and every technology used across
- * them. Projects attract the technologies they share, so clusters form
- * naturally (the Next.js cluster, the .NET cluster, the mobile cluster).
- * Pure canvas, no dependency; pauses when off-screen.
+ * them (including implied ones: Next.js ⇒ React ⇒ JavaScript). Projects are
+ * rounded squares, technologies are circles sized by how many projects use
+ * them and colored by category. Pure canvas, no dependency.
  */
-export function TechGraph({ projects, locale, onSelectProject }: Props) {
+export function TechGraph({ projects, locale, selectedTechs, onToggleTech, onSelectProject }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [hover, setHover] = useState<Node | null>(null);
-  const [pinned, setPinned] = useState<string | null>(null);
   const [card, setCard] = useState<{ x: number; y: number } | null>(null);
+  const [category, setCategory] = useState<TechCategory | null>(null);
   const isFrench = locale === 'fr';
+  const lang = isFrench ? 'fr' : 'en';
 
-  const { nodes, links, techCount } = useMemo(() => {
-    const techs = Array.from(new Set(projects.flatMap((p) => p.technologies)));
-    const usage = (t: string) => projects.filter((p) => p.technologies.includes(t)).length;
+  const { nodes, links, techCount, stacks } = useMemo(() => {
+    const stacks = projects.map((p) => expandStack(p.technologies));
+    const usage = new Map<string, number>();
+    stacks.forEach((s) => s.forEach((t) => usage.set(t, (usage.get(t) ?? 0) + 1)));
+    const techs = Array.from(usage.keys()).sort((a, b) => (usage.get(b)! - usage.get(a)!) || a.localeCompare(b));
     const nodes: Node[] = [
-      ...projects.map<Node>((p) => ({ kind: 'project', label: p.title, short: initials(p.title), r: 17, x: 0, y: 0, vx: 0, vy: 0, project: p, degree: p.technologies.length, lw: 40 })),
-      ...techs.map<Node>((t) => ({ kind: 'tech', label: t, short: t, r: 4 + usage(t) * 1.6, x: 0, y: 0, vx: 0, vy: 0, degree: usage(t), lw: 30 })),
+      ...projects.map<Node>((p) => ({ kind: 'project', label: p.title, short: initials(p.title), usage: 0, r: 21, x: 0, y: 0, vx: 0, vy: 0, project: p, lw: 40 })),
+      ...techs.map<Node>((t) => {
+        const u = usage.get(t)!;
+        return { kind: 'tech', label: t, short: t, category: categoryOf(t), usage: u, r: Math.min(34, 5 + u * 2.6), x: 0, y: 0, vx: 0, vy: 0, lw: 30 };
+      }),
     ];
     const links: [number, number][] = [];
-    projects.forEach((p, i) => p.technologies.forEach((t) => links.push([i, projects.length + techs.indexOf(t)])));
-    return { nodes, links, techCount: techs.length };
+    stacks.forEach((s, i) => s.forEach((t) => links.push([i, projects.length + techs.indexOf(t)])));
+    return { nodes, links, techCount: techs.length, stacks };
   }, [projects]);
 
-  const pinnedRef = useRef<string | null>(null);
-  const hoverRef = useRef<Node | null>(null);
-  useEffect(() => { pinnedRef.current = pinned; }, [pinned]);
-  useEffect(() => { hoverRef.current = hover; }, [hover]);
+  // Projects that match every selected technology (same AND logic as the grid).
+  const matching = useMemo(() => {
+    if (selectedTechs.length === 0) return null;
+    return new Set(projects.filter((_, i) => selectedTechs.every((t) => stacks[i].includes(t))).map((p) => p.title));
+  }, [projects, stacks, selectedTechs]);
+
+  const stateRef = useRef({ hover: null as Node | null, selected: selectedTechs, matching, category });
+  useEffect(() => { stateRef.current = { hover, selected: selectedTechs, matching, category }; }, [hover, selectedTechs, matching, category]);
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -99,7 +135,7 @@ export function TechGraph({ projects, locale, onSelectProject }: Props) {
       const px = small ? 10 : 12;
       for (const n of nodes) {
         ctx.font = n.kind === 'project'
-          ? `600 ${px + 1}px ui-sans-serif, system-ui, sans-serif`
+          ? `700 ${px + 1}px ui-sans-serif, system-ui, sans-serif`
           : `500 ${px}px ui-monospace, SFMono-Regular, Menlo, monospace`;
         n.lw = ctx.measureText(n.label).width / 2 + 6;
       }
@@ -107,21 +143,41 @@ export function TechGraph({ projects, locale, onSelectProject }: Props) {
     resize();
 
     // Projects start on an inner ring, technologies on an outer ring.
-    const projectsN = nodes.filter((n) => n.kind === 'project').length;
+    const projectsN = projects.length;
     nodes.forEach((n, i) => {
       const idx = n.kind === 'project' ? i : i - projectsN;
       const total = n.kind === 'project' ? projectsN : nodes.length - projectsN;
       const a = (idx / total) * Math.PI * 2 + (n.kind === 'tech' ? 0.3 : 0);
-      const rr = n.kind === 'project' ? 0.22 : 0.42;
+      const rr = n.kind === 'project' ? 0.24 : 0.42;
       n.x = W / 2 + Math.cos(a) * W * rr;
       n.y = H / 2 + Math.sin(a) * H * rr;
       n.vx = 0;
       n.vy = 0;
     });
 
-    const theme = () => (document.documentElement.classList.contains('dark') ? PALETTE.dark : PALETTE.light);
-    const linked = (a: Node, b: Node) => links.some(([i, j]) => (nodes[i] === a && nodes[j] === b) || (nodes[j] === a && nodes[i] === b));
-    const focusNode = () => hoverRef.current ?? (pinnedRef.current ? nodes.find((n) => n.label === pinnedRef.current) ?? null : null);
+    const isDark = () => document.documentElement.classList.contains('dark');
+    const adjacency = new Map<Node, Set<Node>>();
+    for (const [i, j] of links) {
+      if (!adjacency.has(nodes[i])) adjacency.set(nodes[i], new Set());
+      if (!adjacency.has(nodes[j])) adjacency.set(nodes[j], new Set());
+      adjacency.get(nodes[i])!.add(nodes[j]);
+      adjacency.get(nodes[j])!.add(nodes[i]);
+    }
+    const linked = (a: Node, b: Node) => adjacency.get(a)?.has(b) ?? false;
+
+    // Visibility of a node under the current category / selection filters.
+    const visible = (n: Node) => {
+      const { category: cat, selected, matching: m } = stateRef.current;
+      if (n.kind === 'tech') {
+        if (cat && n.category !== cat) return false;
+        if (m && selected.length && !selected.includes(n.label)) {
+          // keep techs used by at least one matching project
+          return Array.from(adjacency.get(n) ?? []).some((p) => m.has(p.label));
+        }
+        return true;
+      }
+      return m ? m.has(n.label) : true;
+    };
 
     let drag: Node | null = null;
 
@@ -138,7 +194,7 @@ export function TechGraph({ projects, locale, onSelectProject }: Props) {
           const dx = b.x - a.x;
           const dy = b.y - a.y;
           const d2 = dx * dx + dy * dy + 0.01;
-          const min = (a.r + b.r + 38) * scale;
+          const min = (a.r + b.r + 40) * scale;
           if (d2 < min * min * 4) {
             const d = Math.sqrt(d2);
             const f = ((min * 2 - d) / d) * 0.02;
@@ -152,7 +208,8 @@ export function TechGraph({ projects, locale, onSelectProject }: Props) {
         const dx = b.x - a.x;
         const dy = b.y - a.y;
         const d = Math.hypot(dx, dy) || 1;
-        const f = ((d - 118 * scale) / d) * 0.004;
+        const rest = (110 + b.r) * scale;
+        const f = ((d - rest) / d) * 0.0035;
         a.vx += dx * f; a.vy += dy * f; b.vx -= dx * f; b.vy -= dy * f;
       }
       for (const n of nodes) {
@@ -166,17 +223,28 @@ export function TechGraph({ projects, locale, onSelectProject }: Props) {
     };
 
     const draw = () => {
-      const c = theme();
-      const focus = focusNode();
+      const dark = isDark();
+      const c = dark ? THEME.dark : THEME.light;
+      const { hover: focus, selected } = stateRef.current;
+      const selectedNodes = new Set(nodes.filter((n) => n.kind === 'tech' && selected.includes(n.label)));
+      const hasFilter = selected.length > 0 || stateRef.current.category !== null;
       ctx.clearRect(0, 0, W, H);
+
+      const emphasis = (n: Node) => {
+        if (!visible(n)) return 0.08;
+        if (focus) return n === focus || linked(focus, n) ? 1 : 0.2;
+        if (selectedNodes.has(n)) return 1;
+        return hasFilter ? 0.85 : 1;
+      };
 
       for (const [i, j] of links) {
         const a = nodes[i];
         const b = nodes[j];
-        const hot = focus !== null && (a === focus || b === focus);
+        if (!visible(a) || !visible(b)) continue;
+        const hot = (focus !== null && (a === focus || b === focus)) || selectedNodes.has(a) || selectedNodes.has(b);
         ctx.strokeStyle = hot ? c.linkHot : c.link;
         ctx.lineWidth = hot ? 1.6 : 1;
-        ctx.globalAlpha = focus && !hot ? c.dim : 1;
+        ctx.globalAlpha = focus && !hot ? 0.25 : 1;
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
@@ -185,35 +253,52 @@ export function TechGraph({ projects, locale, onSelectProject }: Props) {
       ctx.globalAlpha = 1;
 
       const labelSize = small ? 10 : 12;
-      for (const n of nodes) {
-        const hot = focus !== null && (n === focus || linked(focus, n));
-        ctx.globalAlpha = focus && !hot ? c.dim + 0.15 : 1;
+      // technologies first, projects on top
+      const ordered = [...nodes.filter((n) => n.kind === 'tech'), ...nodes.filter((n) => n.kind === 'project')];
+      for (const n of ordered) {
+        const e = emphasis(n);
+        ctx.globalAlpha = e;
+        const hot = e === 1 && (focus !== null || selectedNodes.has(n));
         if (n.kind === 'project') {
+          const s = n.r * 2;
           ctx.fillStyle = hot ? c.projectHot : c.project;
           ctx.shadowColor = c.project;
-          ctx.shadowBlur = hot ? 26 : 10;
-          ctx.beginPath();
-          ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+          ctx.shadowBlur = hot ? 28 : 12;
+          roundedRect(ctx, n.x, n.y, s, 12);
           ctx.fill();
           ctx.shadowBlur = 0;
-          ctx.fillStyle = c.projectText;
-          ctx.font = `700 ${small ? 10 : 11}px ui-sans-serif, system-ui, sans-serif`;
+          ctx.fillStyle = hot && dark ? '#0b1220' : c.projectText;
+          ctx.font = `800 ${small ? 11 : 13}px ui-sans-serif, system-ui, sans-serif`;
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          ctx.fillText(n.short, n.x, n.y + 0.5);
+          ctx.fillText(n.short, n.x, n.y + 1);
           ctx.fillStyle = c.label;
-          ctx.font = `600 ${labelSize + 1}px ui-sans-serif, system-ui, sans-serif`;
-          ctx.fillText(n.label, n.x, n.y + n.r + 13);
+          ctx.font = `700 ${labelSize + 1}px ui-sans-serif, system-ui, sans-serif`;
+          ctx.fillText(n.label, n.x, n.y + n.r + 14);
         } else {
-          ctx.fillStyle = hot ? c.techHot : c.tech;
+          const col = CATEGORY_COLOR[n.category ?? 'library'][dark ? 'dark' : 'light'];
+          ctx.fillStyle = col;
+          ctx.globalAlpha = e * (hot ? 1 : 0.55);
           ctx.beginPath();
           ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
           ctx.fill();
+          ctx.globalAlpha = e;
+          ctx.strokeStyle = col;
+          ctx.lineWidth = hot ? 2.5 : 1.5;
+          ctx.stroke();
+          if (n.r >= 14) {
+            ctx.fillStyle = dark ? '#0b1220' : '#ffffff';
+            ctx.font = `700 ${Math.max(9, Math.min(12, n.r * 0.55))}px ui-sans-serif, system-ui, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(String(n.usage), n.x, n.y + 0.5);
+          }
           ctx.fillStyle = hot ? c.label : c.techLabel;
-          ctx.font = `${hot ? 600 : 500} ${labelSize}px ui-monospace, SFMono-Regular, Menlo, monospace`;
+          ctx.font = `${hot ? 700 : 500} ${labelSize}px ui-monospace, SFMono-Regular, Menlo, monospace`;
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          ctx.fillText(n.label, n.x, n.y + n.r + 11);
+          const label = hot ? `${n.label} · ${n.usage}` : n.label;
+          ctx.fillText(label, n.x, n.y + n.r + 11);
         }
       }
       ctx.globalAlpha = 1;
@@ -230,9 +315,9 @@ export function TechGraph({ projects, locale, onSelectProject }: Props) {
     if (reduce) for (let i = 0; i < 260; i++) step();
 
     const io = new IntersectionObserver((entries) => {
-      const visible = entries.some((e) => e.isIntersecting);
-      if (visible && !running) { running = true; loop(); }
-      if (!visible && running) { running = false; cancelAnimationFrame(frame); }
+      const vis = entries.some((e) => e.isIntersecting);
+      if (vis && !running) { running = true; loop(); }
+      if (!vis && running) { running = false; cancelAnimationFrame(frame); }
     });
     io.observe(wrap);
     loop();
@@ -241,7 +326,8 @@ export function TechGraph({ projects, locale, onSelectProject }: Props) {
       const rect = cv.getBoundingClientRect();
       return [e.clientX - rect.left, e.clientY - rect.top] as const;
     };
-    const pick = (x: number, y: number) => nodes.find((n) => Math.hypot(n.x - x, n.y - y) < n.r + 9) ?? null;
+    const pick = (x: number, y: number) =>
+      [...nodes].reverse().find((n) => visible(n) && Math.hypot(n.x - x, n.y - y) < n.r + 8) ?? null;
     let moved = false;
 
     const onMove = (e: PointerEvent) => {
@@ -249,7 +335,7 @@ export function TechGraph({ projects, locale, onSelectProject }: Props) {
       if (drag) { drag.x = x; drag.y = y; moved = true; }
       const h = pick(x, y);
       setHover(h);
-      cv.style.cursor = h ? (h.kind === 'project' ? 'pointer' : 'grab') : 'default';
+      cv.style.cursor = h ? 'pointer' : 'default';
       if (h && h.kind === 'project') setCard({ x: Math.min(W - 300, x + 20), y: Math.min(H - 230, y + 16) });
       else setCard(null);
     };
@@ -264,10 +350,7 @@ export function TechGraph({ projects, locale, onSelectProject }: Props) {
       drag = null;
       if (!target || moved) return;
       if (target.kind === 'project' && target.project) onSelectProject(target.project);
-      else {
-        const label = target.label;
-        setPinned((p) => (p === label ? null : label));
-      }
+      else onToggleTech(target.label);
     };
     const onLeave = () => { setHover(null); setCard(null); };
 
@@ -288,34 +371,43 @@ export function TechGraph({ projects, locale, onSelectProject }: Props) {
       cv.removeEventListener('pointerup', onUp);
       cv.removeEventListener('pointerleave', onLeave);
     };
-  }, [nodes, links, onSelectProject]);
+  }, [nodes, links, projects.length, onSelectProject, onToggleTech]);
 
   const hoveredProject = hover?.kind === 'project' ? hover.project : null;
-  const pinnedCount = pinned ? projects.filter((p) => p.technologies.includes(pinned)).length : 0;
+  const matchCount = matching ? matching.size : projects.length;
 
   return (
     <div className="relative">
+      {/* Legend + category filter */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-3 px-1 text-xs font-medium text-slate-500 dark:text-slate-400">
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
-          <span className="inline-flex items-center gap-2"><i className="w-2.5 h-2.5 rounded-full bg-indigo-600 dark:bg-indigo-400" /> {projects.length} {isFrench ? 'projets' : 'projects'}</span>
-          <span className="inline-flex items-center gap-2"><i className="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600" /> {techCount} {isFrench ? 'technologies' : 'technologies'}</span>
-          <span className="hidden sm:inline">{isFrench ? 'Survole, glisse, clique' : 'Hover, drag, click'}</span>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="inline-flex items-center gap-2 mr-2">
+            <i className="w-3.5 h-3.5 rounded-[4px] bg-indigo-600 dark:bg-indigo-500" />
+            {matchCount}/{projects.length} {isFrench ? 'projets' : 'projects'}
+          </span>
+          {ORDER.map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              aria-pressed={category === cat}
+              onClick={() => setCategory((c) => (c === cat ? null : cat))}
+              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border transition-colors ${
+                category === cat
+                  ? 'border-slate-400 dark:border-slate-500 bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100'
+                  : 'border-transparent hover:bg-slate-100 dark:hover:bg-slate-800'
+              } ${category && category !== cat ? 'opacity-50' : ''}`}
+            >
+              <i className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: CATEGORY_COLOR[cat].light }} />
+              {CATEGORY_LABEL[cat][lang]}
+            </button>
+          ))}
         </div>
-        {pinned && (
-          <button
-            type="button"
-            onClick={() => setPinned(null)}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 font-semibold"
-          >
-            {pinned} · {pinnedCount} {isFrench ? (pinnedCount > 1 ? 'projets' : 'projet') : (pinnedCount > 1 ? 'projects' : 'project')}
-            <X size={12} />
-          </button>
-        )}
+        <span className="hidden md:inline">{techCount} {isFrench ? 'technologies · le chiffre = nombre de projets' : 'technologies · number = projects using it'}</span>
       </div>
 
       <div
         ref={wrapRef}
-        className="relative w-full h-[680px] sm:h-[640px] lg:h-[720px] rounded-[2rem] overflow-hidden border border-white dark:border-slate-800 bg-slate-50 dark:bg-slate-950 shadow-sm"
+        className="relative w-full h-[680px] sm:h-[640px] lg:h-[740px] rounded-[2rem] overflow-hidden border border-white dark:border-slate-800 bg-slate-50 dark:bg-slate-950 shadow-sm"
         role="img"
         aria-label={isFrench ? 'Graphe des projets et des technologies utilisées' : 'Graph of projects and technologies used'}
       >
@@ -340,8 +432,8 @@ export function TechGraph({ projects, locale, onSelectProject }: Props) {
 
       {/* Same information as plain text for screen readers and crawlers */}
       <ul className="sr-only">
-        {projects.map((p) => (
-          <li key={p.title}>{p.title}: {p.technologies.join(', ')}</li>
+        {projects.map((p, i) => (
+          <li key={p.title}>{p.title}: {stacks[i].join(', ')}</li>
         ))}
       </ul>
     </div>
