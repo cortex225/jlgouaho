@@ -344,7 +344,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         active: true,
         technologies: [
           "Next.js",
-          "Typescript",
+          "TypeScript",
           "PostgreSQL",
           "Drizzle",
           "TailwindCSS",
@@ -384,10 +384,10 @@ export function getData(locale: "en" | "fr" = "fr") {
           "Next.js",
           "C#",
           "ASP.NET",
-          "OpenAI API",
+          "OpenAI",
           "Redis",
           "Upstash",
-          "Typescript",
+          "TypeScript",
           "PostgreSQL",
           "TailwindCSS",
           "Stripe",
@@ -462,7 +462,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         active: true,
         technologies: [
           "Next.js",
-          "Typescript",
+          "TypeScript",
           "PostgreSQL",
           "Prisma",
           "TailwindCSS",
@@ -506,7 +506,7 @@ export function getData(locale: "en" | "fr" = "fr") {
           "TypeScript",
           "React",
           "TailwindCSS",
-          "Google Map APIs",
+          "Google Maps API",
           "Local Storage",
         ],
         images: [
@@ -532,7 +532,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         dates: "Jan 2024 - Present",
         active: true,
         technologies: [
-          "Next.js 14",
+          "Next.js",
           "TypeScript",
           "TailwindCSS",
           "Shadcn UI",

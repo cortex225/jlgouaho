@@ -9,7 +9,8 @@ import {
     Twitter,
     Instagram,
     Award,
-    HelpCircle
+    HelpCircle,
+    FileText
 } from 'lucide-react';
 import { SocialIcon } from '@/components/ui/social-icon';
 import { WorkCard } from '@/components/ui/work-card';
@@ -19,9 +20,12 @@ import { ModeToggle } from '@/components/mode-toggle';
 import Image from 'next/image';
 import { useI18n } from '@/app/locales/client';
 import { ProjectModal } from '@/components/project-modal';
-import { ContactForm } from '@/components/contact-form';
 import { Terminal } from '@/components/terminal';
 import { TestimonialsSlider } from './TestimonialsSlider';
+import { Reveal, RevealGroup, RevealItem } from '@/components/motion/reveal';
+import { CountUp } from '@/components/motion/count-up';
+import { Spotlight } from '@/components/motion/spotlight';
+import { LazyVideo } from '@/components/lazy-video';
 import {
   Tooltip,
   TooltipContent,
@@ -58,6 +62,19 @@ export default function Page({ params: { locale } }: { params: { locale: string 
     // Show only first 3 projects
     const visibleProjects = DATA.projects.slice(0, 3);
 
+    // Sidebar chips: technical skills only (marketing / management stay in the resume)
+    const techSkills = DATA.skills.filter(
+        (s) => s.type !== DATA.i18n.sections.skills.marketing && s.type !== DATA.i18n.sections.skills.projectManagement
+    );
+
+    const openProject = (project: any) => setSelectedProject(project);
+    const onProjectKeyDown = (e: React.KeyboardEvent, project: any) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openProject(project);
+        }
+    };
+
     return (
         <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 font-sans relative selection:bg-indigo-100 selection:text-indigo-900">
 
@@ -66,19 +83,23 @@ export default function Page({ params: { locale } }: { params: { locale: string 
             <div className="w-full max-w-7xl mx-auto p-4 md:p-8 lg:p-12 relative z-10 flex flex-col lg:flex-row gap-8 lg:gap-16 items-start">
 
                 {/* --- LEFT COLUMN: PROFILE CARD --- */}
-                <aside className="w-full lg:w-[400px] shrink-0 lg:sticky lg:top-8 self-start h-fit">
+                <aside className="w-full lg:w-[400px] shrink-0 lg:sticky lg:top-8 self-start h-fit relative hero-glow">
                     <div className="glass-card rounded-[2.5rem] p-6 pb-8 overflow-hidden transition-all duration-300 dark:bg-slate-900/60 dark:border-slate-800">
                         
                         {/* Toolbar */}
                         <div className="flex justify-between items-center mb-6">
                              <Link 
                                 href={`/${locale === 'fr' ? 'en' : 'fr'}`}
+                                hrefLang={locale === 'fr' ? 'en' : 'fr'}
+                                aria-label={locale === 'fr' ? 'FR : switch to English' : 'EN : passer en français'}
                                 className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-md px-3 py-2 rounded-full shadow-sm border border-white dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 flex items-center gap-1.5 hover:bg-white dark:hover:bg-slate-800 transition-colors"
                             >
                                 <Languages size={14} /> {locale.toUpperCase()}
                             </Link>
                             <button 
                                 onClick={handleShare}
+                                aria-label={locale === 'fr' ? 'Partager ce profil' : 'Share this profile'}
+                                title={locale === 'fr' ? 'Partager ce profil' : 'Share this profile'}
                                 className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-md p-2 rounded-full shadow-sm border border-white dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-white dark:hover:bg-slate-800 transition-colors"
                             >
                                 <Share2 size={18} />
@@ -100,8 +121,10 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                         {/* Identity */}
                         <div className="text-center mb-8">
                             <div className="relative inline-block mb-5">
-                                <div className="w-32 h-32 rounded-full shadow-2xl border-[6px] border-white dark:border-slate-800 mx-auto overflow-hidden bg-slate-100 dark:bg-slate-800 relative">
-                                    <Image src={DATA.avatarUrl} alt={DATA.name} fill className="object-cover" />
+                                <div className="avatar-ring mx-auto w-fit">
+                                    <div className="w-32 h-32 rounded-full shadow-2xl border-[5px] border-white dark:border-slate-900 overflow-hidden bg-slate-100 dark:bg-slate-800 relative">
+                                        <Image src={DATA.avatarUrl} alt={DATA.name} fill sizes="128px" priority className="object-cover" />
+                                    </div>
                                 </div>
                                 <div className="absolute bottom-1 right-1 bg-white dark:bg-slate-800 p-2 rounded-full shadow-lg">
                                     <Lightbulb size={20} className="text-indigo-600 dark:text-indigo-400" />
@@ -112,14 +135,14 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                             <p className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-2 flex items-center justify-center gap-1">
                                 <MapPin size={12} /> {DATA.location}
                             </p>
-                            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium px-4">{DATA.summary.title}</p>
+                            <p className="text-slate-600 dark:text-slate-300 text-sm font-semibold px-4 text-balance">{t('hero.title')}</p>
                         </div>
 
                         {/* Tech Stack (Tags) - Expanded */}
                         <div className="mb-8">
                             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest text-center mb-4">{t('hero.techStack')}</p>
                             <div className="flex flex-wrap justify-center gap-2">
-                                {DATA.skills.map((tech, index) => (
+                                {techSkills.map((tech, index) => (
                                     <span key={index} className="px-3 py-1 bg-slate-100/50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 rounded-lg text-[11px] font-semibold border border-slate-200/50 dark:border-slate-700/50">
                                         {tech.name}
                                     </span>
@@ -128,22 +151,37 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                         </div>
 
                         {/* Actions */}
-                        <div className="grid grid-cols-2 gap-3 mb-4">
-                            <button
-                                onClick={() => window.location.href = `mailto:${DATA.contact.email}`}
-                                className="bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-200 dark:text-slate-900 text-white py-4 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-xl shadow-slate-900/10 group"
+                        <div className="grid grid-cols-2 gap-3 mb-3">
+                            <a
+                                href={`mailto:${DATA.contact.email}`}
+                                className="btn-shine bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-200 dark:text-slate-900 text-white py-4 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-xl shadow-slate-900/10 group"
                             >
                                 <Mail size={18} className="group-hover:-translate-y-0.5 transition-transform" />
                                 <span className="text-sm font-bold">{t('common.email')}</span>
-                            </button>
-                            <button
-                                onClick={() => window.open(DATA.contact.social.LinkedIn.url, '_blank', 'noopener,noreferrer')}
-                                className="bg-indigo-600 hover:bg-indigo-500 text-white py-4 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-xl shadow-indigo-600/20 group"
+                            </a>
+                            <a
+                                href={DATA.contact.social.LinkedIn.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn-shine bg-indigo-600 hover:bg-indigo-500 text-white py-4 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-xl shadow-indigo-600/20 group"
                             >
                                 <Linkedin size={18} className="group-hover:-translate-y-0.5 transition-transform" />
                                 <span className="text-sm font-bold">{t('common.connect')}</span>
-                            </button>
+                            </a>
                         </div>
+
+                        {/* Site navigation */}
+                        <nav aria-label={locale === 'fr' ? 'Navigation principale' : 'Main navigation'} className="grid grid-cols-3 gap-2 mb-6">
+                            <Link href={`/${locale}/projects`} className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/50 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-900/30 dark:hover:text-indigo-300 transition-colors">
+                                <Code size={14} /> {t('nav.projects')}
+                            </Link>
+                            <Link href={`/${locale}/blog`} className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/50 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-900/30 dark:hover:text-indigo-300 transition-colors">
+                                <BookOpen size={14} /> {t('nav.blog')}
+                            </Link>
+                            <a href="/MyResume.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/50 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-900/30 dark:hover:text-indigo-300 transition-colors">
+                                <FileText size={14} /> {t('nav.resume')}
+                            </a>
+                        </nav>
                         {/* CV Download Button */}
                         {/* <a
                             href="https://pub-c0874d8393bb493ea002a55cbc71d1ab.r2.dev/portfolio/MyResume.pdf"
@@ -182,7 +220,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                         <div className="pt-6 border-t border-slate-200/50 dark:border-slate-700/50 flex justify-center gap-5">
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <SocialIcon href={DATA.contact.social.blog.url} icon={<BookOpen size={20} />} />
+                                    <SocialIcon href={`/${locale}/blog`} target="_self" aria-label={locale === 'fr' ? 'Lire mon blogue' : 'Read my blog'} icon={<BookOpen size={20} />} />
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>{locale === 'fr' ? 'Lire mon blog' : 'Read my blog'}</p>
@@ -191,7 +229,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                             
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <SocialIcon href={DATA.contact.social.GitHub.url} icon={<Github size={20} />} />
+                                    <SocialIcon href={DATA.contact.social.GitHub.url} aria-label="GitHub" icon={<Github size={20} />} />
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>{locale === 'fr' ? 'Voir mes projets sur GitHub' : 'View my projects on GitHub'}</p>
@@ -200,7 +238,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                             
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <SocialIcon href={DATA.contact.social.X.url} icon={<Twitter size={20} />} />
+                                    <SocialIcon href={DATA.contact.social.X.url} aria-label="X (Twitter)" icon={<Twitter size={20} />} />
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>{locale === 'fr' ? 'Me suivre sur X' : 'Follow me on X'}</p>
@@ -209,7 +247,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                             
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <SocialIcon href={DATA.contact.social.Instagram.url} icon={<Instagram size={20} />} />
+                                    <SocialIcon href={DATA.contact.social.Instagram.url} aria-label="Instagram" icon={<Instagram size={20} />} />
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>{locale === 'fr' ? 'Me suivre sur Instagram' : 'Follow me on Instagram'}</p>
@@ -218,7 +256,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                             
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <SocialIcon href={`tel:${DATA.contact.tel}`} icon={<Phone size={20} />} />
+                                    <SocialIcon href={`tel:${DATA.contact.tel}`} target="_self" aria-label={locale === 'fr' ? "M'appeler" : 'Call me'} icon={<Phone size={20} />} />
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>{locale === 'fr' ? "M'appeler" : 'Call me'}</p>
@@ -229,6 +267,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                 <TooltipTrigger asChild>
                                     <button
                                         onClick={() => setShowQR(true)}
+                                        aria-label={locale === 'fr' ? 'Partager via QR Code' : 'Share via QR Code'}
                                         className="text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors p-2 hover:scale-110"
                                     >
                                         <QrCode size={20} />
@@ -246,6 +285,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                 <main className="flex-1 w-full space-y-12 lg:space-y-12  pb-24">
                     
                     {/* About Section */}
+                    <Reveal>
                     <section className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-[2rem] p-6 md:p-10 border border-white dark:border-slate-800 shadow-sm">
                         <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-3">
                             <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-2 rounded-xl"><Lightbulb size={24} /></span>
@@ -257,7 +297,19 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                             ))}
                         </div>
 
+                        {/* Key figures */}
+                        <dl aria-label={t('highlights.title')} className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            {DATA.i18n.highlights.items.map((item, i) => (
+                                <div key={i} data-spotlight className="flex flex-col-reverse justify-end rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-700/50 p-4 hover:-translate-y-0.5 transition-transform">
+                                    <dt className="text-xs text-slate-500 dark:text-slate-400 leading-snug">{item.label}</dt>
+                                    <dd className="text-2xl font-extrabold text-indigo-600 dark:text-indigo-400 tracking-tight mb-1">
+                                        <CountUp value={item.value} />
+                                    </dd>
+                                </div>
+                            ))}
+                        </dl>
                     </section>
+                    </Reveal>
 
                     {/* Currently */}
                     {/* <section className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-[2rem] p-6 md:p-8 border border-white dark:border-slate-800 shadow-sm">
@@ -298,13 +350,15 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                              <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-2 rounded-xl"><Briefcase size={24} /></span>
                             {t('sections.work.title')}
                         </h2>
-                        <div className="space-y-4">
+                        <RevealGroup className="space-y-4">
                             {visibleWork.map((job, i) => (
-                                <WorkCard key={i} job={job} />
+                                <RevealItem key={i}>
+                                    <WorkCard job={job} locale={locale} defaultExpanded={i === 0} />
+                                </RevealItem>
                             ))}
-                        </div>
+                        </RevealGroup>
                         
-                        {DATA.work.length > 2 && (
+                        {DATA.work.length > 3 && (
                             <div className="flex justify-center mt-6">
                                 <button 
                                     onClick={() => setIsWorkExpanded(!isWorkExpanded)}
@@ -326,20 +380,25 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                              <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-2 rounded-xl"><Code size={24} /></span>
                             {t('sections.projects.title')}
                         </h2>
-                        <div className="grid grid-cols-1 gap-6">
+                        <RevealGroup className="grid grid-cols-1 gap-6">
                             {visibleProjects.map((project, i) => (
-                                <div 
-                                    key={i} 
-                                    onClick={() => setSelectedProject(project)}
-                                    className="group bg-white dark:bg-slate-900 rounded-[2rem] p-6 md:p-8 border border-white dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300 overflow-hidden relative cursor-pointer"
+                                <RevealItem key={i}>
+                                <article
+                                    data-spotlight
+                                    role="button"
+                                    tabIndex={0}
+                                    aria-labelledby={`project-title-${i}`}
+                                    onClick={() => openProject(project)}
+                                    onKeyDown={(e) => onProjectKeyDown(e, project)}
+                                    className="group bg-white dark:bg-slate-900 rounded-[2rem] p-6 md:p-8 border border-white dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300 overflow-hidden relative cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                                 >
                                     
                                     <div className="flex justify-between items-start mb-4">
-                                        <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{project.title}</h3>
+                                        <h3 id={`project-title-${i}`} className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{project.title}</h3>
                                         <div className="flex gap-2">
                                             {project.links.map((link, k) => (
                                                 <div key={k} onClick={(e) => e.stopPropagation()} className="contents">
-                                                    <a href={link.href} target="_blank" rel="noopener noreferrer" className="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-400 hover:bg-indigo-100 hover:text-indigo-600 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-400 transition-colors">
+                                                    <a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} : ${link.type}`} className="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-400 hover:bg-indigo-100 hover:text-indigo-600 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-400 transition-colors">
                                                         {link.type.includes("Github") ? <Github size={16} /> : <ExternalLink size={16} />}
                                                     </a>
                                                 </div>
@@ -358,35 +417,34 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                     </div>
 
                                     {(project as any).video ? (
-                                        <div className="rounded-xl overflow-hidden shadow-md border border-slate-100 dark:border-slate-800 mt-4 group-hover:scale-[1.02] transition-transform duration-500">
-                                            <video
+                                        <div className="zoom-media rounded-xl overflow-hidden shadow-md border border-slate-100 dark:border-slate-800 mt-4">
+                                            <LazyVideo
                                                 src={(project as any).video}
-                                                autoPlay
-                                                loop
-                                                muted
-                                                playsInline
+                                                aria-label={`${project.title} : ${locale === 'fr' ? 'démo vidéo' : 'video demo'}`}
                                                 className="w-full h-48 object-cover object-top"
                                             />
                                         </div>
                                     ) : project.images && project.images.length > 0 && (
-                                         <div className="rounded-xl overflow-hidden shadow-md border border-slate-100 dark:border-slate-800 mt-4 group-hover:scale-[1.02] transition-transform duration-500">
+                                         <div className="zoom-media rounded-xl overflow-hidden shadow-md border border-slate-100 dark:border-slate-800 mt-4">
                                             <Image 
                                                 src={project.images[0]} 
-                                                alt={project.title} 
+                                                alt={`${project.title} : ${locale === 'fr' ? 'aperçu' : 'preview'}`}
                                                 width={600} 
                                                 height={300} 
+                                                sizes="(min-width: 1024px) 700px, 100vw"
                                                 className="w-full h-48 object-cover object-top"
                                             />
                                         </div>
                                     )}
-                                </div>
+                                </article>
+                                </RevealItem>
                             ))}
-                        </div>
+                        </RevealGroup>
 
                          <div className="flex justify-center mt-8">
                              <Link
                                 href={`/${locale}/projects`}
-                                className="group flex items-center gap-2 px-8 py-4 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold hover:scale-105 transition-transform shadow-xl shadow-slate-900/10"
+                                className="btn-shine group flex items-center gap-2 px-8 py-4 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold hover:scale-105 transition-transform shadow-xl shadow-slate-900/10"
                             >
                                 {t('common.viewAllProjects')} <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                             </Link>
@@ -403,12 +461,13 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                     </section> */}
 
                     {/* FAQ */}
+                    <Reveal>
                     <section>
                         <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-2 ml-4 flex items-center gap-3">
                             <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-2 rounded-xl"><HelpCircle size={24} /></span>
                             {DATA.i18n.sections.faq.title}
                         </h2>
-                        <p className="text-slate-500 ml-4 mb-8">{DATA.i18n.sections.faq.subtitle}</p>
+                        <p className="text-slate-500 dark:text-slate-400 ml-4 mb-8">{DATA.i18n.sections.faq.subtitle}</p>
                         <div className="space-y-3">
                             {DATA.i18n.sections.faq.items.map((item, i) => (
                                 <details
@@ -426,10 +485,12 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                             ))}
                         </div>
                     </section>
+                    </Reveal>
 
                      {/* Education */}
+                     <Reveal>
                      <section className="bg-slate-900 dark:bg-slate-950 text-slate-100 rounded-[2.5rem] p-8 md:p-12 overflow-hidden relative">
-                         <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500 rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
+                         <div className="float-slow absolute top-0 right-0 w-64 h-64 bg-indigo-500 rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
                          
                         <h2 className="text-2xl font-bold text-white mb-10 relative z-10 flex items-center gap-3">
                             <span className="bg-white/10 p-2 rounded-xl"><GraduationCap size={24} /></span>
@@ -447,10 +508,12 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                             ))}
                         </div>
                     </section>
+                    </Reveal>
 
                     {/* Certifications */}
+                     <Reveal>
                      <section className="bg-slate-900 dark:bg-slate-950 text-slate-100 rounded-[2.5rem] p-8 md:p-12 overflow-hidden relative">
-                         <div className="absolute top-0 left-0 w-64 h-64 bg-emerald-500 rounded-full blur-[100px] opacity-10 pointer-events-none"></div>
+                         <div className="float-slow absolute top-0 left-0 w-64 h-64 bg-emerald-500 rounded-full blur-[100px] opacity-10 pointer-events-none"></div>
                          
                         <h2 className="text-2xl font-bold text-white mb-10 relative z-10 flex items-center gap-3">
                             <span className="bg-white/10 p-2 rounded-xl"><Award size={24} /></span>
@@ -469,6 +532,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                                     src={cert.logoUrl} 
                                                     alt={cert.name} 
                                                     fill 
+                                                    sizes="48px"
                                                     className="object-contain p-1"
                                                 />
                                             </div>
@@ -483,12 +547,18 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                             ))}
                         </div>
                     </section>
-
+                    </Reveal>
 
                     {/* Footer */}
-                    <div className="text-center py-6">
+                    <footer className="text-center py-6 space-y-3">
+                        <nav aria-label={locale === 'fr' ? 'Pied de page' : 'Footer'} className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-semibold text-slate-500 dark:text-slate-400">
+                            <Link href={`/${locale}/projects`} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t('nav.projects')}</Link>
+                            <Link href={`/${locale}/blog`} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t('nav.blog')}</Link>
+                            <a href={`mailto:${DATA.contact.email}`} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t('nav.contact')}</a>
+                            <Link href={`/${locale === 'fr' ? 'en' : 'fr'}`} hrefLang={locale === 'fr' ? 'en' : 'fr'} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{locale === 'fr' ? 'English' : 'Français'}</Link>
+                        </nav>
                         <p className="text-slate-500 dark:text-slate-400 text-sm">© {new Date().getFullYear()} {DATA.name}. {t('common.allRightsReserved')}</p>
-                    </div>
+                    </footer>
 
                 </main>
 
@@ -496,10 +566,11 @@ export default function Page({ params: { locale } }: { params: { locale: string 
 
             {/* QR Code Modal */}
             {showQR && (
-                <div className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200">
-                    <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-2xl w-full max-w-xs relative text-center border border-white dark:border-slate-800">
+                <div className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200" onClick={() => setShowQR(false)}>
+                    <div role="dialog" aria-modal="true" aria-label={t('common.scanToContact')} onClick={(e) => e.stopPropagation()} className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-2xl w-full max-w-xs relative text-center border border-white dark:border-slate-800">
                         <button 
                             onClick={() => setShowQR(false)}
+                            aria-label={t('common.close')}
                             className="absolute top-4 right-4 text-slate-400 hover:text-slate-800 dark:hover:text-white"
                         >
                             <X size={24} />
@@ -531,6 +602,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                     </div>
                 </div>
             )}
+            <Spotlight />
             <ProjectModal
                 project={selectedProject}
                 open={!!selectedProject}

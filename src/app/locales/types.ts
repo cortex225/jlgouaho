@@ -16,6 +16,17 @@ export type Translations = {
     status: string;
     techStack: string;
   };
+  nav: {
+    home: string;
+    projects: string;
+    blog: string;
+    resume: string;
+    contact: string;
+  };
+  highlights: {
+    title: string;
+    items: { value: string; label: string }[];
+  };
   common: {
     overview: string;
     features: string;

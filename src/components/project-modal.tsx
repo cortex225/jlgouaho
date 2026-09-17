@@ -17,6 +17,16 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, open, onClo
     const t = useI18n();
     const [activeImageIndex, setActiveImageIndex] = React.useState<number | null>(null);
 
+    // Escape closes the modal (or the lightbox first if it is open)
+    useEffect(() => {
+        if (!open) return;
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && activeImageIndex === null) onClose();
+        };
+        window.addEventListener('keydown', onKey);
+        return () => window.removeEventListener('keydown', onKey);
+    }, [open, activeImageIndex, onClose]);
+
     // Lock body scroll when modal is open
     useEffect(() => {
         if (open) {
@@ -89,6 +99,9 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, open, onClo
                         
                         {/* Modal Content */}
                         <motion.div
+                            role="dialog"
+                            aria-modal="true"
+                            aria-label={project.title}
                             initial={{ scale: 0.95, opacity: 0, y: 20 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -98,6 +111,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, open, onClo
                             {/* Close Button */}
                             <button
                                 onClick={onClose}
+                                aria-label={t('common.close')}
                                 className="absolute top-4 right-4 z-10 p-2 bg-black/10 dark:bg-white/10 hover:bg-black/20 dark:hover:bg-white/20 backdrop-blur-md rounded-full text-slate-900 dark:text-white transition-colors"
                             >
                                 <X size={20} />
@@ -207,7 +221,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, open, onClo
                                             <section className="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-2xl border border-slate-100 dark:border-slate-800">
                                                 <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">{t('common.conclusion')}</h3>
                                                 <p className="text-slate-700 dark:text-slate-300 italic">
-                                                    "{project.conclusion}"
+                                                    &ldquo;{project.conclusion}&rdquo;
                                                 </p>
                                             </section>
                                         )}

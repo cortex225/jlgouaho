@@ -36,6 +36,22 @@ const translations: Translations = {
     status: "À l'écoute d'opportunités",
     techStack: "Stack Technique",
   },
+  nav: {
+    home: "Profil",
+    projects: "Projets",
+    blog: "Blogue",
+    resume: "CV (PDF)",
+    contact: "Contact",
+  },
+  highlights: {
+    title: "En bref",
+    items: [
+      { value: "3+", label: "ans d'expérience full-stack" },
+      { value: "-78 %", label: "de coûts Azure chez Royal Broker" },
+      { value: "4000+", label: "CV triés en secondes par mon ATS Python" },
+      { value: "10+", label: "projets livrés (SaaS, mobile, IA)" },
+    ],
+  },
   common: {
     overview: "Aperçu",
     features: "Fonctionnalités Clés",
@@ -64,7 +80,7 @@ const translations: Translations = {
   },
   blog: {
     title: "Blogue",
-    description: "Mes réflexions sur le développement logiciel, la vie et plus encore.",
+    description: "Retours d'expérience concrets sur le cloud Azure, .NET, Next.js, React Native et l'IA en production.",
     writtenBy: "Écrit par",
     authorTagline:
       "Développeur full-stack basé au Canada. J'écris sur le code, l'IA et les produits que je construis.",
