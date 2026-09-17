@@ -41,6 +41,7 @@
     "shiki": "^1.29.2",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
+    "three": "^0.186.0",
     "unified": "^11.0.5"
   },
   "devDependencies": {
@@ -48,6 +49,7 @@
     "@types/node": "^20.19.27",
     "@types/react": "^18.3.27",
     "@types/react-dom": "^18.3.7",
+    "@types/three": "^0.186.0",
     "eslint": "^8.57.1",
     "eslint-config-next": "14.2.4",
     "postcss": "^8.5.6",
