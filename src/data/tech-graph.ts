@@ -27,6 +27,7 @@ const ALIAS: Record<string, string> = {
   "OpenAI API": "OpenAI",
   "Gemini 2.5": "Gemini",
   "Tailwind CSS": "TailwindCSS",
+  "Cloudflare FLUX": "Workers AI",
 };
 
 /** Using the key implies real, hands-on use of every value. */
@@ -36,6 +37,12 @@ const IMPLIES: Record<string, string[]> = {
   React: ["JavaScript"],
   "React Native": ["React"],
   Expo: ["React Native"],
+  "Expo Router": ["Expo"],
+  "Expo Notifications": ["Expo"],
+  NativeWind: ["React Native", "TailwindCSS"],
+  "React Native Reanimated": ["React Native"],
+  "Workers AI": ["Cloudflare Workers"],
+  "Cloudflare D1": ["Cloudflare Workers"],
   "Expo Camera": ["Expo"],
   "Expo Haptics": ["Expo"],
   "React Navigation": ["React Native"],
@@ -67,7 +74,8 @@ export const CATEGORY: Record<string, TechCategory> = {
   "Next.js": "framework", React: "framework", "React Native": "framework", Expo: "framework", "Vue.js": "framework",
   "ASP.NET": "framework", ".NET": "framework", "Node.js": "framework", Express: "framework", Vite: "framework",
   PostgreSQL: "database", "SQL Server": "database", MongoDB: "database", Redis: "database", "Local Storage": "database", AsyncStorage: "database",
-  Azure: "cloud", Vercel: "cloud", Supabase: "cloud", Upstash: "cloud", "Cloudflare FLUX": "cloud",
+  Azure: "cloud", Vercel: "cloud", Supabase: "cloud", Upstash: "cloud", "Cloudflare Workers": "cloud", "Workers AI": "cloud",
+  "Cloudflare D1": "database", Zustand: "library", NativeWind: "library", "Expo Router": "library", "Expo Notifications": "library", "React Native Reanimated": "library", OpenStreetMap: "service",
   TailwindCSS: "library", "Shadcn UI": "library", Bootstrap: "library", PrimeVue: "library", "Framer Motion": "library",
   "Lucide React": "library", "Chart.js": "library", Drizzle: "library", Prisma: "library", "React Navigation": "library",
   "react-native-svg": "library", "Expo Camera": "library", "Expo Haptics": "library", i18n: "library", JWT: "library", WebSockets: "library",

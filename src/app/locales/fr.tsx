@@ -667,6 +667,51 @@ const translations: Translations = {
         conclusion:
           "Virtual Card Pro démontre comment une simple carte de visite peut être transformée en une expérience digitale riche et moderne. Ce projet m'a permis d'explorer les dernières fonctionnalités de React 19 et de créer une solution pratique pour le réseautage professionnel.",
       },
+      spinVibe: {
+        description:
+          "App mobile (ex-DUO Roue) qui tranche « on fait quoi ce soir ? » : une roue à lancer, des suggestions IA adaptées au contexte social (couple, amis, famille, solo), puis planification, rappels et souvenirs.",
+        overview:
+          "SpinVibe est né de DUO Roue, un prototype web React pour choisir une soirée à deux. Il est devenu une app Expo (iOS, Android, web) publiée sous le nom SpinVibe, pensée pour tous les contextes sociaux. La boucle produit tient en trois temps : décider (roue, swipe ou choix direct), vivre (plan, checklist, rappels natifs) et se souvenir (note, photos). Les suggestions viennent d'un Worker Cloudflare qui interroge Workers AI et un corpus d'idées en D1, avec un catalogue hors-ligne en repli filtré par contexte : jamais d'écran vide, jamais de clé dans le bundle. Les lieux réels autour de l'utilisateur sont tirés d'OpenStreetMap/Overpass, sans clé API.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Roue SVG segmentée</strong> avec geste de lancer tangentiel, tick haptique à chaque segment et sélection déterministe : le gagnant est tiré au lancement, les suggestions se chargent pendant la rotation</li>
+            <li><strong>Contexte social</strong> (couple, amis, famille, solo) qui conditionne catégories, idées et textes générés</li>
+            <li><strong>Découvrir</strong> : deck de swipe (envie / déjà vu) qui alimente l'anti-répétition, et carte 3D des lieux réels via OpenStreetMap</li>
+            <li><strong>Plans</strong> : liste et calendrier, checklist, notes, rappels natifs à T-1h et T-15 min, écran souvenir avec note et photos</li>
+            <li><strong>Envies et Collections</strong> : capture sans décision d'un côté, idées riches importables depuis un lien de l'autre, passage dans les deux sens</li>
+            <li><strong>Progression</strong> : niveaux, XP, défis hebdomadaires, 10 badges avec raretés et célébration au déblocage</li>
+            <li><strong>Backend Cloudflare</strong> : Worker + Workers AI + D1, authentification Apple et Google, gouvernance du corpus et traduction automatique des idées</li>
+            <li><strong>Bilingue FR/EN</strong>, devise et liens de réservation déduits du pays de la ville choisie</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">🎡 Absorber la latence de l'IA dans le suspense</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> attendre 2 à 4 s après l'arrêt de la roue tuait l'effet.<br>
+                <span class="font-semibold">Solution :</span> le résultat est tiré dès le lancement et la requête part pendant la rotation ; un jeton de requête garantit qu'une réponse en retard n'écrase jamais un résultat plus récent.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">📴 Jamais d'écran vide</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> l'app devait fonctionner sans réseau, sans clé et sans backend déployé.<br>
+                <span class="font-semibold">Solution :</span> catalogue hors-ligne filtré par contexte social en repli systématique, Worker activé seulement si <code>EXPO_PUBLIC_API_URL</code> est défini, aucun secret dans le bundle.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">🔁 Du prototype « à deux » au produit « pour tous »</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> DUO Roue supposait un couple partout dans le code et les textes.<br>
+                <span class="font-semibold">Solution :</span> le contexte social est devenu un invariant du produit : sélecteur global, catégories et prompts conditionnés, i18n FR/EN réécrit, et migration des données locales des premiers utilisateurs.
+              </p>
+            </div>
+          </div>
+        `,
+        conclusion:
+          "SpinVibe m'a appris à faire mûrir un prototype en produit : positionnement élargi, backend serverless économe, expérience hors-ligne d'abord, et un geste principal (la roue) suffisamment soigné pour porter toute l'app.",
+      },
       fitTrack: {
         description:
           "App mobile fitness & nutrition IA-first : profil intelligent (BMR/TDEE), bibliothèque de 873 exercices animés avec muscles ciblés, générateur de séances IA contextualisé, suivi par spider chart et coach IA conversationnel.",

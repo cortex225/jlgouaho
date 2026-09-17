@@ -667,6 +667,51 @@ const translations: Translations = {
         conclusion:
           "Virtual Business Card Pro showcases modern React 19 development with Vite, demonstrating my ability to create polished, professional applications with cutting-edge UI/UX and practical business utility.",
       },
+      spinVibe: {
+        description:
+          "Mobile app (formerly DUO Roue) that settles \"what do we do tonight?\": spin a wheel, get AI suggestions tuned to the social context (couple, friends, family, solo), then plan, get reminders and keep memories.",
+        overview:
+          "SpinVibe started as DUO Roue, a React web prototype to pick a date night. It grew into an Expo app (iOS, Android, web) published as SpinVibe and designed for every social context. The product loop has three beats: decide (wheel, swipe or direct pick), live it (plan, checklist, native reminders) and remember (rating, photos). Suggestions come from a Cloudflare Worker querying Workers AI and an ideas corpus in D1, with an offline catalog filtered by context as a fallback: never an empty screen, never a key in the bundle. Real places around the user come from OpenStreetMap/Overpass, with no API key.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Segmented SVG wheel</strong> with a tangential fling gesture, a haptic tick per segment and deterministic selection: the winner is drawn at launch and suggestions load while it spins</li>
+            <li><strong>Social context</strong> (couple, friends, family, solo) driving categories, ideas and generated copy</li>
+            <li><strong>Discover</strong>: swipe deck (want / already seen) feeding the anti-repetition, and a 3D map of real places via OpenStreetMap</li>
+            <li><strong>Plans</strong>: list and calendar, checklist, notes, native reminders at T-1h and T-15 min, memory screen with rating and photos</li>
+            <li><strong>Wants and Collections</strong>: quick capture on one side, rich ideas importable from a link on the other, convertible both ways</li>
+            <li><strong>Progression</strong>: levels, XP, weekly challenges, 10 badges with rarities and unlock celebrations</li>
+            <li><strong>Cloudflare backend</strong>: Worker + Workers AI + D1, Apple and Google sign-in, corpus governance and automatic translation of ideas</li>
+            <li><strong>Bilingual FR/EN</strong>, currency and booking links inferred from the chosen city's country</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">🎡 Hiding AI latency inside the suspense</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> waiting 2 to 4 s after the wheel stopped killed the moment.<br>
+                <span class="font-semibold">Solution:</span> the result is drawn at launch and the request fires during the spin; a request token guarantees a late response never overwrites a newer result.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">📴 Never an empty screen</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> the app had to work with no network, no key and no deployed backend.<br>
+                <span class="font-semibold">Solution:</span> an offline catalog filtered by social context as the systematic fallback, the Worker enabled only when <code>EXPO_PUBLIC_API_URL</code> is set, no secret in the bundle.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">🔁 From a "for two" prototype to a "for everyone" product</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> DUO Roue assumed a couple everywhere in code and copy.<br>
+                <span class="font-semibold">Solution:</span> social context became a product invariant: global selector, conditioned categories and prompts, rewritten FR/EN i18n, and a migration of early users' local data.
+              </p>
+            </div>
+          </div>
+        `,
+        conclusion:
+          "SpinVibe taught me how to grow a prototype into a product: a broader positioning, a frugal serverless backend, an offline-first experience, and a core gesture (the wheel) polished enough to carry the whole app.",
+      },
       fitTrack: {
         description:
           "AI-first mobile fitness & nutrition app: smart profile (BMR/TDEE), library of 873 animated exercises with muscle targeting, context-aware AI workout generator, spider-chart progression tracking and conversational coach.",
