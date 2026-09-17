@@ -26,6 +26,11 @@ import { Reveal, RevealGroup, RevealItem } from '@/components/motion/reveal';
 import { CountUp } from '@/components/motion/count-up';
 import { Spotlight } from '@/components/motion/spotlight';
 import { LazyVideo } from '@/components/lazy-video';
+import { TiltCard } from '@/components/three/tilt-card';
+import dynamic from 'next/dynamic';
+
+// three.js only loads client-side, after hydration.
+const SceneBackground = dynamic(() => import('@/components/three/scene-background'), { ssr: false });
 import {
   Tooltip,
   TooltipContent,
@@ -79,12 +84,13 @@ export default function Page({ params: { locale } }: { params: { locale: string 
         <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 font-sans relative selection:bg-indigo-100 selection:text-indigo-900">
 
             <div className="fixed inset-0 animated-bg z-0 pointer-events-none"></div>
+            <SceneBackground />
 
             <div className="w-full max-w-7xl mx-auto p-4 md:p-8 lg:p-12 relative z-10 flex flex-col lg:flex-row gap-8 lg:gap-16 items-start">
 
                 {/* --- LEFT COLUMN: PROFILE CARD --- */}
                 <aside className="w-full lg:w-[400px] shrink-0 lg:sticky lg:top-8 self-start h-fit relative hero-glow">
-                    <div className="glass-card rounded-[2.5rem] p-6 pb-8 overflow-hidden transition-all duration-300 dark:bg-slate-900/60 dark:border-slate-800">
+                    <TiltCard className="glass-card rounded-[2.5rem] p-6 pb-8 overflow-hidden dark:bg-slate-900/60 dark:border-slate-800">
                         
                         {/* Toolbar */}
                         <div className="flex justify-between items-center mb-6">
@@ -278,7 +284,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                 </TooltipContent>
                             </Tooltip>
                         </div>
-                    </div>
+                    </TiltCard>
                 </aside>
 
                 {/* --- RIGHT COLUMN: DETAILED CONTENT --- */}
