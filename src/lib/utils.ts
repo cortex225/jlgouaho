@@ -28,3 +28,17 @@ export function formatDateShort(date: string, locale: Locale = "en") {
     timeZone: "UTC",
   });
 }
+
+// First developer role (Royal Broker Solutions, August 2022).
+const CAREER_START = new Date("2022-08-01");
+
+/** Full years since the first developer role, used in "{years}+" placeholders. */
+export function yearsOfExperience(now: Date = new Date()) {
+  const ms = now.getTime() - CAREER_START.getTime();
+  return Math.max(1, Math.floor(ms / (365.25 * 24 * 60 * 60 * 1000)));
+}
+
+/** Replaces the "{years}" placeholder used in locale strings. */
+export function withYears(text: string) {
+  return text.replaceAll("{years}", String(yearsOfExperience()));
+}

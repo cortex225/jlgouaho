@@ -91,9 +91,6 @@ export type Translations = {
       modes: string;
       languages: string;
     };
-    testimonials: {
-      title: string;
-    };
     currently: {
       title: string;
       certificationLabel: string;

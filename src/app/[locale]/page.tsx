@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import {
     Mail, Linkedin, Github, Share2, QrCode, X, Languages, Lightbulb,
     Code, Briefcase, MapPin, ExternalLink, GraduationCap, ArrowRight,
-    ChevronDown, ChevronUp, Download, Phone, Quote, BookOpen,
+    ChevronDown, ChevronUp, Download, Phone, BookOpen,
     Hammer, GanttChart, CheckCircle2,
     Twitter,
     Instagram,
@@ -15,13 +15,13 @@ import {
 import { SocialIcon } from '@/components/ui/social-icon';
 import { WorkCard } from '@/components/ui/work-card';
 import { getData } from '@/data/resume';
+import { withYears } from '@/lib/utils';
 import Link from 'next/link';
 import { ModeToggle } from '@/components/mode-toggle';
 import Image from 'next/image';
 import { useI18n } from '@/app/locales/client';
 import { ProjectModal } from '@/components/project-modal';
 import { Terminal } from '@/components/terminal';
-import { TestimonialsSlider } from './TestimonialsSlider';
 import { Reveal, RevealGroup, RevealItem } from '@/components/motion/reveal';
 import { CountUp } from '@/components/motion/count-up';
 import { Spotlight } from '@/components/motion/spotlight';
@@ -309,7 +309,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                 <div key={i} data-spotlight className="flex flex-col-reverse justify-end rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-700/50 p-4 hover:-translate-y-0.5 transition-transform">
                                     <dt className="text-xs text-slate-500 dark:text-slate-400 leading-snug">{item.label}</dt>
                                     <dd className="text-2xl font-extrabold text-indigo-600 dark:text-indigo-400 tracking-tight mb-1">
-                                        <CountUp value={item.value} />
+                                        <CountUp value={withYears(item.value)} />
                                     </dd>
                                 </div>
                             ))}
@@ -457,14 +457,6 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                         </div>
                     </section>
 
-                    {/* Testimonials */}
-                    {/* <section>
-                        <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-8 ml-4 flex items-center gap-3">
-                            <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-2 rounded-xl"><Quote size={24} /></span>
-                            {t('sections.testimonials.title')}
-                        </h2>
-                        <TestimonialsSlider locale={locale} testimonials={DATA.testimonials} />
-                    </section> */}
 
                     {/* FAQ */}
                     <Reveal>
