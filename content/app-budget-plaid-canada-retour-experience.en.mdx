@@ -1,0 +1,154 @@
+---
+title: "Plaid API in Canada: building a budgeting app with Vercel and Neon"
+publishedAt: "2026-11-16"
+summary: "How I built a budgeting app with the Plaid API in Canada: Vercel functions, Neon Postgres, encrypted tokens, webhooks and Canadian bank quirks."
+image: "/blog/budget-buddy-plaid.png"
+tags: ["Plaid", "Fintech", "Vercel", "Neon", "React"]
+---
+
+Budget Buddy is my personal budgeting app. It answers one question: how much money do I really have left until my next paycheck? To get there without typing every expense by hand, I connected the Plaid API in Canada to my bank accounts. This post covers the architecture, the technical decisions and the pitfalls, for developers and indie founders who want to build a budgeting app with Plaid.
+
+One thing up front: right now the app serves a single account, mine. Everything below comes from the project's code and docs.
+
+---
+
+## The idea: what's left until payday
+
+Most budgeting apps think in calendar months. I get paid every paycheck, and my rent leaves before the 1st. The number I care about is what I can spend before the next deposit lands.
+
+Budget Buddy computes it like this: checking balances, minus the bills expected before payday, minus card purchases not yet paid off, minus the money set aside for envelopes. Expected bills are detected automatically from anything that comes back monthly or every two weeks at the same amount.
+
+Around that number, the app has:
+
+- a plan, with planned vs actual per category;
+- debts and savings goals, with a cascade that splits what you can put aside;
+- a paycheck ritual that suggests where each dollar of the paycheck that just arrived should go;
+- a net worth curve built from balances recorded day by day.
+
+One decision mattered more than I expected. The rule for "which transactions count in a period" lives in a single file, and the home screen, the plan and the history all call it. Rent paid on October 29 counts in November everywhere. When each screen had its own date filter, "this month" could show a different total depending on the page.
+
+---
+
+## Architecture: Vite, Vercel functions, Neon and Plaid
+
+- Front end: React 18 and TypeScript on Vite, with TanStack Query and shadcn/ui.
+- API: Vercel functions in the `api/` folder, written against the Web `Request` and `Response` objects.
+- Database: Neon Postgres. The schema lives in numbered SQL files applied by hand, each with a rollback script.
+- Sign-in: Neon Auth with Google, proxied through an app route so session cookies stay on my domain.
+- Banks: Plaid, read-only.
+
+All the business logic sits in `src/core/` as plain TypeScript: no React, no network calls. Paycheck, plan and debt math live there, and that is what Vitest covers. When a number changes, a test changes with it.
+
+There is no Next.js in this project. If that's your stack, Next.js route handlers also take a `Request` and return a `Response`, so the same Plaid and Vercel setup carries over with little work.
+
+---
+
+## The Plaid flow, step by step
+
+It's the standard Plaid sequence:
+
+1. The server creates a `link_token` (`POST /api/plaid/link-token`).
+2. The browser opens Plaid Link; the user picks a bank and signs in.
+3. Plaid hands a `public_token` to the browser, which sends it to the server.
+4. The server exchanges it for an `access_token` (`POST /api/plaid/exchange`), stores it encrypted and runs a first sync.
+
+For Canada, a few fields in the link token request matter:
+
+```ts
+const base: LinkTokenCreateRequest = {
+  user: { client_user_id: auth.user.id },
+  client_name: "AI Budget Buddy",
+  country_codes: [CountryCode.Ca, CountryCode.Us],
+  language: "fr",
+};
+if (process.env.PLAID_REDIRECT_URI) {
+  base.redirect_uri = process.env.PLAID_REDIRECT_URI;
+}
+```
+
+`language: "fr"` shows the Plaid window in French, which you want for Quebec users. `client_user_id` is the opaque account id, never an email or a name. Some Canadian banks go through OAuth, and those need a redirect URI registered with Plaid.
+
+Transactions are required; investments (TFSA, RRSP) are requested as an optional product. If investments aren't enabled on the developer account, the route builds the token again without them instead of failing.
+
+Plaid Link runs on a standalone page, `banque.html`, with its own Content Security Policy. The rest of the app keeps a strict CSP that allows no external scripts; only that page adds Plaid's domain.
+
+---
+
+## Where the secrets live
+
+This is the part I'd copy as is into my next project.
+
+The Plaid access token never goes back to the browser. Before it reaches Neon, it is encrypted with AES-256-GCM using a key that exists only in Vercel environment variables (`TOKEN_ENCRYPTION_KEY`). Someone reading the database alone gets nothing usable.
+
+```ts
+export function encryptToken(plain: string): string {
+  const iv = randomBytes(12);
+  const cipher = createCipheriv("aes-256-gcm", getKey(), iv, { authTagLength: 16 });
+  const encrypted = Buffer.concat([cipher.update(plain, "utf8"), cipher.final()]);
+  const tag = cipher.getAuthTag();
+  return [iv, tag, encrypted].map((b) => b.toString("base64")).join(".");
+}
+```
+
+Keep in mind that this key can never change once a bank is linked. Rotate it and every stored token becomes unreadable.
+
+Every route follows the same rules. Errors sent to the browser are generic, and raw error objects are never logged, since they can carry Plaid details. SQL queries are parameterized and filtered by `user_id`.
+
+The public token exchange also needs some care about order. The server checks the encryption config before calling Plaid. If saving still fails, or if the account goes over the cap of ten active banks, the connection is revoked at Plaid right away (`/item/remove`). Otherwise you'd keep a billable connection whose token the app no longer has.
+
+---
+
+## Sync strategy: cursor, webhook and cron
+
+Transactions come from `/transactions/sync` with a cursor. A sync can start from four places:
+
+- the Import button, limited to one manual sync every 60 seconds;
+- the Plaid webhook, when a bank has new data;
+- a Vercel cron every morning, as a safety net;
+- linking a bank, which runs the first sync.
+
+Inside the sync function:
+
+- The cursor is saved only after every page is processed. Writes are upserts, so rerunning a sync doesn't create duplicates.
+- If Plaid returns `TRANSACTIONS_SYNC_MUTATION_DURING_PAGINATION`, the sync restarts from the saved cursor, up to three attempts.
+- Plaid reports money going out as a positive amount. I flip the sign on the way in, so a negative amount means money out in the database, the code and the UI.
+- Investment accounts have no transactions in `/transactions/sync`. Their balances come from `/investments/holdings/get`.
+- Each sync records the day's balance for every account, on Montreal time, for the net worth curve.
+
+The webhook has no user session, so it has to prove it came from Plaid. The route checks the JWT in the `Plaid-Verification` header: an ES256 signature from an unexpired Plaid public key, issued less than five minutes ago, with a SHA-256 hash matching the body it received. Anything else gets a 401. The same body received twice within five minutes is handled once.
+
+Warnings such as `PENDING_EXPIRATION` or `USER_PERMISSION_REVOKED` are saved on the bank and show a "reconnect" banner. Bank connections can drop at any time, so plan that flow from day one.
+
+---
+
+## Canadian specifics
+
+Amounts are in Canadian dollars, and the whole interface is in Quebec French. Plaid gives each transaction a category, but it isn't always right for you. The code has rules for merchants the bank category gets wrong, like Couche-Tard filed as a restaurant when it's my gas.
+
+Interac e-Transfers needed their own rules. They come from different people, so the app never treats them as a paycheck, and an Interac transfer never pays off a card. A transfer between two of my own accounts shows up twice, once out and once in, and the app pairs them so they count as neither spending nor income.
+
+For reconnecting a bank, I only go through the bank sign-in step. The account selection step crashed on Plaid's side with an `INTERNAL_SERVER_ERROR` during a National Bank reconnection. It's still available separately, for adding a TFSA or RRSP.
+
+Then there's Quebec's Law 25. Deleting an account revokes each bank at Plaid, then deletes the account's data in one transaction. If a revocation fails, nothing is deleted and the user can retry. CSV and PDF statement imports are parsed on the device, and no data goes to an AI service.
+
+---
+
+## What a founder should know before choosing the Plaid API in Canada
+
+**Active connections cost money.** My code revokes any connection it can't store. For pricing and the list of supported Canadian institutions, check Plaid's official documentation; I'm not quoting numbers here.
+
+**Sandbox is only the start.** `PLAID_ENV=sandbox` is enough to build. Production uses a different secret, and multi-user use has to be approved by Plaid, with a published privacy policy.
+
+**Not every product is on by default.** Plan a fallback for when a product, like investments, isn't available.
+
+**A webhook doesn't replace a cron.** The webhook gives you freshness, the cron catches what was missed. With upserts and a cursor, both can hit the same bank safely.
+
+**Opening the app to other users takes work outside Plaid.** My list before getting there: a Postgres role limited to the tables the app needs, row-level security as a second line of defense, my own Google OAuth credentials for the consent screen, and per-account limits (already in place).
+
+---
+
+## Next steps
+
+You can see the interface on the public demo: [ai-budget-buddy-brown.vercel.app](https://ai-budget-buddy-brown.vercel.app).
+
+Building a personal-finance app in Canada and on the fence about Plaid? Send me your use case and I'll tell you which parts of this architecture I'd keep. If server-side API key handling is on your mind too, I cover it in [my write-up on running LLMs in production](/en/blog/ia-integrer-llm-dans-mes-projets).
