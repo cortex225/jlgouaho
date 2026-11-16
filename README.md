@@ -8,7 +8,6 @@ Source of [jlgouaho.com](https://www.jlgouaho.com), the bilingual (FR/EN) portfo
 - Tailwind CSS, shadcn/ui, Framer Motion
 - next-international for the French and English routes
 - MDX blog posts in `content/`, rendered with unified and rehype-pretty-code
-- three.js for the background scene
 - Deployed on Vercel
 
 ## Run locally
