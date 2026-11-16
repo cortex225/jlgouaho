@@ -1,14 +1,14 @@
 ---
 title: "How I Cut Azure Costs by 78% at Royal Broker"
 publishedAt: "2025-01-15"
-summary: "A concrete field report on the cloud migration I led at Royal Broker: from $600/month to $135/month, in 3 months. A look at the architecture, the mistakes to avoid, and the decisions that changed everything."
+summary: "A concrete field report on the cloud migration I led at Royal Broker: from $600/month to $135/month, in 3 months. A look at the architecture, the mistakes to avoid, and the migration decisions."
 image: "/blog/azure-cost.png"
 tags: ["Azure", "Cloud", "FinOps", "Serverless", ".NET"]
 ---
 
 In August 2022, I joined Royal Broker Solutions as an intern. Six months later, I was hired full-time with one main mission: take over and optimize our internal SaaS platform, **InstaHR**.
 
-The problem? We were paying **$600/month** on Azure for an application used by about thirty people. It made no sense.
+The problem: we were paying **$600/month** on Azure for an application used by about thirty people. It made no sense.
 
 Here is exactly how we got down to **$135/month**.
 
@@ -37,7 +37,7 @@ A few things jumped out right away:
 
 ---
 
-## The approach: Right-sizing + Serverless Architecture
+## The approach: right-sizing + serverless architecture
 
 ### Step 1: Analyze the real load
 
@@ -143,7 +143,7 @@ Azure charges for outbound bandwidth. By moving the storage into the same region
 
 ## What this experience taught me
 
-The cloud is powerful but dangerous if you're not paying attention. Providers make "provisioning" too easy: one click and you have a $300/month machine.
+Providers make "provisioning" too easy: one click and you have a $300/month machine.
 
 The practices with the most impact:
 - **Instrument before optimizing**: metrics justify the decisions

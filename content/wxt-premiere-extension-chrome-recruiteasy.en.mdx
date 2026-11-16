@@ -1,7 +1,7 @@
 ---
 title: "My First Chrome Extension with WXT: Lessons Learned Building RecruitEasy"
 publishedAt: "2026-05-20"
-summary: "I built the RecruitEasy Chrome extension with WXT after years of struggling with raw Manifest V3 boilerplate. Here's why this framework changed the way I develop extensions, and the pitfalls I ran into along the way."
+summary: "I built the RecruitEasy Chrome extension with WXT after years of struggling with raw Manifest V3 boilerplate. What the framework saved me from, and the pitfalls I ran into."
 image: "/blog/wxt-recruiteasy.png"
 tags: ["WXT", "Chrome Extension", "Manifest V3", "RecruitEasy", "TypeScript"]
 ---
@@ -140,7 +140,7 @@ async function sendWithRetry(tabId: number, msg: unknown, tries = 3) {
 }
 ```
 
-**3. Host permissions.** LinkedIn changes its markup regularly. My parsing relied on fragile CSS selectors. I ended up targeting more stable attributes (`data-*`, semantic tags) rather than generated class names.
+**3. LinkedIn's markup.** LinkedIn changes its markup regularly. My parsing relied on fragile CSS selectors. I ended up targeting more stable attributes (`data-*`, semantic tags) rather than generated class names.
 
 ---
 

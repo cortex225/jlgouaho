@@ -6,13 +6,13 @@ image: "/blog/ia-llm-production.png"
 tags: ["LLM", "OpenAI", "OpenRouter", "IA en production", "Coûts API"]
 ---
 
-L'IA est partout dans le discours tech. Dans mon quotidien de développeur, elle est devenue un outil parmi d'autres, puissant mais qu'il faut savoir doser. Après l'avoir intégrée dans plusieurs projets (RecruitEasy, FitTrack, mon ATS maison), voici un retour honnête, loin du hype.
+Dans mon quotidien de développeur, l'IA est devenue un outil parmi d'autres, puissant mais qu'il faut savoir doser. Après l'avoir intégrée dans plusieurs projets (RecruitEasy, FitTrack, mon ATS maison), voici ce que j'en retiens.
 
 ---
 
 ## La première leçon : tout n'a pas besoin d'un LLM
 
-Mon meilleur souvenir d'IA n'utilise… aucun LLM. L'ATS que j'ai construit chez Royal Broker triait 4000+ CVs avec du NLP classique : extraction de mots-clés, scoring pondéré, classement. Rapide, déterministe, gratuit.
+Mon meilleur souvenir d'IA n'utilise aucun LLM. L'ATS que j'ai construit chez Royal Broker triait 4000+ CVs avec du NLP classique : extraction de mots-clés, scoring pondéré, classement. Rapide, déterministe, gratuit.
 
 J'aurais pu balancer chaque CV dans GPT-4. Ça aurait marché. Mais à 200 candidatures par jour, la facture API aurait explosé, et la latence aurait rendu le tri inutilisable en temps réel.
 
@@ -22,7 +22,7 @@ J'aurais pu balancer chaque CV dans GPT-4. Ça aurait marché. Mais à 200 candi
 
 ## Quand le LLM devient indispensable
 
-Là où l'IA générative brille vraiment, c'est sur l'ambiguïté du langage humain. Dans RecruitEasy, j'utilise l'API OpenAI pour transformer une description de poste en critères de matching structurés.
+L'IA générative sert surtout face à l'ambiguïté du langage humain. Dans RecruitEasy, j'utilise l'API OpenAI pour transformer une description de poste en critères de matching structurés.
 
 ```ts
 const completion = await openai.chat.completions.create({
@@ -136,7 +136,7 @@ Le bon arbitrage est un triangle **coût / latence / qualité**. Pour une extrac
 
 Dépendre à 100 % d'OpenAI, c'est un risque : prix qui change, modèle déprécié, panne d'API, ou simplement un meilleur modèle ailleurs (Anthropic, Google, Mistral, modèles open source…).
 
-C'est là qu'**OpenRouter** entre en jeu. C'est une passerelle unique, **compatible avec le SDK OpenAI**, qui route mes requêtes vers des dizaines de modèles de fournisseurs différents. Concrètement, je change juste l'URL de base et le nom du modèle :
+**OpenRouter** est une passerelle unique, **compatible avec le SDK OpenAI**, qui route mes requêtes vers des dizaines de modèles de fournisseurs différents. Concrètement, je change juste l'URL de base et le nom du modèle :
 
 ```ts
 const router = new OpenAI({
@@ -161,7 +161,7 @@ Le compromis : une légère latence supplémentaire et une dépendance à un int
 
 ---
 
-## Le cache : votre meilleur ami contre la facture
+## Le cache : ne pas payer deux fois le même appel
 
 La même question revient souvent. Re-payer un appel LLM pour un résultat identique, c'est jeter de l'argent. Sur RecruitEasy, j'ai mis **Redis (via Upstash)** devant chaque appel coûteux.
 
@@ -215,8 +215,6 @@ if (!parsed.success) {
 ## Mon approche aujourd'hui
 
 L'IA générative n'est ni magique ni à fuir. C'est une brique avec des contraintes claires : coût, latence, non-déterminisme. Je l'intègre quand elle résout un vrai problème de langage ou de génération, et je l'entoure systématiquement de garde-fous : cache, validation de schéma, fallback, monitoring.
-
-Le piège n'est pas d'utiliser l'IA. C'est de l'utiliser partout, sans mesurer. Le bon réflexe de développeur reste le même qu'avant : choisir l'outil adapté au problème, pas le plus impressionnant.
 
 ---
 

@@ -6,13 +6,13 @@ image: "/blog/ia-llm-production.png"
 tags: ["LLM", "OpenAI", "OpenRouter", "AI in Production", "API Costs"]
 ---
 
-AI is everywhere in the tech conversation. In my day-to-day as a developer, it has become one tool among many: powerful, but something you have to use in the right doses. After integrating it into several projects (RecruitEasy, FitTrack, my homemade ATS), here is an honest take, far from the hype.
+In my day-to-day as a developer, AI has become one tool among many: powerful, but something you have to use in the right doses. After integrating it into several projects (RecruitEasy, FitTrack, my homemade ATS), here is what I take away from it.
 
 ---
 
 ## The first lesson: not everything needs an LLM
 
-My best AI memory uses... no LLM at all. The ATS I built at Royal Broker sorted 4,000+ resumes with classic NLP: keyword extraction, weighted scoring, ranking. Fast, deterministic, free.
+My best AI memory uses no LLM at all. The ATS I built at Royal Broker sorted 4,000+ resumes with classic NLP: keyword extraction, weighted scoring, ranking. Fast, deterministic, free.
 
 I could have thrown every resume at GPT-4. It would have worked. But at 200 applications a day, the API bill would have exploded, and the latency would have made real-time sorting unusable.
 
@@ -22,7 +22,7 @@ I could have thrown every resume at GPT-4. It would have worked. But at 200 appl
 
 ## When the LLM becomes essential
 
-Where generative AI really shines is the ambiguity of human language. In RecruitEasy, I use the OpenAI API to turn a job description into structured matching criteria.
+Generative AI is most useful with the ambiguity of human language. In RecruitEasy, I use the OpenAI API to turn a job description into structured matching criteria.
 
 ```ts
 const completion = await openai.chat.completions.create({
@@ -136,7 +136,7 @@ The right tradeoff is a triangle of **cost / latency / quality**. For real-time 
 
 Depending 100% on OpenAI is a risk: prices change, a model gets deprecated, the API goes down, or there's simply a better model elsewhere (Anthropic, Google, Mistral, open source models, etc.).
 
-That's where **OpenRouter** comes in. It's a single gateway, **compatible with the OpenAI SDK**, that routes my requests to dozens of models from different providers. In practice, I just change the base URL and the model name:
+**OpenRouter** is a single gateway, **compatible with the OpenAI SDK**, that routes my requests to dozens of models from different providers. In practice, I just change the base URL and the model name:
 
 ```ts
 const router = new OpenAI({
@@ -161,7 +161,7 @@ The tradeoff: a bit of extra latency and a dependency on a middleman. For critic
 
 ---
 
-## Caching: your best friend against the bill
+## Caching: not paying twice for the same call
 
 The same question comes up often. Re-paying for an LLM call to get an identical result is throwing money away. On RecruitEasy, I put **Redis (via Upstash)** in front of every expensive call.
 
@@ -215,8 +215,6 @@ if (!parsed.success) {
 ## My approach today
 
 Generative AI is neither magic nor something to run from. It's a building block with clear constraints: cost, latency, non-determinism. I integrate it when it solves a real language or generation problem, and I systematically surround it with guardrails: caching, schema validation, fallback, monitoring.
-
-The trap isn't using AI. It's using it everywhere, without measuring. The good developer instinct stays the same as before: pick the tool suited to the problem, not the most impressive one.
 
 ---
 
