@@ -4,6 +4,10 @@ import { BASE_URL, languageAlternates } from "@/lib/seo";
 
 const LOCALES = ["fr", "en"] as const;
 
+// Last real change to the profile or project list: update when they change
+// instead of reporting the build date to search engines.
+const PROFILE_UPDATED = "2026-11-17";
+
 // Same hreflang keys as the page metadata (alternates.languages) so Google
 // sees one consistent set of alternates.
 function alternates(route: string) {
@@ -18,8 +22,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .at(-1);
 
   const staticRoutes: { route: string; priority: number; lastModified?: string }[] = [
-    { route: "", priority: 1 },
-    { route: "/projects", priority: 0.8 },
+    { route: "", priority: 1, lastModified: PROFILE_UPDATED },
+    { route: "/projects", priority: 0.8, lastModified: PROFILE_UPDATED },
     { route: "/blog", priority: 0.8, lastModified: latestPost },
   ];
 

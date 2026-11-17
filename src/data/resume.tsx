@@ -348,6 +348,7 @@ export function getData(locale: "en" | "fr" = "fr") {
       },
       {
         title: "FitTrack",
+        article: "react-native-expo-fittrack-retour-experience",
         description: t.sections.projects.fitTrack.description,
         overview: t.sections.projects.fitTrack.overview,
         features: t.sections.projects.fitTrack.features,
@@ -426,6 +427,7 @@ export function getData(locale: "en" | "fr" = "fr") {
       },
       {
         title: "RecruitEasy",
+        article: "wxt-premiere-extension-chrome-recruiteasy",
         description: t.sections.projects.recruitEase.description,
         overview: t.sections.projects.recruitEase.overview,
         features: t.sections.projects.recruitEase.features,
@@ -466,6 +468,7 @@ export function getData(locale: "en" | "fr" = "fr") {
       },
       {
         title: "InstaHR",
+        article: "reduction-couts-azure-78-pourcent",
         description: t.sections.projects.instaHR.description,
         overview: t.sections.projects.instaHR.overview,
         features: t.sections.projects.instaHR.features,
@@ -547,6 +550,7 @@ export function getData(locale: "en" | "fr" = "fr") {
       },
       {
         title: "LeadMapper",
+        article: "trouver-clients-agence-web-commerces-sans-site",
         description: t.sections.projects.leadMapper.description,
         overview: t.sections.projects.leadMapper.overview,
         features: t.sections.projects.leadMapper.features,
@@ -674,6 +678,7 @@ export function getData(locale: "en" | "fr" = "fr") {
       },
       {
         title: "Budget Buddy",
+        article: "app-budget-plaid-canada-retour-experience",
         description: t.sections.projects.budgetBuddy.description,
         overview: t.sections.projects.budgetBuddy.overview,
         features: t.sections.projects.budgetBuddy.features,

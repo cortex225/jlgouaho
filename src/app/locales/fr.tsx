@@ -20,13 +20,13 @@ const translations: Translations = {
       "jlgouaho",
     ],
     homeTitle:
-      "Déto Jean-Luc Gouaho : Développeur Full-Stack Cloud & Azure au Québec",
+      "Jean-Luc Gouaho : développeur full-stack au Québec",
     homeDescription:
-      "Développeur Full-Stack .NET, Vue.js, Next.js & Azure. {years}+ ans d'expérience, réduction de 78% des coûts cloud, ATS Python triant 4000+ CV en quelques secondes. Disponible pour opportunités au Canada.",
-    projectsTitle: "Projets : Portfolio de Jean-Luc Gouaho",
+      "Développeur full-stack au Québec : .NET, Next.js, Azure et IA. {years}+ ans d'expérience, coûts Azure réduits de 78 %, fondateur de RecruitEasy.ca.",
+    projectsTitle: "Projets full-stack : SaaS, IA et cloud",
     projectsDescription:
-      "Collection de projets full-stack : CRM SaaS, ATS IA, plateforme e-commerce, automatisations DevOps. Stack : Next.js, .NET, Vue.js, Azure, PostgreSQL, OpenAI.",
-    blogTitle: "Blog : Retours d'expérience Cloud, DevOps & Full-Stack",
+      "Projets en ligne : RecruitEasy, AgentOS, PlayerConnect, LeadMapper, Budget Buddy et sites clients. Stack : Next.js, .NET, Azure, PostgreSQL.",
+    blogTitle: "Blogue : retours d'expérience cloud, IA et full-stack",
     blogDescription:
       "Articles techniques concrets : optimisation Azure (-78%), ATS Python pour trier 4000+ CV, architecture serverless, CI/CD et bonnes pratiques DevOps.",
   },

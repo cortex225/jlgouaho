@@ -9,6 +9,8 @@ export function languageAlternates(route: string) {
   return {
     "fr-CA": `${BASE_URL}/fr${route}`,
     "en-CA": `${BASE_URL}/en${route}`,
+    fr: `${BASE_URL}/fr${route}`,
+    en: `${BASE_URL}/en${route}`,
     "x-default": `${BASE_URL}/fr${route}`,
   };
 }

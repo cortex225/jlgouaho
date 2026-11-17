@@ -38,7 +38,7 @@ export async function generateMetadata({
   const postUrl = `${BASE_URL}/${locale}${route}`;
 
   return {
-    title,
+    title: post.metadata.seoTitle ?? title,
     description: summary,
     keywords: tags,
     alternates: {
@@ -56,10 +56,13 @@ export async function generateMetadata({
       tags,
       locale: OG_LOCALE[locale],
       url: postUrl,
+      siteName: "Déto Jean-Luc Gouaho",
       images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
     },
     twitter: {
       card: "summary_large_image",
+      site: "@jlgouaho",
+      creator: "@jlgouaho",
       title,
       description: summary,
       images: [ogImage],
@@ -97,9 +100,21 @@ export default async function Blog({ params }: { params: Params }) {
     notFound();
   }
 
+  // Related posts: most shared tags first, then closest publication date,
+  // so every article links to different neighbours instead of the 2 newest.
+  const tagsOf = (tags?: string[]) => new Set((tags ?? []).map((t) => t.toLowerCase()));
+  const ownTags = tagsOf(post.metadata.tags);
+  const ownDate = new Date(post.metadata.publishedAt).getTime();
   const relatedPosts = (await getBlogPosts(locale))
     .filter((p) => p.slug !== slug)
-    .slice(0, 2);
+    .map((p) => ({
+      post: p,
+      shared: Array.from(tagsOf(p.metadata.tags)).filter((t) => ownTags.has(t)).length,
+      distance: Math.abs(new Date(p.metadata.publishedAt).getTime() - ownDate),
+    }))
+    .sort((a, b) => b.shared - a.shared || a.distance - b.distance)
+    .slice(0, 2)
+    .map((r) => r.post);
 
   const { html: contentWithIds, headings } = addHeadingIds(post.source);
   const isFrench = locale === "fr";

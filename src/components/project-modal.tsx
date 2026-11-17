@@ -2,10 +2,10 @@
 
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, Github, Calendar, Layers } from 'lucide-react';
+import { X, ExternalLink, Github, Calendar, Layers, BookOpen } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useI18n } from '@/app/locales/client';
+import { useCurrentLocale, useI18n } from '@/app/locales/client';
 
 interface ProjectModalProps {
     project: any;
@@ -15,6 +15,7 @@ interface ProjectModalProps {
 
 export const ProjectModal: React.FC<ProjectModalProps> = ({ project, open, onClose }) => {
     const t = useI18n();
+    const locale = useCurrentLocale();
     const [activeImageIndex, setActiveImageIndex] = React.useState<number | null>(null);
 
     // Escape closes the modal (or the lightbox first if it is open)
@@ -243,7 +244,16 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, open, onClo
                                                     {link.type}
                                                 </Link>
                                             ))}
-                                            {(!project.links || project.links.length === 0) && (
+                                            {project.article && (
+                                                <Link
+                                                    href={`/${locale}/blog/${project.article}`}
+                                                    className="flex items-center justify-center gap-2 w-full py-4 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-white font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                                                >
+                                                    <BookOpen size={20} />
+                                                    {locale === 'fr' ? "Lire l'article" : 'Read the article'}
+                                                </Link>
+                                            )}
+                                            {(!project.links || project.links.length === 0) && !project.article && (
                                                 <div className="p-4 bg-slate-100 dark:bg-slate-900 rounded-xl text-center text-sm text-slate-500">
                                                     {t('common.noLinks')}
                                                 </div>

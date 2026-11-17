@@ -9,6 +9,8 @@ import { unified } from "unified";
 
 export type PostMetadata = {
   title: string;
+  /** Shorter title for the <title> tag when the H1 is long. */
+  seoTitle?: string;
   publishedAt: string;
   updatedAt?: string;
   summary: string;

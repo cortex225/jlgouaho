@@ -8,7 +8,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
-import { ogImageUrl } from "@/lib/seo";
+import { languageAlternates, ogImageUrl } from "@/lib/seo";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -47,7 +47,7 @@ export const generateMetadata = ({
     metadataBase: new URL(BASE_URL),
     title: {
       default: t.seo.homeTitle,
-      template: `%s | ${data.name}`,
+      template: "%s | JL Gouaho",
     },
     description: withYears(t.seo.homeDescription),
     applicationName: data.name,
@@ -58,11 +58,7 @@ export const generateMetadata = ({
     category: "technology",
     alternates: {
       canonical: canonicalUrl,
-      languages: {
-        "fr-CA": `${BASE_URL}/fr`,
-        "en-CA": `${BASE_URL}/en`,
-        "x-default": `${BASE_URL}/fr`,
-      },
+      languages: languageAlternates(""),
     },
     openGraph: {
       title: t.seo.homeTitle,
@@ -103,9 +99,6 @@ export const generateMetadata = ({
       site: "@jlgouaho",
       images: [ogImage],
     },
-    verification: {
-      google: "3fa472ef9a36100d",
-    },
   };
 };
 
@@ -118,7 +111,6 @@ export default function RootLayout({
 }>) {
   const data = getData(locale as "en" | "fr");
   const t = data.i18n;
-  const inLanguage = locale === "fr" ? "fr-CA" : "en-CA";
 
   const personJsonLd = {
     "@context": "https://schema.org",
@@ -133,8 +125,8 @@ export default function RootLayout({
     image: {
       "@type": "ImageObject",
       url: `${BASE_URL}/me.png`,
-      width: 800,
-      height: 800,
+      width: 200,
+      height: 200,
     },
     jobTitle: t.hero.title,
     description: t.seo.tagline,
@@ -156,6 +148,7 @@ export default function RootLayout({
       "https://github.com/cortex225",
       "https://x.com/jlgouaho",
       "https://www.instagram.com/jlgouaho/",
+      "https://business.jlgouaho.com",
     ],
     knowsAbout: [
       "Full-Stack Development",
@@ -194,11 +187,10 @@ export default function RootLayout({
       name: "Cégep de Granby",
       url: "https://www.cegepgranby.com/",
     },
-    worksFor: {
-      "@type": "Organization",
-      name: "Evnia",
-      url: "https://evnia.ca/",
-    },
+    worksFor: [
+      { "@type": "Organization", name: "Evnia", url: "https://evnia.ca/" },
+      { "@type": "Organization", name: "RecruitEasy.ca", url: "https://recruiteasy.ca" },
+    ],
   };
 
   const websiteJsonLd = {
@@ -210,32 +202,6 @@ export default function RootLayout({
     description: t.seo.tagline,
     inLanguage: ["fr-CA", "en-CA"],
     publisher: { "@id": `${BASE_URL}/#person` },
-  };
-
-  const profilePageJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "ProfilePage",
-    "@id": `${BASE_URL}/${locale}#profile`,
-    url: `${BASE_URL}/${locale}`,
-    inLanguage,
-    dateModified: new Date().toISOString(),
-    mainEntity: { "@id": `${BASE_URL}/#person` },
-    isPartOf: { "@id": `${BASE_URL}/#website` },
-  };
-
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "@id": `${BASE_URL}/${locale}#faq`,
-    inLanguage,
-    mainEntity: t.sections.faq.items.map((item) => ({
-      "@type": "Question",
-      name: item.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: item.answer,
-      },
-    })),
   };
 
   return (
@@ -262,14 +228,6 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageJsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       </head>
       <body
