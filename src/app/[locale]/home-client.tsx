@@ -71,12 +71,6 @@ export default function HomeClient({ locale, latestPosts }: { locale: string; la
     );
 
     const openProject = (project: any) => setSelectedProject(project);
-    const onProjectKeyDown = (e: React.KeyboardEvent, project: any) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            openProject(project);
-        }
-    };
 
     return (
         <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 font-sans relative selection:bg-indigo-100 selection:text-indigo-900">
@@ -388,20 +382,21 @@ export default function HomeClient({ locale, latestPosts }: { locale: string; la
                                 <RevealItem key={i}>
                                 <article
                                     data-spotlight
-                                    role="button"
-                                    tabIndex={0}
                                     aria-labelledby={`project-title-${i}`}
-                                    onClick={() => openProject(project)}
-                                    onKeyDown={(e) => onProjectKeyDown(e, project)}
-                                    className="group bg-white dark:bg-slate-900 rounded-[2rem] p-6 md:p-8 border border-white dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300 overflow-hidden relative cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                                    className="group bg-white dark:bg-slate-900 rounded-[2rem] p-6 md:p-8 border border-white dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300 overflow-hidden relative cursor-pointer focus-within:ring-2 focus-within:ring-indigo-500"
                                 >
                                     
                                     <div className="flex justify-between items-start mb-4">
-                                        <h3 id={`project-title-${i}`} className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{project.title}</h3>
+                                        <h3 id={`project-title-${i}`} className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                            {/* Covers the whole card (after:inset-0): the card stays clickable without nesting links in a button. */}
+                                            <button type="button" onClick={() => openProject(project)} className="text-left after:absolute after:inset-0 after:rounded-[2rem] focus:outline-none">
+                                                {project.title}
+                                            </button>
+                                        </h3>
                                         <div className="flex gap-2">
                                             {project.links.map((link, k) => (
                                                 <div key={k} onClick={(e) => e.stopPropagation()} className="contents">
-                                                    <a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} : ${link.type}`} className="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-400 hover:bg-indigo-100 hover:text-indigo-600 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-400 transition-colors">
+                                                    <a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} : ${link.type}`} className="relative z-10 p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-400 hover:bg-indigo-100 hover:text-indigo-600 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-400 transition-colors">
                                                         {link.type.includes("Github") ? <Github size={16} /> : <ExternalLink size={16} />}
                                                     </a>
                                                 </div>
