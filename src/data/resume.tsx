@@ -588,8 +588,10 @@ export function getData(locale: "en" | "fr" = "fr") {
           "Vite",
           "TailwindCSS",
           "Zustand",
+          "Node.js",
           "Express",
           "OpenRouter",
+          "MCP",
         ],
         images: [
           "/projects/agent-os/chat-agent.jpg",
@@ -597,6 +599,30 @@ export function getData(locale: "en" | "fr" = "fr") {
           "/projects/agent-os/mobile.jpg",
         ],
         links: [],
+      },
+      {
+        title: "Marie-Antoine",
+        description: t.sections.projects.marieAntoine.description,
+        overview: t.sections.projects.marieAntoine.overview,
+        features: t.sections.projects.marieAntoine.features,
+        challenges: t.sections.projects.marieAntoine.challenges,
+        conclusion: t.sections.projects.marieAntoine.conclusion,
+        href: "https://marie-antoine.jlgouaho.com",
+        dates: "2026",
+        active: true,
+        technologies: ["React", "TypeScript", "Vite", "React Router", "GSAP"],
+        images: [
+          "/projects/marie-antoine/accueil.jpg",
+          "/projects/marie-antoine/art-de-recevoir.jpg",
+          "/projects/marie-antoine/artizan.jpg",
+        ],
+        links: [
+          {
+            type: "Website",
+            href: "https://marie-antoine.jlgouaho.com",
+            icon: <Icons.globe className="size-3" />,
+          },
+        ],
       },
       {
         title: "Portfolio",

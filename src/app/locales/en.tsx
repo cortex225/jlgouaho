@@ -585,39 +585,82 @@ const translations: Translations = {
       },
       agentOs: {
         description:
-          "A dashboard where a solopreneur works with a team of 6 specialized AI agents, organized by project.",
+          "A dashboard where a solopreneur runs 6 specialized AI agents, with a model router that enforces a monthly budget.",
         overview:
-          "AgentOS pairs a solopreneur with six AI agents (community, tech, strategy, support, sales, art direction). Each project has its own context and knowledge base, injected into the prompts of the relevant agents. Calls go through OpenRouter, or straight to OpenAI and Gemini with your own key.",
+          "AgentOS pairs a solopreneur with six AI agents (community, tech, strategy, support, sales, art direction), organized by project. The React front end talks to an Express server that acts as the single gateway to OpenRouter, OpenAI and Gemini: it picks the model, streams the reply over SSE and books the cost of every call. API keys never leave the server.",
         features: `
           <ul class="list-disc pl-4 space-y-1">
-            <li>6 agents, each with a persona and suggested prompts</li>
-            <li>Workspaces with context injected into the system prompt</li>
-            <li>Separate history per project and per agent</li>
-            <li>Knowledge base (guidelines, links, files) assignable per agent</li>
-            <li>Council: ask several agents the same question in parallel</li>
-            <li>Command palette, @mentions, slash commands, streamed replies</li>
+            <li>Server-side model router: quality tiers, fallback models, and a request flagged as sensitive is never sent to a free model</li>
+            <li>Monthly dollar budget kept in a ledger: degraded mode at 80%, paid models cut off at the cap, cost computed from the real usage returned by the provider</li>
+            <li>Routing logic written as pure functions (plan, route, budget, settle) and covered by unit tests</li>
+            <li>System prompt built on every call: persona, project context and a per-agent filtered knowledge base, capped at about 1,500 tokens</li>
+            <li>Prompt caching (cache_control) on the stable part of the system prompt to cut the cost of repeated calls</li>
+            <li>MCP servers enabled per agent, Council (one question to several agents in parallel), command palette, @mentions and slash commands</li>
+            <li>Zustand state persisted with a versioned schema and migrations (version 10)</li>
           </ul>
         `,
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">Reliable LLM calls</h5>
+              <h5 class="font-medium">Keeping a budget without breaking the experience</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
-                <span class="font-semibold">Problem:</span> Providers return 429 and 5xx errors under load.<br>
-                <span class="font-semibold">Solution:</span> Retries with exponential backoff (1, 2, 4 then 8 s) before giving up.
+                <span class="font-semibold">Problem:</span> Paid models get expensive when agents and scheduled tasks keep running.<br>
+                <span class="font-semibold">Solution:</span> Every reply is settled at its real cost in a monthly ledger; at 80% of the cap the router switches to degraded mode, and at the cap it refuses paid models with a clear 402 error.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">The right context for each agent</h5>
+              <h5 class="font-medium">Useful context without blowing up tokens</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
-                <span class="font-semibold">Problem:</span> Sending the whole knowledge base to every agent is costly and muddies answers.<br>
-                <span class="font-semibold">Solution:</span> The system prompt is built on each call: persona, project context and only the items assigned to that agent.
+                <span class="font-semibold">Problem:</span> Injecting the whole knowledge base into every prompt is costly and muddies answers.<br>
+                <span class="font-semibold">Solution:</span> Only items assigned to the agent are kept, sorted by recency, truncated past 2,000 characters and cut to a global budget; the stable prompt is cached.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">Reliable calls</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> Providers return 429 and 5xx errors under load.<br>
+                <span class="font-semibold">Solution:</span> Retries with exponential backoff (1, 2, 4 then 8 s) and fallback models defined by the router.
               </p>
             </div>
           </div>
         `,
         conclusion:
-          "AgentOS let me work on orchestrating several models, SSE streaming and context management in a dense interface.",
+          "AgentOS shows how I build an AI product: a server gateway that keeps the keys, picks the model and controls the bill, and business logic that is testable apart from the UI.",
+      },
+      marieAntoine: {
+        description:
+          "The site of Marie-Antoine Aka, private chef and creator in Montreal: her portfolio, her Art de recevoir house and her Artizan studio.",
+        overview:
+          "A showcase site built for a client that brings together three activities: her personal portfolio, Art de recevoir (private chef, tables and receptions) and Artizan (photography, video and art direction). It uses Vite, React and React Router, prerendered to static HTML: the build outputs eleven complete pages served from the CDN with no server at all.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Eleven pages prerendered to static HTML, indexable without JavaScript</li>
+            <li>Per-page title, description, share image and JSON-LD structured data</li>
+            <li>Self-hosted, pinned fonts: the build makes no network calls</li>
+            <li>Three distinct visual worlds on one site, animated with GSAP</li>
+            <li>Sitemap and llms.txt file for search engines</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">A fast, well-indexed site with no server</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> The content never changes, but every page needs to be indexed with its own metadata.<br>
+                <span class="font-semibold">Solution:</span> A prerender script runs the server render of each route at build time and writes a complete HTML page, with its head and structured data.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">A deployment that doesn't break</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problem:</span> The Vercel project had been created with the Next.js preset, which failed on a Vite repository.<br>
+                <span class="font-semibold">Solution:</span> vercel.json explicitly sets the framework, commands and output directory, which take precedence over the dashboard.
+              </p>
+            </div>
+          </div>
+        `,
+        conclusion:
+          "A client project with a simple constraint: a fast, good-looking, well-indexed site with no server to maintain.",
       },
       maCiv: {
         description:

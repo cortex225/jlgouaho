@@ -224,6 +224,13 @@ export type Translations = {
         challenges: string;
         conclusion: string;
       };
+      marieAntoine: {
+        description: string;
+        overview: string;
+        features: string;
+        challenges: string;
+        conclusion: string;
+      };
       maCiv: {
         description: string;
         overview: string;
