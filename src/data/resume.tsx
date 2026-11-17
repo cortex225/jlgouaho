@@ -211,7 +211,7 @@ export function getData(locale: "en" | "fr" = "fr") {
     work: [
       {
         company: t.sections.work.evnia.company,
-        href: "https://evnia.ca/", // Assuming URL, I'll add this placeholder or just check it. Evnia.ca seems likely for a Montreal firm.
+        href: "https://evnia.ca/", // URL non vérifiée
         badges: [],
         location: "Montreal, QC",
         title: t.sections.work.evnia.title,
@@ -724,34 +724,6 @@ export function getData(locale: "en" | "fr" = "fr") {
             icon: <Icons.globe className="size-3" />,
           },
         ],
-      },
-    ],
-    testimonials: [
-      {
-        quote: {
-          fr: "Jean-Luc a livré un travail remarquable chez Royal Broker. Il a pris ownership du CRM InstaHR de A à Z, migré notre infrastructure Azure en réduisant les coûts de 78%, et construit un ATS Python qui trie des milliers de CVs en quelques secondes. C'est le genre de développeur qui comprend les enjeux business autant que les enjeux techniques.",
-          en: "Jean-Luc delivered remarkable work at Royal Broker. He took full ownership of the InstaHR CRM from A to Z, migrated our Azure infrastructure reducing costs by 78%, and built a Python ATS that sorts thousands of resumes in seconds. He's the kind of developer who understands business challenges as much as technical ones.",
-        },
-        author: "Pierre-Alexandre Martin",
-        role: {
-          fr: "Directeur des Opérations",
-          en: "Director of Operations",
-        },
-        company: "Royal Broker Solutions",
-        avatar: "/royal.png",
-      },
-      {
-        quote: {
-          fr: "Jean-Luc a rejoint Traction DK comme développeur et a immédiatement apporté une vraie valeur. Il s'est intégré rapidement dans notre stack Groovy/Grails, a corrigé des bugs critiques et amélioré les performances de notre CRM automobile. Son instinct DevOps et sa rigueur sur le CI/CD ont été un vrai plus pour l'équipe.",
-          en: "Jean-Luc joined Traction DK as a developer and immediately added real value. He integrated quickly into our Groovy/Grails stack, fixed critical bugs and improved the performance of our automotive CRM. His DevOps instinct and rigor on CI/CD were a real asset for the team.",
-        },
-        author: "Sophie Tremblay",
-        role: {
-          fr: "Chef de Projet",
-          en: "Project Lead",
-        },
-        company: "Traction DK",
-        avatar: "/traction.jpeg",
       },
     ],
     availability: {

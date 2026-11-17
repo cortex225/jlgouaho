@@ -1,14 +1,14 @@
 ---
 title: "Comment j'ai réduit les coûts Azure de 78% chez Royal Broker"
 publishedAt: "2025-01-15"
-summary: "Retour d'expérience concret sur la migration cloud que j'ai menée chez Royal Broker : de 600$/mois à 135$/mois, en 3 mois. Analyse de l'architecture, des erreurs à éviter et des décisions qui ont tout changé."
+summary: "Retour d'expérience concret sur la migration cloud que j'ai menée chez Royal Broker : de 600$/mois à 135$/mois, en 3 mois. Analyse de l'architecture, des erreurs à éviter et des décisions de migration."
 image: "/blog/azure-cost.png"
 tags: ["Azure", "Cloud", "FinOps", "Serverless", ".NET"]
 ---
 
 En août 2022, je rejoins Royal Broker Solutions en stage. Six mois plus tard, je suis embauché à temps plein avec pour mission principale : reprendre et optimiser notre plateforme SaaS interne, **InstaHR**.
 
-Le problème ? On payait **600$/mois** sur Azure pour une application utilisée par une trentaine de personnes. C'était aberrant.
+Le problème : on payait **600$/mois** sur Azure pour une application utilisée par une trentaine de personnes. C'était aberrant.
 
 Voici exactement comment on est passé à **135$/mois**.
 
@@ -37,7 +37,7 @@ Plusieurs constats immédiats :
 
 ---
 
-## L'approche : Right-sizing + Architecture Serverless
+## L'approche : right-sizing + architecture serverless
 
 ### Étape 1 : Analyser la charge réelle
 
@@ -143,7 +143,7 @@ Azure facture la bande passante sortante. En déplaçant le stockage dans la mê
 
 ## Ce que cette expérience m'a appris
 
-Le cloud est puissant mais dangereux si on n'y fait pas attention. Les fournisseurs rendent le "provisioning" trop facile : un clic et vous avez une machine à 300$/mois.
+Les fournisseurs rendent le "provisioning" trop facile : un clic et vous avez une machine à 300$/mois.
 
 Les pratiques qui ont le plus d'impact :
 - **Instrumenter avant d'optimiser** : les métriques justifient les décisions

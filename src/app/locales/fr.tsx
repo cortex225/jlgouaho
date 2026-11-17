@@ -22,7 +22,7 @@ const translations: Translations = {
     homeTitle:
       "Déto Jean-Luc Gouaho : Développeur Full-Stack Cloud & Azure au Québec",
     homeDescription:
-      "Développeur Full-Stack .NET, Vue.js, Next.js & Azure. +3 ans d'expérience, réduction de 78% des coûts cloud, ATS Python traitant 4000+ CV/s. Disponible pour opportunités au Canada.",
+      "Développeur Full-Stack .NET, Vue.js, Next.js & Azure. {years}+ ans d'expérience, réduction de 78% des coûts cloud, ATS Python triant 4000+ CV en quelques secondes. Disponible pour opportunités au Canada.",
     projectsTitle: "Projets : Portfolio de Jean-Luc Gouaho",
     projectsDescription:
       "Collection de projets full-stack : CRM SaaS, ATS IA, plateforme e-commerce, automatisations DevOps. Stack : Next.js, .NET, Vue.js, Azure, PostgreSQL, OpenAI.",
@@ -34,7 +34,7 @@ const translations: Translations = {
     greeting: "Bonjour, je suis",
     title: "Développeur Full-Stack | Spécialiste en Cloud & Automatisation",
     status: "À l'écoute d'opportunités",
-    techStack: "Stack Technique",
+    techStack: "Stack technique",
   },
   nav: {
     home: "Profil",
@@ -46,28 +46,28 @@ const translations: Translations = {
   highlights: {
     title: "En bref",
     items: [
-      { value: "3+", label: "ans d'expérience full-stack" },
-      { value: "-78 %", label: "de coûts Azure chez Royal Broker" },
+      { value: "{years}+", label: "ans d'expérience full-stack" },
+      { value: "-78%", label: "de coûts Azure chez Royal Broker" },
       { value: "4000+", label: "CV triés en secondes par mon ATS Python" },
       { value: "10+", label: "projets livrés (SaaS, mobile, IA)" },
     ],
   },
   common: {
     overview: "Aperçu",
-    features: "Fonctionnalités Clés",
-    challenges: "Défis & Solutions",
+    features: "Fonctionnalités clés",
+    challenges: "Défis & solutions",
     conclusion: "Conclusion",
     gallery: "Galerie",
     noLinks: "Aucun lien externe disponible.",
     technologies: "Technologies",
     email: "Courriel",
     connect: "Connecter",
-    viewAllProjects: "Voir Tous les Projets",
-    getInTouch: "Me Contacter",
+    viewAllProjects: "Voir tous les projets",
+    getInTouch: "Me contacter",
     allRightsReserved: "Tous droits réservés.",
     scanToContact: "Scanner pour me contacter",
     close: "Fermer",
-    backToProfile: "Retour au Profil",
+    backToProfile: "Retour au profil",
     inProgress: "En cours",
     showMore: "Voir plus",
     showLess: "Voir moins",
@@ -87,11 +87,11 @@ const translations: Translations = {
     viewProfile: "Voir mon profil",
   },
   projectsPage: {
-    allProjects: "Tous les Projets",
-    description: "Une collection complète de mes travaux, expérimentations et contributions open source.",
+    allProjects: "Tous les projets",
+    description: "Mes travaux, expérimentations et contributions open source.",
     haveIdea: "Vous avez une idée de projet ?",
     letsDiscuss: "Discutons-en",
-    backToProfile: "Retour au Profil",
+    backToProfile: "Retour au profil",
     filterAll: "Tous",
   },
   sections: {
@@ -117,7 +117,7 @@ const translations: Translations = {
         {
           question: "Êtes-vous disponible pour des projets freelance ?",
           answer:
-            "Oui. J'accepte les missions de développement full-stack, d'optimisation cloud Azure, d'automatisation de processus métier et de développement d'applications SaaS. Réponse garantie sous 24 h.",
+            "Oui. J'accepte les missions de développement full-stack, d'optimisation cloud Azure, d'automatisation de processus métier et de développement d'applications SaaS. Je réponds en général sous 24 h.",
         },
         {
           question: "Où êtes-vous basé et dans quelles langues travaillez-vous ?",
@@ -141,9 +141,6 @@ const translations: Translations = {
       modes: "Télétravail · Hybride",
       languages: "Français (natif) · Anglais (avancé)",
     },
-    testimonials: {
-      title: "Recommandations",
-    },
     currently: {
       title: "En ce moment",
       certificationLabel: "Certifications en cours",
@@ -151,7 +148,7 @@ const translations: Translations = {
       readingLabel: "Ce que je lis",
     },
     contactForm: {
-      title: "Travaillons Ensemble",
+      title: "Travaillons ensemble",
       subtitle: "Décrivez votre projet ou opportunité, je réponds sous 24h.",
       namePlaceholder: "Votre nom",
       emailPlaceholder: "votre@email.com",
@@ -162,7 +159,7 @@ const translations: Translations = {
     about: {
       title: "À propos de moi",
       description:
-        "Développeur Full-Stack avec une solide expérience en .NET, Vue.js et Azure, et une forte appétence pour le cloud computing, DevOps et l'automatisation. Engagé dans l'optimisation des performances et la scalabilité des applications, j'ai contribué à des solutions permettant de réduire les coûts cloud et d'améliorer l'efficacité des déploiements.\n\nActuellement en formation pour des certifications Microsoft (AZ-900 et AI-900), je continue d'affiner mes compétences afin d'apporter des solutions toujours plus innovantes et adaptées aux enjeux du marché.",
+        "Développeur Full-Stack avec une solide expérience en .NET, Vue.js et Azure, et une forte appétence pour le cloud computing, DevOps et l'automatisation. Attentif aux performances et à la scalabilité des applications, j'ai contribué à des solutions permettant de réduire les coûts cloud et d'améliorer l'efficacité des déploiements.\n\nJe prépare actuellement les certifications Microsoft AZ-900 et AI-900.",
     },
     work: {
       title: "Expérience professionnelle",
@@ -181,8 +178,8 @@ const translations: Translations = {
       evnia: {
         description: `
           <ul class="list-disc pl-4 space-y-1">
-            <li><strong>Développement d'applications Low-code</strong> : Amélioration et personnalisation de l'application avec <strong>Caspio</strong> en utilisant <strong>JavaScript, HTML, CSS</strong> et l'intégration d'<strong>API Rest</strong> pour optimiser les fonctionnalités de <strong>Power Automate</strong> pour l'automatisation.</li>
-            <li><strong>Collaboration et résolution de problèmes</strong> : Travail en équipe pour analyser les besoins, identifier et mettre en œuvre des solutions appropriées et innovantes.</li>
+            <li><strong>Développement d'applications low-code</strong> : Amélioration et personnalisation de l'application avec <strong>Caspio</strong> en utilisant <strong>JavaScript, HTML, CSS</strong> et l'intégration d'<strong>API REST</strong> pour optimiser les fonctionnalités de <strong>Power Automate</strong> pour l'automatisation.</li>
+            <li><strong>Collaboration et résolution de problèmes</strong> : Travail en équipe pour analyser les besoins, identifier et mettre en œuvre des solutions.</li>
             <li><strong>Stratégie durable</strong> : Proposition d'idées et implication dans la définition d'objectifs sociaux et environnementaux visant à réduire l'impact de l'entreprise.</li>
           </ul>
         `,
@@ -209,7 +206,6 @@ const translations: Translations = {
         description: `
           <ul class="list-disc pl-4 space-y-1">
             <li><strong>Développement de sites d'estimation de valeur-crédit</strong> en PHP et WordPress.</li>
-            <li><strong>Apprentissage pratique</strong> et implémentation de solutions optimisées.</li>
             <li><strong>Embauché</strong> à la suite du stage grâce aux performances démontrées.</li>
           </ul>
         `,
@@ -252,7 +248,7 @@ const translations: Translations = {
       subtitle: "Découvrez mes derniers travaux",
       description:
         "J'ai travaillé sur divers projets, des sites web simples aux applications web complexes. Voici quelques-uns de mes favoris.",
-      badge: "Mes Projets",
+      badge: "Mes projets",
       instaHR: {
         description:
           "Un CRM SaaS pour la gestion des ressources humaines lorsque j'ai commencé à travailler chez Royal Broker.",
@@ -273,18 +269,18 @@ const translations: Translations = {
     <!-- Intégration de PrimeVue -->
     <div class="space-y-1">
       <h5 class="font-semibold text-lg flex items-center gap-2">
-        🚀 Intégration de PrimeVue dans des vues Razor (.cshtml)
+        Intégration de PrimeVue dans des vues Razor (.cshtml)
       </h5>
       <p class="text-neutral-700 dark:text-neutral-300">
         <span class="font-semibold">Problème :</span> Difficulté à utiliser les composants de PrimeVue directement dans les fichiers .cshtml d’ASP.NET.<br>
-        <span class="font-semibold">Solution :</span> Mise en place d’un serveur <span class="font-semibold text-blue-500">Vite ⚡</span> pour charger Vue comme un microfrontend, permettant une compatibilité optimale avec Razor.
+        <span class="font-semibold">Solution :</span> Mise en place d’un serveur <span class="font-semibold text-blue-500">Vite</span> pour charger Vue comme un microfrontend dans les vues Razor.
       </p>
     </div>
 
     <!-- Intégration des paiements -->
     <div class="space-y-1">
       <h5 class="font-semibold text-lg flex items-center gap-2">
-        💳 Intégration des paiements avec Stripe et Zoho
+        Intégration des paiements avec Stripe et Zoho
       </h5>
       <p class="text-neutral-700 dark:text-neutral-300">
         <span class="font-semibold">Problème :</span> Besoin d’une solution sécurisée et évolutive pour gérer les paiements des employés.<br>
@@ -295,7 +291,7 @@ const translations: Translations = {
     <!-- Réduction des coûts cloud -->
     <div class="space-y-1">
       <h5 class="font-semibold text-lg flex items-center gap-2">
-        ☁️ Optimisation des coûts cloud
+        Optimisation des coûts cloud
       </h5>
       <p class="text-neutral-700 dark:text-neutral-300">
         <span class="font-semibold">Problème :</span> Coûts élevés sur le cloud avec une incertitude sur le service optimal (Azure, AWS, GCP).<br>
@@ -309,36 +305,36 @@ const translations: Translations = {
       },
       playerConnect: {
         description:
-          "La plateforme qui connecte les joueurs de basketball avec les recruteurs et entraîneurs. 📊🏀",
+          "La plateforme qui connecte les joueurs de basketball avec les recruteurs et entraîneurs.",
         overview:
           "PlayerConnect est une plateforme qui connecte les joueurs de basketball avec les recruteurs et les entraîneurs. Elle permet aux joueurs de mettre en avant leurs performances, aux recruteurs d’accéder à des profils détaillés, et aux entraîneurs d’organiser plus efficacement le suivi de leurs équipes.",
         features: `
           <ul class="list-disc pl-4 space-y-1">
-            <li>Profils de joueurs détaillés avec statistiques et vidéos 📊🎥</li>
-            <li>Système de matchmaking entre recruteurs et joueurs 🏀🔍</li>
-            <li>Calendrier interactif des matchs et événements 📅</li>
-            <li>Notifications en temps réel pour les recruteurs et joueurs 📢</li>
-            <li>Système de messagerie intégrée pour faciliter les échanges 💬</li>
+            <li>Profils de joueurs détaillés avec statistiques et vidéos</li>
+            <li>Système de matchmaking entre recruteurs et joueurs</li>
+            <li>Calendrier interactif des matchs et événements</li>
+            <li>Notifications en temps réel pour les recruteurs et joueurs</li>
+            <li>Système de messagerie intégrée pour faciliter les échanges</li>
           </ul>
         `,
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">🔹Analyse automatique des performances</h5>
+              <h5 class="font-medium">Analyse automatique des performances</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> Transformer des vidéos de matchs en insights exploitables.<br>
                 <span class="font-semibold">Solution :</span> Intégration de l’IA avec OpenAI API pour extraire des statistiques clés à partir des vidéos.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">🔹 Engagement et visibilité des joueurs</h5>
+              <h5 class="font-medium">Engagement et visibilité des joueurs</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                <span class="font-semibold"> Problème :</span> Aider les joueurs à maximiser leur exposition aux recruteurs.<br>
                 <span class="font-semibold">Solution :</span> Mise en place d’un système de profil optimisé, avec des recommandations basées sur les performances et un algorithme de matchmaking avancé.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">🔹Expérience utilisateur et performance</h5>
+              <h5 class="font-medium">Expérience utilisateur et performance</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                <span class="font-semibold">  Problème :</span> Garantir une navigation fluide malgré l’utilisation de vidéos et de données en temps réel.<br>
                 <span class="font-semibold">Solution :</span> Optimisation du frontend avec Next.js, utilisation de WebSockets pour la communication en temps réel, et hébergement optimisé sur Vercel et Firebase.
@@ -347,11 +343,11 @@ const translations: Translations = {
           </div>
         `,
         conclusion:
-          "PlayerConnect est une plateforme innovante qui révolutionne le recrutement sportif en connectant directement les joueurs avec les recruteurs et entraîneurs. Grâce à l’intelligence artificielle et à l’analyse de performances, elle offre une opportunité unique aux talents de se démarquer et d’accéder à de nouvelles opportunités.",
+          "PlayerConnect met directement en relation les joueurs avec les recruteurs et les entraîneurs. L’intelligence artificielle et l’analyse de performances aident les joueurs à se démarquer.",
       },
       recruitEase: {
         description:
-          "Une plateforme de recrutement innovante qui utilise l'IA pour automatiser et optimiser le processus de recrutement.",
+          "Une plateforme de recrutement qui utilise l'IA pour automatiser et optimiser le processus de recrutement.",
         overview:
           "RecruitEase simplifie le recrutement en automatisant l'analyse des CV, la présélection des candidats et la gestion des entretiens.",
         features: `
@@ -379,13 +375,13 @@ const translations: Translations = {
           </div>
         `,
         conclusion:
-          "RecruitEase démontre comment l'IA peut transformer le recrutement en le rendant plus efficace et objectif.",
+          "RecruitEase utilise l'IA pour rendre le recrutement plus efficace et plus objectif.",
       },
       magicSearch: {
         description:
-          "Un moteur de recherche hybride magnifiquement conçu qui améliore la précision des recherches en interrogeant des résultats sémantiquement liés.",
+          "Un moteur de recherche hybride qui améliore la précision des recherches en interrogeant des résultats sémantiquement liés.",
         overview:
-          "MagicSearch est un moteur de recherche qui exploite la compréhension sémantique pour fournir des résultats plus précis et contextuels. Il est conçu pour les utilisateurs qui souhaitent des expériences de recherche plus rapides, plus intelligentes et plus significatives.",
+          "MagicSearch est un moteur de recherche qui exploite la compréhension sémantique pour fournir des résultats plus précis et contextuels.",
         features: `
           <ul class="list-disc pl-4 space-y-1">
             <li>Recherche sémantique alimentée par les embeddings OpenAI</li>
@@ -411,7 +407,7 @@ const translations: Translations = {
           </div>
         `,
         conclusion:
-          "La construction de MagicSearch a été une expérience enrichissante qui a amélioré ma compréhension des algorithmes de recherche et de l'optimisation frontend/backend. Cela m'a appris à équilibrer l'expérience utilisateur avec les performances.",
+          "MagicSearch m'a fait progresser en algorithmes de recherche et en optimisation frontend/backend. Il m'a appris à équilibrer l'expérience utilisateur avec les performances.",
       },
       leadMapper: {
         description:
@@ -431,21 +427,21 @@ const translations: Translations = {
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">🔹 Analyse DOM Dynamique</h5>
+              <h5 class="font-medium">Analyse DOM dynamique</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> Google Maps utilise un chargement de contenu dynamique avec des structures imbriquées complexes.<br>
                 <span class="font-semibold">Solution :</span> Implémentation de MutationObserver pour détecter les changements DOM et des sélecteurs robustes pour gérer les mises à jour fréquentes de l'interface Google.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">🔹 Précision de l'Extraction</h5>
+              <h5 class="font-medium">Précision de l'extraction</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> Toutes les entreprises n'affichent pas leurs coordonnées complètes.<br>
                 <span class="font-semibold">Solution :</span> Implémentation d'un scraping intelligent qui navigue vers les pages de détails pour trouver les courriels et contacts cachés.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">🔹 Expérience Utilisateur</h5>
+              <h5 class="font-medium">Expérience utilisateur</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> Rendre l'outil intuitif pour les freelances non-techniques.<br>
                 <span class="font-semibold">Solution :</span> Conception d'une interface épurée avec des indicateurs de progression clairs et une fonctionnalité d'export en un clic.
@@ -460,7 +456,7 @@ const translations: Translations = {
         description:
           "Mon site portfolio personnel construit avec Next.js 14, avec support i18n et un design moderne et responsive.",
         overview:
-          "Ce portfolio présente mes projets, compétences et expérience professionnelle. Construit avec des technologies modernes, il offre une internationalisation complète (anglais/français), un mode sombre et des animations fluides pour une expérience utilisateur engageante.",
+          "Ce portfolio présente mes projets, compétences et expérience professionnelle. Il propose une internationalisation complète (anglais/français), un mode sombre et des animations fluides.",
         features: `
           <ul class="list-disc pl-4 space-y-1">
             <li>Support bilingue (EN/FR) avec changement de langue fluide</li>
@@ -475,21 +471,21 @@ const translations: Translations = {
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">🌐 Architecture d'Internationalisation</h5>
+              <h5 class="font-medium">Architecture d'internationalisation</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> Gérer les traductions tout en maintenant la sécurité des types et une bonne DX.<br>
                 <span class="font-semibold">Solution :</span> Création d'un système de traduction typé avec TypeScript assurant la validation à la compilation de toutes les clés de traduction.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">🎨 Cohérence du Design System</h5>
+              <h5 class="font-medium">Cohérence du design system</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> Maintenir la cohérence visuelle entre les modes clair/sombre.<br>
                 <span class="font-semibold">Solution :</span> Utilisation de Tailwind CSS avec des variables CSS personnalisées et des composants Shadcn UI pour un design system cohérent.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">⚡ Optimisation des Performances</h5>
+              <h5 class="font-medium">Optimisation des performances</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> Équilibrer les animations riches avec des temps de chargement rapides.<br>
                 <span class="font-semibold">Solution :</span> Implémentation du lazy loading, optimisation des images et utilisation du réseau edge de Vercel pour une livraison optimale.
@@ -498,13 +494,13 @@ const translations: Translations = {
           </div>
         `,
         conclusion:
-          "Construire ce portfolio a été l'occasion de montrer mes capacités full-stack tout en expérimentant les dernières fonctionnalités de Next.js. Il sert à la fois de vitrine professionnelle et de témoignage de mon attention aux détails et ma sensibilité au design.",
+          "Construire ce portfolio m'a permis de mettre en pratique mes compétences full-stack et d'expérimenter les dernières fonctionnalités de Next.js. Il me sert aussi de vitrine professionnelle.",
       },
       budgetBuddy: {
         description:
-          "Une application intelligente de gestion de finances personnelles qui aide les utilisateurs à suivre leurs dépenses, définir des budgets et atteindre leurs objectifs financiers.",
+          "Une application de gestion de finances personnelles qui aide les utilisateurs à suivre leurs dépenses, définir des budgets et atteindre leurs objectifs financiers.",
         overview:
-          "Budget Buddy est une application complète de finances personnelles conçue pour aider les utilisateurs à prendre le contrôle de leur argent. Elle offre un suivi intuitif des dépenses, la création de budgets et des analyses perspicaces pour promouvoir de meilleures habitudes financières.",
+          "Budget Buddy est une application de finances personnelles. Elle permet de suivre ses dépenses, de créer des budgets et de consulter des analyses pour adopter de meilleures habitudes financières.",
         features: `
           <ul class="list-disc pl-4 space-y-1">
             <li>Suivi des dépenses avec classification par catégorie</li>
@@ -519,21 +515,21 @@ const translations: Translations = {
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">💰 Calculs de Budget en Temps Réel</h5>
+              <h5 class="font-medium">Calculs de budget en temps réel</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> Assurer un suivi précis du budget avec des mises à jour en temps réel entre les catégories.<br>
                 <span class="font-semibold">Solution :</span> Implémentation d'une gestion d'état réactive avec mises à jour optimistes et synchronisation en arrière-plan.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">📊 Visualisation des Données</h5>
+              <h5 class="font-medium">Visualisation des données</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> Présenter des données financières complexes de manière compréhensible.<br>
                 <span class="font-semibold">Solution :</span> Création de composants graphiques personnalisés avec infobulles interactives et capacités d'exploration détaillée.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">🔒 Sécurité des Données</h5>
+              <h5 class="font-medium">Sécurité des données</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> Protéger les informations financières sensibles.<br>
                 <span class="font-semibold">Solution :</span> Implémentation du chiffrement de bout en bout et authentification sécurisée avec support multi-facteurs.
@@ -563,21 +559,21 @@ const translations: Translations = {
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">🎨 Identité Visuelle</h5>
+              <h5 class="font-medium">Identité visuelle</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> Créer un design qui inspire confiance tout en restant chaleureux et accueillant.<br>
                 <span class="font-semibold">Solution :</span> Utilisation d'une palette de couleurs apaisantes et d'images professionnelles mettant en valeur le soin apporté aux animaux.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">📱 Expérience Mobile</h5>
+              <h5 class="font-medium">Expérience mobile</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> Assurer une navigation fluide sur mobile pour les clients pressés.<br>
                 <span class="font-semibold">Solution :</span> Design mobile-first avec boutons d'appel à l'action clairs et formulaire de contact accessible.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">⚡ Performance & SEO</h5>
+              <h5 class="font-medium">Performance & SEO</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> Améliorer la visibilité locale de la clinique sur les moteurs de recherche.<br>
                 <span class="font-semibold">Solution :</span> Optimisation des images, métadonnées structurées et contenu optimisé pour le référencement local.
@@ -604,14 +600,14 @@ const translations: Translations = {
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">🎨 Conception Responsive sans Framework</h5>
+              <h5 class="font-medium">Conception responsive sans framework</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> Créer un design immersif et structuré sans utiliser d'outils comme Bootstrap ou Tailwind.<br>
-                <span class="font-semibold">Solution :</span> Utilisation avancée de CSS Grid et Flexbox avec une attention particulière portée aux media queries pour assurer une lisibilité parfaite sur mobile.
+                <span class="font-semibold">Solution :</span> Utilisation avancée de CSS Grid et Flexbox avec une attention particulière portée aux media queries pour assurer une bonne lisibilité sur mobile.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">⚡ Optimisation des Médias Visuels</h5>
+              <h5 class="font-medium">Optimisation des médias visuels</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> Présenter des images haute résolution du patrimoine sans ralentir le temps de chargement.<br>
                 <span class="font-semibold">Solution :</span> Optimisation et redimensionnement manuel des assets visuels pour garantir une navigation fluide tout en gardant des couleurs vibrantes.
@@ -624,9 +620,9 @@ const translations: Translations = {
       },
       virtualCardPro: {
         description:
-          "Une application de carte de visite numérique et portfolio professionnel - connectant le réseautage physique et digital avec des fonctionnalités intelligentes.",
+          "Une application de carte de visite numérique et portfolio professionnel - reliant le réseautage physique et numérique.",
         overview:
-          "Virtual Card Pro est une application de carte de visite numérique haute performance et entièrement responsive, construite avec les dernières technologies web. Elle permet aux professionnels de partager leurs informations de contact de manière moderne et élégante, tout en offrant des fonctionnalités avancées comme l'export vCard et l'intégration Google Wallet.",
+          "Virtual Card Pro est une application de carte de visite numérique entièrement responsive. Elle permet aux professionnels de partager leurs informations de contact, avec l'export vCard et l'intégration Google Wallet.",
         features: `
           <ul class="list-disc pl-4 space-y-1">
             <li>Design moderne et entièrement responsive</li>
@@ -642,21 +638,21 @@ const translations: Translations = {
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">📱 Compatibilité Cross-platform</h5>
+              <h5 class="font-medium">Compatibilité multiplateforme</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
-                <span class="font-semibold">Problème :</span> Assurer que la carte s'affiche parfaitement sur tous les appareils et navigateurs.<br>
+                <span class="font-semibold">Problème :</span> Assurer que la carte s'affiche correctement sur tous les appareils et navigateurs.<br>
                 <span class="font-semibold">Solution :</span> Utilisation de Tailwind CSS avec une approche mobile-first et tests extensifs sur différents appareils.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">📇 Génération vCard</h5>
+              <h5 class="font-medium">Génération vCard</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> Créer des fichiers vCard compatibles avec tous les gestionnaires de contacts.<br>
                 <span class="font-semibold">Solution :</span> Implémentation du standard vCard 3.0 avec encodage UTF-8 pour supporter les caractères spéciaux.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">🌐 Internationalisation</h5>
+              <h5 class="font-medium">Internationalisation</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> Supporter plusieurs langues tout en maintenant une UX fluide.<br>
                 <span class="font-semibold">Solution :</span> Système de traduction dynamique avec détection automatique de la langue du navigateur.
@@ -665,7 +661,7 @@ const translations: Translations = {
           </div>
         `,
         conclusion:
-          "Virtual Card Pro démontre comment une simple carte de visite peut être transformée en une expérience digitale riche et moderne. Ce projet m'a permis d'explorer les dernières fonctionnalités de React 19 et de créer une solution pratique pour le réseautage professionnel.",
+          "Virtual Card Pro transforme une carte de visite en application web. Ce projet m'a permis d'explorer les dernières fonctionnalités de React 19 et de créer une solution pratique pour le réseautage professionnel.",
       },
       spinVibe: {
         description:
@@ -687,21 +683,21 @@ const translations: Translations = {
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">🎡 Absorber la latence de l'IA dans le suspense</h5>
+              <h5 class="font-medium">Absorber la latence de l'IA dans le suspense</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> attendre 2 à 4 s après l'arrêt de la roue tuait l'effet.<br>
                 <span class="font-semibold">Solution :</span> le résultat est tiré dès le lancement et la requête part pendant la rotation ; un jeton de requête garantit qu'une réponse en retard n'écrase jamais un résultat plus récent.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">📴 Jamais d'écran vide</h5>
+              <h5 class="font-medium">Jamais d'écran vide</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> l'app devait fonctionner sans réseau, sans clé et sans backend déployé.<br>
                 <span class="font-semibold">Solution :</span> catalogue hors-ligne filtré par contexte social en repli systématique, Worker activé seulement si <code>EXPO_PUBLIC_API_URL</code> est défini, aucun secret dans le bundle.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">🔁 Du prototype « à deux » au produit « pour tous »</h5>
+              <h5 class="font-medium">Du prototype « à deux » au produit « pour tous »</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> DUO Roue supposait un couple partout dans le code et les textes.<br>
                 <span class="font-semibold">Solution :</span> le contexte social est devenu un invariant du produit : sélecteur global, catégories et prompts conditionnés, i18n FR/EN réécrit, et migration des données locales des premiers utilisateurs.
@@ -734,28 +730,28 @@ const translations: Translations = {
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">🧠 Robustesse des appels Gemini</h5>
+              <h5 class="font-medium">Robustesse des appels Gemini</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> erreurs 503/429 récurrentes lors des pics de charge.<br>
                 <span class="font-semibold">Solution :</span> wrapper <code>callWithRetry</code> avec backoff exponentiel et bascule automatique sur <code>gemini-2.5-flash-lite</code>. Le free tier de Gemini Image étant à 0 requête, l'image generation a été délégée à Cloudflare Workers AI (10k req/jour gratuites).
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">🎯 Garantir que l'IA ne hallucine pas d'exercices</h5>
+              <h5 class="font-medium">Garantir que l'IA ne hallucine pas d'exercices</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> Gemini inventait des exercices fictifs sans GIF ni muscles, cassant l'UX visuelle.<br>
                 <span class="font-semibold">Solution :</span> shortlist filtrée de 60 exos passée au prompt avec leurs IDs, <code>responseSchema</code> imposant un <code>exerciseId</code> obligatoire, et fuzzy-match par nom en garde-fou si Gemini invente quand même.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">🍽️ Images de recettes uniques</h5>
+              <h5 class="font-medium">Images de recettes uniques</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
-                <span class="font-semibold">Problème :</span> deux providers d'image se sont succédés. Pollinations renvoyait la même image pour les 5 recettes (seed string ignoré), puis Gemini Image gratuit a été coupé.<br>
+                <span class="font-semibold">Problème :</span> deux providers d'image se sont succédé. Pollinations renvoyait la même image pour les 5 recettes (seed string ignoré), puis Gemini Image gratuit a été coupé.<br>
                 <span class="font-semibold">Solution :</span> bascule sur Cloudflare FLUX-1-schnell avec data-URI base64 directe, prompt enrichi du nom de recette pour garantir l'unicité, fallback Pollinations conservé.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">📊 Spider chart SVG sans dépendance lourde</h5>
+              <h5 class="font-medium">Spider chart SVG sans dépendance lourde</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problème :</span> visualiser le volume d'entraînement par groupe musculaire avec filtres temporels.<br>
                 <span class="font-semibold">Solution :</span> composant SVG custom (react-native-svg) avec 8 axes regroupant les 17 muscles low-level, cercles concentriques et polygone rempli, ~120 lignes, zéro dépendance chart additionnelle.

@@ -1,45 +1,38 @@
+# jlgouaho
 
+Source of [jlgouaho.com](https://www.jlgouaho.com), the bilingual (FR/EN) portfolio and blog of Jean-Luc Gouaho.
 
-# Portfolio
+## Stack
 
-Built with next.js, [shadcn/ui](https://ui.shadcn.com/), and [magic ui](https://magicui.design/), deployed on Vercel.
+- Next.js 14 (App Router), React 18, TypeScript
+- Tailwind CSS, shadcn/ui, Framer Motion
+- next-international for the French and English routes
+- MDX blog posts in `content/`, rendered with unified and rehype-pretty-code
+- Deployed on Vercel
 
-# Features
+## Run locally
 
-- Setup only takes a few minutes by editing the [single config file](./src/data/resume.tsx)
-- Built using Next.js 14, React, Typescript, Shadcn/UI, TailwindCSS, Framer Motion, Magic UI
-- Includes a blog
-- Responsive for different devices
-- Optimized for Next.js and Vercel
+Requires Node.js and pnpm.
 
-# Getting Started Locally
+```bash
+pnpm install
+pnpm dev      # http://localhost:3000
+pnpm build    # production build
+pnpm start    # serve the build
+```
 
-1. Clone this repository to your local machine:
+No environment variables are needed to run the site.
 
-   ```bash
-   git clone https://github.com/dillionverma/portfolio
-   ```
+## Where the content lives
 
-2. Move to the cloned directory
+- `src/data/resume.tsx`: profile, work history, education, projects, links
+- `src/app/locales/fr.tsx` and `src/app/locales/en.tsx`: all translated text
+- `content/`: blog posts, one file per language (`<slug>.fr.mdx`, `<slug>.en.mdx`)
 
-   ```bash
-   cd jlgouaho
-   ```
+## Credits
 
-3. Install dependencies:
+Started from [Dillion Verma's portfolio template](https://github.com/dillionverma/portfolio).
 
-   ```bash
-   pnpm install
-   ```
+## License
 
-4. Start the local Server:
-
-   ```bash
-   pnpm dev
-   ```
-
-5. Open the [Config file](./src/data/resume.tsx) and make changes
-
-# License
-
-Licensed under the [MIT license](https://github.com/dillionverma/portfolio/blob/main/LICENSE.md).
+MIT, see [LICENSE](./LICENSE).

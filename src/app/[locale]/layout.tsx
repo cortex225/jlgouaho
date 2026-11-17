@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { getData } from "@/data/resume";
-import { cn } from "@/lib/utils";
+import { cn, withYears } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
@@ -25,6 +25,8 @@ export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }));
 }
 export const dynamicParams = false;
+// Rebuild daily so the computed years of experience stay current in metadata.
+export const revalidate = 86400;
 
 export const generateMetadata = ({
   params: { locale },
@@ -47,7 +49,7 @@ export const generateMetadata = ({
       default: t.seo.homeTitle,
       template: `%s | ${data.name}`,
     },
-    description: t.seo.homeDescription,
+    description: withYears(t.seo.homeDescription),
     applicationName: data.name,
     authors: [{ name: data.name, url: canonicalUrl }],
     creator: data.name,

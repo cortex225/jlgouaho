@@ -1,0 +1,128 @@
+---
+title: "How to find clients for your web design business: I built LeadMapper to spot local businesses without a website"
+publishedAt: "2026-11-16"
+summary: "How to find clients for a web design business: LeadMapper finds local businesses without a website, scores them out of 100 and tracks your outreach."
+image: "/blog/leadmapper-prospection.png"
+tags: ["Prospecting", "Web design", "LeadMapper", "Google Places", "React"]
+---
+
+If you run a small web design business, you already know how to build the site. The hard part is finding clients for it: a list of real businesses that need one and can pay for it.
+
+The usual approach is to open Google Maps, search for "barber" or "restaurant" and click through every listing to see who has a website. It works. It is also slow, and you end up with no record of who you already checked.
+
+So I built **LeadMapper**, a prospecting tool for designers and web agencies. One search finds the businesses in an area that have no website, scores each one out of 100 and keeps track of who you contacted.
+
+---
+
+## Find local businesses without a website, then filter out the bad leads
+
+A business with no website is not automatically a good lead. A shop that opened last month, with no reviews and no regulars, may not have the budget.
+
+What I wanted was the overlap of two things:
+
+- **need**: no website, or a trade where customers look things up online before they show up;
+- **ability to pay**: an established business with returning customers.
+
+Google Maps already carries both signals. The job was to read them automatically.
+
+---
+
+## What LeadMapper does
+
+You pick a trade and a city (the demo screens use barbers in Montreal) or use your GPS position with a radius between 1 and 20 km. The app queries Google Places and shows the results on a map and in a list at the same time. Select a business in one and it is highlighted in the other. Marker colors follow priority.
+
+Each detail panel shows the phone number, address, rating, review count and a breakdown of the score. I wanted the number to explain itself. Nobody trusts a score they cannot read.
+
+The rest is for day-to-day work:
+
+- Filters and sorting by priority, website presence, rating and review count. In Quebec City, for instance, you can keep only high-priority businesses with no website.
+- Outreach tracking, with a status per business (to contact, contacted, meeting, signed, dismissed) plus free-form notes, stored in the browser.
+- A CSV export that opens cleanly in Excel, accented characters included.
+- A demo mode with no Google key, using fictional businesses in Montreal, Quebec City, Laval, Sherbrooke and a few other cities. Results are deterministic, so the same search always returns the same list.
+
+---
+
+## How the score out of 100 works
+
+The whole thing lives in one function, `src/lib/scoring.ts`. The list, the map and the detail panel all read from it, so they never disagree.
+
+```ts
+const noWebsite = place.website ? 0 : 50;
+
+let rating = 0;
+if (place.rating === undefined) rating = 5;
+else if (place.rating >= 4.5) rating = 20;
+else if (place.rating >= 4.0) rating = 15;
+else if (place.rating >= 3.5) rating = 10;
+else if (place.rating >= 3.0) rating = 5;
+```
+
+The full scale:
+
+- **No website: +50.** The heaviest weight, because this is where the need comes from.
+- **Google rating: up to +20.** 4.5 or above gets the maximum. A good rating usually means an owner who cares about reputation.
+- **Review count: up to +20.** 100 reviews or more gets the full 20, 50 gets 15, 20 gets 10. It is the best hint that the business is established.
+- **Sector where the web matters: +10.** Restaurants, cafes, hair salons, spas, dentists, physiotherapists, car repair, plumbers, real estate agencies and a few others: trades where customers book, check a menu or look up opening hours.
+
+A score of 70 or more is high priority, 45 to 69 is medium, anything lower is low.
+
+Take a made-up barber with no website, a 4.6 rating and 120 reviews: 50 + 20 + 20 + 10 = 100. A second barber with a website, a 4.2 rating and 30 reviews tops out at 35. The first one sits at the top of the list. The second one drops out as soon as you filter on "no website".
+
+---
+
+## Why lots of reviews and no website is the best lead
+
+This is the most useful thing the scoring taught me, and it holds even if you never use the tool.
+
+A business with many reviews and no website already has customers. What it lacks is a place it controls for its hours, prices, booking or menu. Right now that information lives in its Google listing and in what customers write about it.
+
+A business with no reviews and no website is a gamble. It might be starting up, it might be closing. Worth a call, just not the first one.
+
+That is why I start with the high-priority list and only move down once it is done.
+
+---
+
+## How I approach them
+
+This is my approach, not a proven formula. It is what makes sense to me when the scoring data is right in front of you.
+
+**Call or walk in rather than email.** Google Places does not return email addresses, and LeadMapper does not guess them. You get a phone number and an address, so first contact happens by phone or in person. For a neighbourhood shop, stopping by outside rush hour is the most direct option.
+
+**Start from what they already have.** I don't open with "you don't have a website". I open with what I saw: their rating, how many people recommend them, the fact that customers find them on Google Maps. Then I ask where those people go to check prices or book.
+
+**Keep the first written message short.** When I do write, after a call or to leave something behind, I stick to four points:
+
+1. who I am, in one line;
+2. what I noticed on their listing (rating, reviews, no website);
+3. one concrete offer, such as a single page with hours, services and a booking link;
+4. a simple next step, like a ten-minute call.
+
+No price list and no technical vocabulary. A barber is not buying React. He is buying fewer phone calls asking what time he closes.
+
+**Log every contact.** This is what the status and notes are for. "Call back after the holidays", "owner is in on Tuesdays", "not interested, cousin builds websites": without those notes you end up calling the same people twice.
+
+---
+
+## A few technical choices
+
+The front end is React 18, TypeScript and Vite, with Tailwind and shadcn/ui components. The map is Leaflet on OpenStreetMap tiles.
+
+The part I cared about most: **the Google API key never leaves the server**. The front end calls `/api/search`, a small Express API deployed as a Vercel function. It validates the input (text capped at 80 characters, radius from a fixed list of 1, 2, 5, 10 or 20 km) and then queries Google Places. There is no generic proxy that forwards to any URL. Since each search triggers several billable Google calls, the API also rate-limits by IP.
+
+If you like small in-house tools that sort a large pile for you, I did something similar with [a Python ATS that sorts more than 4,000 resumes](/en/blog/ats-python-trier-4000-cvs).
+
+---
+
+## Known limits
+
+- With Google Places, the radius only applies when you search by GPS position. A search by city name ignores it.
+- Tracking lives in the browser, so it does not follow you to another device. The CSV export is the workaround for now.
+- The score detects missing websites, not outdated ones. Flagging sites without HTTPS or without a mobile layout, for redesign offers, is on the list of next steps.
+
+---
+
+## Try it
+
+The [demo is live](https://lead-mapper.vercel.app) with no account and no key. Search for barbers in Montreal and see how the score ranks them. The code is on [GitHub](https://github.com/cortex225/LeadMapper) if you want to plug in your own Google key.
+
+If you are a freelance designer or run a small agency in Quebec or elsewhere in Canada and want the tool adapted to how you prospect, get in touch through the contact page on this site.

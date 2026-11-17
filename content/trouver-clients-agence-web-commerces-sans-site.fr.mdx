@@ -1,0 +1,126 @@
+---
+title: "Trouver des clients comme web designer : j'ai codé LeadMapper pour repérer les commerces sans site"
+publishedAt: "2026-11-16"
+summary: "Trouver des clients comme web designer au Québec : comment LeadMapper repère les commerces sans site web, les note sur 100 et organise la prospection."
+image: "/blog/leadmapper-prospection.png"
+tags: ["Prospection", "Web design", "LeadMapper", "Google Places", "React"]
+---
+
+Trouver des clients comme web designer, c'est rarement un problème de compétence. On sait faire le site. Ce qui manque, c'est la liste de gens à qui le proposer.
+
+La méthode classique, c'est d'ouvrir Google Maps, de taper "barbier" ou "restaurant", puis de cliquer fiche par fiche pour voir qui a un site et qui n'en a pas. Ça marche. C'est aussi très long, et on ne garde aucune trace de ce qu'on a déjà regardé.
+
+J'ai donc construit **LeadMapper** : un outil de prospection qui fait ce tri en une recherche, note chaque commerce sur 100 et garde le suivi des prises de contact.
+
+---
+
+## Le vrai problème de la prospection de commerces sans site web
+
+Un commerce sans site n'est pas forcément un bon prospect. Une entreprise qui vient d'ouvrir, sans avis ni clientèle, n'a peut-être pas le budget.
+
+Ce que je cherchais, c'était l'intersection de deux choses :
+
+- le **besoin** : pas de site, ou un secteur où les clients cherchent en ligne avant de se déplacer;
+- la **capacité de payer** : un commerce établi, avec une clientèle qui revient.
+
+Google Maps contient déjà ces signaux. Il fallait les lire automatiquement.
+
+---
+
+## Ce que fait LeadMapper
+
+On choisit un secteur et une ville, par exemple des barbiers à Montréal, ou on utilise sa position GPS avec un rayon de 1 à 20 km. L'application interroge Google Places, récupère les commerces, puis les affiche à la fois sur une carte et dans une liste. Cliquer un commerce dans l'une le met en avant dans l'autre, et la couleur des marqueurs suit la priorité.
+
+Chaque fiche montre le téléphone, l'adresse, la note, les avis et le détail du score. Un score opaque, on ne lui fait pas confiance.
+
+Le reste sert au travail quotidien :
+
+- Des filtres et un tri par priorité, présence d'un site, note et nombre d'avis. Sur Québec, par exemple, on peut ne garder que la priorité haute sans site web.
+- Un suivi commercial, avec un statut par commerce (à contacter, contacté, rendez-vous, signé, écarté) et des notes libres, conservés dans le navigateur.
+- Un export CSV qui s'ouvre proprement dans Excel, accents compris.
+- Un mode démo sans clé Google, avec des commerces fictifs à Montréal, Québec, Laval, Sherbrooke et ailleurs. Le tirage est déterministe : la même recherche donne toujours les mêmes résultats.
+
+---
+
+## Le score sur 100, ligne par ligne
+
+Toute la logique tient dans `src/lib/scoring.ts`, une seule fonction qui sert à la liste, à la carte et à la fiche.
+
+```ts
+const noWebsite = place.website ? 0 : 50;
+
+let rating = 0;
+if (place.rating === undefined) rating = 5;
+else if (place.rating >= 4.5) rating = 20;
+else if (place.rating >= 4.0) rating = 15;
+else if (place.rating >= 3.5) rating = 10;
+else if (place.rating >= 3.0) rating = 5;
+```
+
+Le barème complet :
+
+- **Pas de site web : +50.** C'est le critère qui pèse le plus, parce que c'est lui qui crée le besoin.
+- **Note Google : jusqu'à +20.** 4,5 et plus donne le maximum. Une bonne note veut dire un commerce qui tient à sa réputation.
+- **Volume d'avis : jusqu'à +20.** 100 avis ou plus donne le maximum, 50 donne 15, 20 donne 10. C'est le meilleur indice que le commerce est établi.
+- **Secteur où le web compte : +10.** Restauration, café, coiffure, spa, dentiste, physiothérapie, garage, plombier, agence immobilière, entre autres : des métiers où le client réserve, consulte un menu ou cherche des heures d'ouverture.
+
+À partir de 70, la priorité est haute. Entre 45 et 69, moyenne. En dessous, basse.
+
+Prenons un barbier fictif sans site, noté 4,6 avec 120 avis : 50 + 20 + 20 + 10, il fait 100. Un autre barbier avec un site, noté 4,2 et 30 avis, plafonne à 35. Le premier passe en haut de la liste, le second disparaît dès qu'on filtre sur "sans site".
+
+---
+
+## Pourquoi beaucoup d'avis sans site, c'est le meilleur prospect
+
+C'est ce que le score m'a appris de plus utile, et ça vaut même sans l'outil.
+
+Un commerce avec beaucoup d'avis et pas de site a déjà des clients. Ce qui lui manque, c'est un endroit qu'il contrôle pour ses heures, ses prix, sa prise de rendez-vous ou son menu. Aujourd'hui, ces informations vivent dans sa fiche Google et dans les commentaires de ses clients.
+
+À l'inverse, un commerce sans avis et sans site est un pari. Peut-être qu'il démarre, peut-être qu'il ferme. Ça vaut un appel, mais pas en premier.
+
+C'est pour ça que je commence par la priorité haute et que je garde les autres pour quand cette liste est épuisée.
+
+---
+
+## Trouver des clients parmi ces commerces : mon approche
+
+Ce qui suit est mon approche, pas une méthode garantie : c'est ce qui me paraît logique avec les données du score sous les yeux.
+
+**Appeler ou passer, plutôt qu'écrire.** Google Places ne fournit pas d'adresse courriel, et LeadMapper n'en devine pas. On a un téléphone et une adresse, donc le premier contact se fait par téléphone ou en personne. Pour un commerce de quartier, se présenter au comptoir en dehors des heures de pointe reste la façon la plus directe.
+
+**Partir de ce qu'ils ont déjà.** Je ne commence pas par "vous n'avez pas de site". Je commence par ce que j'ai vu : leur note, le nombre de personnes qui les recommandent, le fait que les gens les trouvent sur Google Maps. Ensuite seulement vient la question : où ces gens vont-ils pour voir vos prix ou prendre rendez-vous?
+
+**Un premier message court.** Quand j'écris, par exemple après un appel ou pour laisser une trace, je m'en tiens à quatre éléments :
+
+1. qui je suis, en une ligne;
+2. ce que j'ai remarqué sur leur fiche (la note, les avis, l'absence de site);
+3. une proposition précise, par exemple une page avec les heures, les services et un lien de réservation;
+4. une question simple pour la suite, comme un appel de dix minutes.
+
+Pas de grille tarifaire ni de jargon technique. Le commerçant n'achète pas du React, il achète moins d'appels pour demander les heures.
+
+**Noter chaque contact.** C'est là que le statut et les notes servent. "Rappeler après la rentrée", "le propriétaire est là le mardi", "pas intéressé, a un cousin qui fait des sites" : sans ces notes, on rappelle les mêmes personnes deux fois.
+
+---
+
+## Quelques choix techniques
+
+Le front est en React 18, TypeScript et Vite, la carte en Leaflet sur OpenStreetMap. Le point auquel je tenais le plus : **la clé Google ne quitte jamais le serveur**. Le front appelle `/api/search`, une petite API Express déployée comme fonction sur Vercel. Elle valide les paramètres (texte limité à 80 caractères, rayon choisi dans une liste fermée de 1, 2, 5, 10 ou 20 km) et interroge Google Places. Il n'y a pas de proxy générique vers une URL arbitraire. Comme chaque recherche déclenche plusieurs appels facturés à Google, l'API applique aussi une limite de débit par IP.
+
+Si ce genre d'outil maison qui trie un gros volume pour vous vous intéresse, j'avais fait un exercice proche avec [un ATS en Python pour trier plus de 4000 CV](/fr/blog/ats-python-trier-4000-cvs).
+
+---
+
+## Les limites, honnêtement
+
+- Avec Google Places, le rayon ne s'applique que pour une recherche par position GPS. Pour une recherche par nom de ville, l'API l'ignore.
+- Le suivi vit dans le navigateur : il ne suit pas d'un appareil à l'autre.
+- Le score repère l'absence de site, pas les sites vieillissants. Repérer les sites sans HTTPS ou non adaptés au mobile, pour les offres de refonte, fait partie des pistes.
+
+---
+
+## L'essayer
+
+Le [mode démo est en ligne](https://lead-mapper.vercel.app), sans compte ni clé : lancez une recherche de barbiers à Montréal et regardez comment le score classe les résultats. Le code est sur [GitHub](https://github.com/cortex225/LeadMapper) si vous voulez le brancher sur votre propre clé Google.
+
+Vous êtes web designer ou vous dirigez une petite agence au Québec et vous voulez adapter l'outil à votre façon de prospecter? Écrivez-moi depuis la page contact du site.

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import {
     Mail, Linkedin, Github, Share2, QrCode, X, Languages, Lightbulb,
     Code, Briefcase, MapPin, ExternalLink, GraduationCap, ArrowRight,
-    ChevronDown, ChevronUp, Download, Phone, Quote, BookOpen,
+    ChevronDown, ChevronUp, Download, Phone, BookOpen,
     Hammer, GanttChart, CheckCircle2,
     Twitter,
     Instagram,
@@ -15,22 +15,18 @@ import {
 import { SocialIcon } from '@/components/ui/social-icon';
 import { WorkCard } from '@/components/ui/work-card';
 import { getData } from '@/data/resume';
+import { withYears } from '@/lib/utils';
 import Link from 'next/link';
 import { ModeToggle } from '@/components/mode-toggle';
 import Image from 'next/image';
 import { useI18n } from '@/app/locales/client';
 import { ProjectModal } from '@/components/project-modal';
 import { Terminal } from '@/components/terminal';
-import { TestimonialsSlider } from './TestimonialsSlider';
 import { Reveal, RevealGroup, RevealItem } from '@/components/motion/reveal';
 import { CountUp } from '@/components/motion/count-up';
 import { Spotlight } from '@/components/motion/spotlight';
 import { LazyVideo } from '@/components/lazy-video';
-import { TiltCard } from '@/components/three/tilt-card';
-import dynamic from 'next/dynamic';
 
-// three.js only loads client-side, after hydration.
-const SceneBackground = dynamic(() => import('@/components/three/scene-background'), { ssr: false });
 import {
   Tooltip,
   TooltipContent,
@@ -84,13 +80,12 @@ export default function Page({ params: { locale } }: { params: { locale: string 
         <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 font-sans relative selection:bg-indigo-100 selection:text-indigo-900">
 
             <div className="fixed inset-0 animated-bg z-0 pointer-events-none"></div>
-            <SceneBackground />
 
             <div className="w-full max-w-7xl mx-auto p-4 md:p-8 lg:p-12 relative z-10 flex flex-col lg:flex-row gap-8 lg:gap-16 items-start">
 
                 {/* --- LEFT COLUMN: PROFILE CARD --- */}
                 <aside className="w-full lg:w-[400px] shrink-0 lg:sticky lg:top-8 self-start h-fit relative hero-glow">
-                    <TiltCard className="glass-card rounded-[2.5rem] p-6 pb-8 overflow-hidden dark:bg-slate-900/60 dark:border-slate-800">
+                    <div className="glass-card rounded-[2.5rem] p-6 pb-8 overflow-hidden dark:bg-slate-900/60 dark:border-slate-800">
                         
                         {/* Toolbar */}
                         <div className="flex justify-between items-center mb-6">
@@ -284,7 +279,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                 </TooltipContent>
                             </Tooltip>
                         </div>
-                    </TiltCard>
+                    </div>
                 </aside>
 
                 {/* --- RIGHT COLUMN: DETAILED CONTENT --- */}
@@ -309,7 +304,7 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                                 <div key={i} data-spotlight className="flex flex-col-reverse justify-end rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-700/50 p-4 hover:-translate-y-0.5 transition-transform">
                                     <dt className="text-xs text-slate-500 dark:text-slate-400 leading-snug">{item.label}</dt>
                                     <dd className="text-2xl font-extrabold text-indigo-600 dark:text-indigo-400 tracking-tight mb-1">
-                                        <CountUp value={item.value} />
+                                        <CountUp value={withYears(item.value)} />
                                     </dd>
                                 </div>
                             ))}
@@ -457,14 +452,6 @@ export default function Page({ params: { locale } }: { params: { locale: string 
                         </div>
                     </section>
 
-                    {/* Testimonials */}
-                    {/* <section>
-                        <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-8 ml-4 flex items-center gap-3">
-                            <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-2 rounded-xl"><Quote size={24} /></span>
-                            {t('sections.testimonials.title')}
-                        </h2>
-                        <TestimonialsSlider locale={locale} testimonials={DATA.testimonials} />
-                    </section> */}
 
                     {/* FAQ */}
                     <Reveal>

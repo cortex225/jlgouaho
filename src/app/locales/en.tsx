@@ -20,13 +20,13 @@ const translations: Translations = {
       "jlgouaho",
     ],
     homeTitle:
-      "Déto Jean-Luc Gouaho : Full-Stack Cloud & Azure Developer in Quebec",
+      "Déto Jean-Luc Gouaho: Full-Stack Cloud & Azure Developer in Quebec",
     homeDescription:
-      "Full-Stack Developer specialized in .NET, Vue.js, Next.js and Azure. 3+ years of experience, 78% cloud cost reduction, Python ATS processing 4000+ resumes in seconds. Open to opportunities in Canada.",
-    projectsTitle: "Projects : Jean-Luc Gouaho Portfolio",
+      "Full-Stack Developer specialized in .NET, Vue.js, Next.js and Azure. {years}+ years of experience, 78% cloud cost reduction, Python ATS processing 4000+ resumes in seconds. Open to opportunities in Canada.",
+    projectsTitle: "Projects: Jean-Luc Gouaho Portfolio",
     projectsDescription:
       "A collection of full-stack projects: SaaS CRM, AI-powered ATS, e-commerce platform, DevOps automation. Stack: Next.js, .NET, Vue.js, Azure, PostgreSQL, OpenAI.",
-    blogTitle: "Blog : Cloud, DevOps & Full-Stack Deep Dives",
+    blogTitle: "Blog: Field Notes on Cloud, DevOps & Full-Stack",
     blogDescription:
       "Hands-on technical articles: Azure cost optimization (-78%), Python ATS processing 4000+ resumes, serverless architecture, CI/CD and DevOps best practices.",
   },
@@ -46,7 +46,7 @@ const translations: Translations = {
   highlights: {
     title: "At a glance",
     items: [
-      { value: "3+", label: "years of full-stack experience" },
+      { value: "{years}+", label: "years of full-stack experience" },
       { value: "-78%", label: "Azure costs at Royal Broker" },
       { value: "4,000+", label: "resumes sorted in seconds by my Python ATS" },
       { value: "10+", label: "shipped projects (SaaS, mobile, AI)" },
@@ -88,7 +88,7 @@ const translations: Translations = {
   },
   projectsPage: {
     allProjects: "All Projects",
-    description: "A complete collection of my work, experiments, and open source contributions.",
+    description: "My work, experiments, and open source contributions.",
     haveIdea: "Have an idea for a project?",
     letsDiscuss: "Let's Discuss",
     backToProfile: "Back to Profile",
@@ -117,7 +117,7 @@ const translations: Translations = {
         {
           question: "Are you available for freelance projects?",
           answer:
-            "Yes. I take on full-stack development, Azure cost optimization, business process automation and SaaS application work. I reply to every inquiry within 24 hours.",
+            "Yes. I take on full-stack development, Azure cost optimization, business process automation and SaaS application work. I usually reply within 24 hours.",
         },
         {
           question: "Where are you based and what languages do you work in?",
@@ -141,9 +141,6 @@ const translations: Translations = {
       modes: "Remote · Hybrid",
       languages: "French (native) · English (advanced)",
     },
-    testimonials: {
-      title: "Recommendations",
-    },
     currently: {
       title: "Right Now",
       certificationLabel: "Certifications in progress",
@@ -162,7 +159,7 @@ const translations: Translations = {
     about: {
       title: "About me",
       description:
-        "Full-Stack Developer with solid experience in .NET, Vue.js, and Azure, and a strong appetite for cloud computing, DevOps, and automation. Committed to optimizing application performance and scalability, I have contributed to solutions that reduce cloud costs and improve deployment efficiency.\n\nCurrently training for Microsoft certifications (AZ-900 and AI-900), I continue to refine my skills in order to deliver increasingly innovative solutions tailored to market challenges.",
+        "Full-Stack Developer with solid experience in .NET, Vue.js, and Azure, and a strong appetite for cloud computing, DevOps, and automation. Focused on application performance and scalability, I have contributed to solutions that reduce cloud costs and improve deployment efficiency.\n\nI am currently preparing for the Microsoft AZ-900 and AI-900 certifications.",
     },
     work: {
       title: "Professional Experience",
@@ -174,7 +171,6 @@ const translations: Translations = {
             <li><strong>Implementation of Agile processes</strong> and <strong>CI/CD with Git</strong> and integration of <strong>DevOps</strong> best practices.</li>
             <li><strong>Critical bug fixes</strong> and application performance improvements.</li>
           </ul>
-          </ul>
         `,
         start: "August 2024",
         end: "January 2025",
@@ -182,14 +178,14 @@ const translations: Translations = {
       evnia: {
         description: `
           <ul class="list-disc pl-4 space-y-1">
-            <li><strong>Low-code application development</strong>: Improving and customizing the application with <strong>Caspio</strong> using <strong>JavaScript, HTML, CSS</strong>, and <strong>Rest API</strong> integration to optimize <strong>Power Automate</strong> features for automation.</li>
-            <li><strong>Collaboration and problem solving</strong>: Working as a team to analyze needs, identify and implement appropriate and innovative solutions.</li>
+            <li><strong>Low-code application development</strong>: Improving and customizing the application with <strong>Caspio</strong> using <strong>JavaScript, HTML, CSS</strong>, and <strong>REST API</strong> integration to optimize <strong>Power Automate</strong> features for automation.</li>
+            <li><strong>Collaboration and problem solving</strong>: Working as a team to analyze needs, identify and implement solutions.</li>
             <li><strong>Sustainable strategy</strong>: Proposing ideas and getting involved in defining social and environmental goals aimed at reducing the company's impact.</li>
           </ul>
         `,
         start: "March 2025",
         end: "Present",
-        company: "Evnia, firm-conseil en écofiscalité",
+        company: "Evnia, eco-taxation consulting firm",
         title: "Application Developer",
       },
       royalBroker: {
@@ -210,7 +206,6 @@ const translations: Translations = {
         description: `
           <ul class="list-disc pl-4 space-y-1">
             <li>Development of credit value estimation websites using PHP and WordPress.</li>
-            <li>Practical learning and implementation of optimized solutions.</li>
             <li>Hired following the internship due to demonstrated performance.</li>
           </ul>
         `,
@@ -256,9 +251,9 @@ const translations: Translations = {
       badge: "My Projects",
       magicSearch: {
         description:
-          "A beautifully designed, hybrid search engine that enhances search accuracy by querying semantically related results.",
+          "A hybrid search engine that improves search accuracy by querying semantically related results.",
         overview:
-          "MagicSearch is a search engine that leverages semantic understanding to deliver more accurate and context-aware results. It is designed for users who want faster, smarter, and more meaningful search experiences.",
+          "MagicSearch is a search engine that uses semantic understanding to deliver more accurate and context-aware results.",
         features: `
           <ul class="list-disc pl-4 space-y-1">
             <li>Semantic search powered by OpenAI embeddings</li>
@@ -284,7 +279,7 @@ const translations: Translations = {
           </div>
         `,
         conclusion:
-          "Building MagicSearch was a rewarding experience that enhanced my understanding of search algorithms and frontend/backend optimization. It taught me how to balance user experience with performance.",
+          "Building MagicSearch improved my understanding of search algorithms and frontend/backend optimization. It taught me how to balance user experience with performance.",
       },
       instaHR: {
         description:
@@ -306,18 +301,18 @@ const translations: Translations = {
                 <!-- PrimeVue Integration -->
                 <div class="space-y-1">
                 <h5 class="font-semibold text-lg flex items-center gap-2">
-                    🚀 Integrating PrimeVue into Razor Views (.cshtml)
+                    Integrating PrimeVue into Razor Views (.cshtml)
                 </h5>
                 <p class="text-neutral-700 dark:text-neutral-300">
                     <span class="font-semibold">Problem:</span> Difficulty using PrimeVue components directly in .cshtml files of ASP.NET.<br>
-                    <span class="font-semibold">Solution:</span> Implemented a <span class="font-semibold text-blue-500">Vite ⚡</span> server to load Vue as a microfrontend, ensuring optimal compatibility with Razor.
+                    <span class="font-semibold">Solution:</span> Implemented a <span class="font-semibold text-blue-500">Vite</span> server to load Vue as a microfrontend inside Razor views.
                 </p>
                 </div>
 
                 <!-- Payment Integration -->
                 <div class="space-y-1">
                 <h5 class="font-semibold text-lg flex items-center gap-2">
-                    💳 Payment Integration with Stripe and Zoho
+                    Payment Integration with Stripe and Zoho
                 </h5>
                 <p class="text-neutral-700 dark:text-neutral-300">
                     <span class="font-semibold">Problem:</span> Need for a secure and scalable solution to manage employee payments.<br>
@@ -328,7 +323,7 @@ const translations: Translations = {
                 <!-- Cloud Cost Optimization -->
                 <div class="space-y-1">
                 <h5 class="font-semibold text-lg flex items-center gap-2">
-                    ☁️ Cloud Cost Optimization
+                    Cloud Cost Optimization
                 </h5>
                 <p class="text-neutral-700 dark:text-neutral-300">
                     <span class="font-semibold">Problem:</span> High cloud costs with uncertainty about the best service (Azure, AWS, GCP).<br>
@@ -342,36 +337,36 @@ const translations: Translations = {
       },
       playerConnect: {
         description:
-          "The platform that connects basketball players with recruiters and coaches. 📊🏀",
+          "The platform that connects basketball players with recruiters and coaches.",
         overview:
           "PlayerConnect is a platform that connects basketball players with recruiters and coaches. It allows players to showcase their performance, recruiters to access detailed profiles, and coaches to efficiently manage team tracking.",
         features: `
     <ul class="list-disc pl-4 space-y-1">
-      <li>Detailed player profiles with stats and videos 📊🎥</li>
-      <li>Matchmaking system between recruiters and players 🏀🔍</li>
-      <li>Interactive match and event calendar 📅</li>
-      <li>Real-time notifications for recruiters and players 📢</li>
-      <li>Built-in messaging system for seamless communication 💬</li>
+      <li>Detailed player profiles with stats and videos</li>
+      <li>Matchmaking system between recruiters and players</li>
+      <li>Interactive match and event calendar</li>
+      <li>Real-time notifications for recruiters and players</li>
+      <li>Built-in messaging system to make exchanges easier</li>
     </ul>
   `,
         challenges: `
     <div class="space-y-4">
       <div class="space-y-1">
-        <h5 class="font-medium">🔹 Automated Performance Analysis</h5>
+        <h5 class="font-medium">Automated Performance Analysis</h5>
         <p class="text-neutral-600 dark:text-neutral-400">
           <span class="font-semibold">Problem:</span> Turning match videos into actionable insights.<br>
           <span class="font-semibold">Solution:</span> Integrated AI with OpenAI API to extract key statistics from videos.
         </p>
       </div>
       <div class="space-y-1">
-        <h5 class="font-medium">🔹 Player Engagement and Visibility</h5>
+        <h5 class="font-medium">Player Engagement and Visibility</h5>
         <p class="text-neutral-600 dark:text-neutral-400">
           <span class="font-semibold">Problem:</span> Helping players maximize their exposure to recruiters.<br>
           <span class="font-semibold">Solution:</span> Implemented an optimized profile system with performance-based recommendations and an advanced matchmaking algorithm.
         </p>
       </div>
       <div class="space-y-1">
-        <h5 class="font-medium">🔹 User Experience and Performance</h5>
+        <h5 class="font-medium">User Experience and Performance</h5>
         <p class="text-neutral-600 dark:text-neutral-400">
           <span class="font-semibold">Problem:</span> Ensuring smooth navigation despite the use of real-time data and videos.<br>
           <span class="font-semibold">Solution:</span> Optimized the frontend with Next.js, implemented WebSockets for real-time communication, and hosted efficiently on Vercel and Firebase.
@@ -380,11 +375,11 @@ const translations: Translations = {
     </div>
   `,
         conclusion:
-          "PlayerConnect is an innovative platform that revolutionizes sports recruitment by directly connecting players with recruiters and coaches. With artificial intelligence and performance analysis, it provides a unique opportunity for talents to stand out and access new career prospects.",
+          "PlayerConnect connects players directly with recruiters and coaches. AI and performance analysis help players stand out.",
       },
       recruitEase: {
         description:
-          "An innovative recruitment platform that uses AI to automate and optimize the hiring process.",
+          "A recruitment platform that uses AI to automate and optimize the hiring process.",
         overview:
           "RecruitEase simplifies recruitment by automating resume analysis, candidate screening, and interview management.",
         features: `
@@ -412,7 +407,7 @@ const translations: Translations = {
           </div>
         `,
         conclusion:
-          "RecruitEase demonstrates how AI can transform recruitment by making it more efficient and objective.",
+          "RecruitEase uses AI to make recruitment more efficient and more objective.",
       },
       leadMapper: {
         description:
@@ -432,21 +427,21 @@ const translations: Translations = {
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">🔹 Dynamic DOM Parsing</h5>
+              <h5 class="font-medium">Dynamic DOM Parsing</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> Google Maps uses dynamic content loading with complex nested structures.<br>
                 <span class="font-semibold">Solution:</span> Implemented MutationObserver to detect DOM changes and robust selectors to handle Google's frequent UI updates.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">🔹 Data Extraction Accuracy</h5>
+              <h5 class="font-medium">Data Extraction Accuracy</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> Not all businesses have complete contact information displayed.<br>
                 <span class="font-semibold">Solution:</span> Implemented intelligent scraping that navigates to business detail pages to find hidden emails and contact details.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">🔹 User Experience</h5>
+              <h5 class="font-medium">User Experience</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> Making the tool intuitive for non-technical freelancers.<br>
                 <span class="font-semibold">Solution:</span> Designed a clean, simple interface with clear progress indicators and one-click export functionality.
@@ -461,10 +456,10 @@ const translations: Translations = {
         description:
           "My personal portfolio website built with Next.js 14, featuring i18n support and a modern, responsive design.",
         overview:
-          "This portfolio showcases my projects, skills, and professional experience. Built with modern technologies, it features full internationalization (English/French), dark mode support, and smooth animations to create an engaging user experience.",
+          "This portfolio showcases my projects, skills, and professional experience. It features full internationalization (English/French), dark mode support, and smooth animations.",
         features: `
           <ul class="list-disc pl-4 space-y-1">
-            <li>Bilingual support (EN/FR) with seamless language switching</li>
+            <li>Bilingual support (EN/FR) with smooth language switching</li>
             <li>Dark/Light mode with system preference detection</li>
             <li>Responsive design optimized for all devices</li>
             <li>Project showcase with detailed modal views</li>
@@ -476,21 +471,21 @@ const translations: Translations = {
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">🌐 Internationalization Architecture</h5>
+              <h5 class="font-medium">Internationalization Architecture</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> Managing translations while maintaining type safety and good DX.<br>
                 <span class="font-semibold">Solution:</span> Created a typed translation system with TypeScript ensuring compile-time validation of all translation keys.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">🎨 Design System Consistency</h5>
+              <h5 class="font-medium">Design System Consistency</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> Maintaining visual consistency across light/dark modes.<br>
-                <span class="font-semibold">Solution:</span> Leveraged Tailwind CSS with custom CSS variables and Shadcn UI components for a cohesive design system.
+                <span class="font-semibold">Solution:</span> Used Tailwind CSS with custom CSS variables and Shadcn UI components for a cohesive design system.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">⚡ Performance Optimization</h5>
+              <h5 class="font-medium">Performance Optimization</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> Balancing rich animations with fast load times.<br>
                 <span class="font-semibold">Solution:</span> Implemented lazy loading, optimized images, and used Vercel's edge network for optimal delivery.
@@ -499,13 +494,13 @@ const translations: Translations = {
           </div>
         `,
         conclusion:
-          "Building this portfolio was an opportunity to showcase my full-stack capabilities while experimenting with the latest Next.js features. It serves as both a professional showcase and a testament to my attention to detail and design sensibility.",
+          "Building this portfolio let me put my full-stack skills into practice and experiment with the latest Next.js features. It also serves as my professional showcase.",
       },
       budgetBuddy: {
         description:
-          "A smart personal finance management app that helps users track expenses, set budgets, and achieve financial goals.",
+          "A personal finance management app that helps users track expenses, set budgets, and achieve financial goals.",
         overview:
-          "Budget Buddy is a comprehensive personal finance application designed to help users take control of their money. It provides intuitive expense tracking, budget creation, and insightful analytics to promote better financial habits.",
+          "Budget Buddy is a personal finance application. It lets users track expenses, create budgets, and review analytics to build better financial habits.",
         features: `
           <ul class="list-disc pl-4 space-y-1">
             <li>Expense tracking with category classification</li>
@@ -520,21 +515,21 @@ const translations: Translations = {
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">💰 Real-time Budget Calculations</h5>
+              <h5 class="font-medium">Real-time Budget Calculations</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> Ensuring accurate budget tracking with real-time updates across categories.<br>
                 <span class="font-semibold">Solution:</span> Implemented reactive state management with optimistic updates and background sync.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">📊 Data Visualization</h5>
+              <h5 class="font-medium">Data Visualization</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> Presenting complex financial data in an understandable way.<br>
                 <span class="font-semibold">Solution:</span> Created custom chart components with interactive tooltips and drill-down capabilities.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">🔒 Data Security</h5>
+              <h5 class="font-medium">Data Security</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> Protecting sensitive financial information.<br>
                 <span class="font-semibold">Solution:</span> Implemented end-to-end encryption and secure authentication with multi-factor support.
@@ -564,21 +559,21 @@ const translations: Translations = {
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">🎨 Client Vision Translation</h5>
+              <h5 class="font-medium">Client Vision Translation</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> Understanding and translating the client's vision into a cohesive design.<br>
                 <span class="font-semibold">Solution:</span> Conducted thorough discovery sessions and created multiple mockups to align on the desired aesthetic.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">📱 Mobile-First Approach</h5>
+              <h5 class="font-medium">Mobile-First Approach</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> Most pet owners browse on mobile when looking for vet services.<br>
                 <span class="font-semibold">Solution:</span> Designed mobile-first with touch-friendly navigation and quick-access contact buttons.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">⚡ Performance Optimization</h5>
+              <h5 class="font-medium">Performance Optimization</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> Ensuring fast load times despite high-quality imagery.<br>
                 <span class="font-semibold">Solution:</span> Implemented image optimization, lazy loading, and efficient caching strategies.
@@ -587,7 +582,7 @@ const translations: Translations = {
           </div>
         `,
         conclusion:
-          "This freelance project reinforced my skills in client communication and translating business needs into effective web design. It demonstrated the impact a modern website can have on a local business's professional image.",
+          "This freelance project reinforced my skills in client communication and translating business needs into effective web design.",
       },
       maCiv: {
         description:
@@ -605,14 +600,14 @@ const translations: Translations = {
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">🎨 Responsive Design without Frameworks</h5>
+              <h5 class="font-medium">Responsive Design without Frameworks</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> Creating an immersive and well-structured design without using tools like Bootstrap or Tailwind.<br>
-                <span class="font-semibold">Solution:</span> Advanced use of CSS Grid and Flexbox with careful attention to media queries to ensure perfect readability on mobile devices.
+                <span class="font-semibold">Solution:</span> Advanced use of CSS Grid and Flexbox with careful attention to media queries to ensure good readability on mobile devices.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">⚡ Visual Media Optimization</h5>
+              <h5 class="font-medium">Visual Media Optimization</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> Presenting high-resolution images of the country's heritage without slowing down the load time.<br>
                 <span class="font-semibold">Solution:</span> Manual optimization and resizing of visual assets to ensure a smooth browsing experience while keeping colors vibrant.
@@ -625,47 +620,47 @@ const translations: Translations = {
       },
       virtualCardPro: {
         description:
-          "A digital business card and professional portfolio app - bridging physical and digital networking with smart features.",
+          "A digital business card and professional portfolio app - bridging physical and digital networking.",
         overview:
-          "Virtual Business Card Pro is a high-performance, fully responsive digital business card designed to convert visitors into clients. It serves as a central hub for professional identity, bridging the physical and digital worlds with smart features like QR codes, vCard downloads, and Google Wallet integration.",
+          "Virtual Business Card Pro is a fully responsive digital business card designed to convert visitors into clients. It links physical and digital networking through QR codes, vCard downloads, and Google Wallet integration.",
         features: `
           <ul class="list-disc pl-4 space-y-1">
-            <li>📱 Fully responsive design: mobile app-like interface & desktop split-view</li>
-            <li>🌍 Multi-language support: instant FR/EN toggling</li>
-            <li>💼 Rich content sections: About, Services, Process, Testimonials</li>
-            <li>📇 vCard download: one-click contact saving (.vcf)</li>
-            <li>📲 Google Wallet integration: QR code for mobile wallet</li>
-            <li>⚡ One-tap contact: direct links for Email, Calendly, LinkedIn</li>
-            <li>🎨 Modern UI: glassmorphism effects, smooth animations</li>
+            <li>Fully responsive design: mobile app-like interface & desktop split-view</li>
+            <li>Multi-language support: instant FR/EN toggling</li>
+            <li>Rich content sections: About, Services, Process, Testimonials</li>
+            <li>vCard download: one-click contact saving (.vcf)</li>
+            <li>Google Wallet integration: QR code for mobile wallet</li>
+            <li>One-tap contact: direct links for Email, Calendly, LinkedIn</li>
+            <li>Modern UI: glassmorphism effects, smooth animations</li>
           </ul>
         `,
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">📱 Responsive Design Excellence</h5>
+              <h5 class="font-medium">Responsive Design</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
-                <span class="font-semibold">Problem:</span> Creating a seamless experience across mobile (compact interface) and desktop (split-view layout).<br>
-                <span class="font-semibold">Solution:</span> Implemented adaptive layouts with Tailwind CSS breakpoints and sticky positioning for optimal viewing.
+                <span class="font-semibold">Problem:</span> Creating a consistent experience across mobile (compact interface) and desktop (split-view layout).<br>
+                <span class="font-semibold">Solution:</span> Implemented adaptive layouts with Tailwind CSS breakpoints and sticky positioning.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">📲 Wallet Integration</h5>
+              <h5 class="font-medium">Wallet Integration</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> Enabling users to save contact info directly to their phone's wallet.<br>
                 <span class="font-semibold">Solution:</span> Implemented Google Wallet API with dynamic QR code generation for instant card saving.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">🌍 Internationalization</h5>
+              <h5 class="font-medium">Internationalization</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> Supporting both French and English with instant switching.<br>
-                <span class="font-semibold">Solution:</span> Built a lightweight i18n system with React context for seamless language toggling.
+                <span class="font-semibold">Solution:</span> Built a lightweight i18n system with React context for instant language toggling.
               </p>
             </div>
           </div>
         `,
         conclusion:
-          "Virtual Business Card Pro showcases modern React 19 development with Vite, demonstrating my ability to create polished, professional applications with cutting-edge UI/UX and practical business utility.",
+          "Virtual Business Card Pro turns a business card into a web app. The project let me explore the latest React 19 features with Vite and build a practical tool for professional networking.",
       },
       spinVibe: {
         description:
@@ -687,21 +682,21 @@ const translations: Translations = {
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">🎡 Hiding AI latency inside the suspense</h5>
+              <h5 class="font-medium">Hiding AI latency inside the suspense</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> waiting 2 to 4 s after the wheel stopped killed the moment.<br>
                 <span class="font-semibold">Solution:</span> the result is drawn at launch and the request fires during the spin; a request token guarantees a late response never overwrites a newer result.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">📴 Never an empty screen</h5>
+              <h5 class="font-medium">Never an empty screen</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> the app had to work with no network, no key and no deployed backend.<br>
                 <span class="font-semibold">Solution:</span> an offline catalog filtered by social context as the systematic fallback, the Worker enabled only when <code>EXPO_PUBLIC_API_URL</code> is set, no secret in the bundle.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">🔁 From a "for two" prototype to a "for everyone" product</h5>
+              <h5 class="font-medium">From a "for two" prototype to a "for everyone" product</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> DUO Roue assumed a couple everywhere in code and copy.<br>
                 <span class="font-semibold">Solution:</span> social context became a product invariant: global selector, conditioned categories and prompts, rewritten FR/EN i18n, and a migration of early users' local data.
@@ -734,28 +729,28 @@ const translations: Translations = {
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">🧠 Robust Gemini calls</h5>
+              <h5 class="font-medium">Robust Gemini calls</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> recurring 503/429 errors during traffic spikes.<br>
                 <span class="font-semibold">Solution:</span> <code>callWithRetry</code> wrapper with exponential backoff and automatic fallback to <code>gemini-2.5-flash-lite</code>. Gemini Image free tier being capped at 0 requests, image generation was delegated to Cloudflare Workers AI (10k/day free).
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">🎯 Preventing the AI from hallucinating exercises</h5>
+              <h5 class="font-medium">Preventing the AI from hallucinating exercises</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> Gemini invented fictional exercises with no GIF or muscles, breaking the visual UX.<br>
                 <span class="font-semibold">Solution:</span> 60-exercise filtered shortlist passed to the prompt with IDs, <code>responseSchema</code> enforcing a mandatory <code>exerciseId</code>, and fuzzy-name match as a safety net if Gemini still invents.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">🍽️ Unique recipe images</h5>
+              <h5 class="font-medium">Unique recipe images</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> two image providers were swapped. Pollinations returned the same image for all 5 recipes (string seed ignored), then Gemini's free image tier got cut.<br>
                 <span class="font-semibold">Solution:</span> switched to Cloudflare FLUX-1-schnell with base64 data URI, prompt enriched with the recipe name for visual uniqueness, Pollinations kept as fallback.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">📊 Custom SVG spider chart, no heavy chart lib</h5>
+              <h5 class="font-medium">Custom SVG spider chart, no heavy chart lib</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
                 <span class="font-semibold">Problem:</span> visualize training volume per muscle group with time filters.<br>
                 <span class="font-semibold">Solution:</span> custom SVG component (react-native-svg) with 8 axes grouping the 17 low-level muscles, concentric grid and filled polygon, ~120 lines, zero additional chart dependency.
@@ -771,10 +766,10 @@ const translations: Translations = {
     contact: {
       title: "Contact",
       subtitle: "Get in Touch",
-      description_start: "Want to chat? Just shoot me a dm",
+      description_start: "Want to chat? Just shoot me a DM",
       description_end: "and I'll respond in less than 24 hours.",
       badge: "Contact",
-      linkedinText: "with a direct question on linkedin",
+      linkedinText: "with a direct question on LinkedIn",
     },
   },
 } as const;

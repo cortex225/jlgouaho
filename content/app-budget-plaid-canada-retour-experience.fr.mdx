@@ -1,0 +1,152 @@
+---
+title: "API Plaid au Canada : créer une application de budget avec Vercel et Neon"
+publishedAt: "2026-11-16"
+summary: "Créer une app de budget avec l'API Plaid au Canada : fonctions Vercel, Neon Postgres, jetons chiffrés, webhooks et pièges des banques québécoises."
+image: "/blog/budget-buddy-plaid.png"
+tags: ["Plaid", "Fintech", "Vercel", "Neon", "React"]
+---
+
+Budget Buddy est mon application de budget personnel. Elle répond à une question précise : combien il me reste vraiment jusqu'à la prochaine paye. Pour y répondre sans saisir chaque dépense à la main, j'ai branché l'API Plaid au Canada sur mes comptes bancaires. Voici l'architecture, les décisions techniques et les pièges rencontrés, pour les développeurs et les fondateurs qui veulent créer une application de budget au Québec ou ailleurs au pays.
+
+Une précision d'abord : pour l'instant, l'app sert un seul compte, le mien. Tout ce qui suit vient du code et de la documentation du projet.
+
+---
+
+## L'idée : ce qui reste jusqu'à la paye
+
+La plupart des apps de budget raisonnent par mois. Moi, je suis payé à la paye, et mon loyer part avant le 1er. Le chiffre qui m'intéresse, c'est ce que je peux dépenser d'ici la prochaine paye.
+
+Dans Budget Buddy, ce montant se calcule ainsi : le solde des comptes chèques, moins les prélèvements attendus d'ici la paye, moins les achats sur carte pas encore remboursés, moins l'argent gardé pour les enveloppes. Les prélèvements attendus sont repérés tout seuls : ce qui revient chaque mois ou aux deux semaines, au même montant.
+
+Autour de ce chiffre, l'app offre :
+
+- un plan, avec le prévu et le réel par catégorie ;
+- les dettes et les objectifs d'épargne, avec une répartition en cascade de ce qu'on peut mettre de côté ;
+- un rituel de paye, qui propose où va chaque dollar de la paye qui vient d'arriver ;
+- une courbe du patrimoine, tirée des soldes enregistrés jour par jour.
+
+Un détail a beaucoup pesé : la règle « quelles opérations comptent dans une période » vit dans un seul fichier. L'accueil, le plan et l'historique l'utilisent tous. Le loyer payé le 29 octobre compte donc en novembre partout. Avec un filtre de dates par écran, « ce mois » finissait par afficher des totaux différents selon la page.
+
+---
+
+## L'architecture : Vite, fonctions Vercel, Neon et Plaid
+
+- Front : React 18 et TypeScript avec Vite, TanStack Query et shadcn/ui.
+- API : des fonctions Vercel dans le dossier `api/`, écrites avec les objets Web `Request` et `Response`.
+- Base : Neon Postgres. Le schéma est dans des fichiers SQL numérotés, appliqués à la main, chacun avec son script de retour arrière.
+- Connexion : Neon Auth avec Google, relayée par une route de l'app pour que les cookies de session restent sur mon domaine.
+- Banques : Plaid, en lecture seule.
+
+Toute la logique métier est dans `src/core/`, en TypeScript pur, sans React et sans appel réseau. C'est là que vivent les calculs de paye, de plan et de dettes, et c'est ce que je teste avec Vitest. Quand un chiffre change, un test change avec lui.
+
+---
+
+## Le flux Plaid, étape par étape
+
+Le parcours est le classique de Plaid :
+
+1. Le serveur crée un `link_token` (`POST /api/plaid/link-token`).
+2. Le navigateur ouvre Plaid Link ; l'utilisateur choisit sa banque et s'authentifie.
+3. Plaid renvoie un `public_token` au navigateur, qui l'envoie au serveur.
+4. Le serveur l'échange contre un `access_token` (`POST /api/plaid/exchange`), l'enregistre chiffré, puis lance une première synchro.
+
+Pour le Canada, quelques réglages du jeton comptent :
+
+```ts
+const base: LinkTokenCreateRequest = {
+  user: { client_user_id: auth.user.id },
+  client_name: "AI Budget Buddy",
+  country_codes: [CountryCode.Ca, CountryCode.Us],
+  language: "fr",
+};
+if (process.env.PLAID_REDIRECT_URI) {
+  base.redirect_uri = process.env.PLAID_REDIRECT_URI;
+}
+```
+
+`language: "fr"` affiche la fenêtre Plaid en français, ce qui compte au Québec. `client_user_id` est l'identifiant opaque du compte connecté, jamais le courriel ni le nom. Et certaines banques canadiennes passent par OAuth : il leur faut une URL de retour enregistrée chez Plaid.
+
+Les transactions sont obligatoires ; les placements (CELI, REER) sont demandés comme produit optionnel. Si les placements ne sont pas activés sur le compte développeur, la route recrée le jeton sans eux au lieu d'échouer.
+
+Plaid Link tourne dans une page autonome, `banque.html`, avec sa propre politique de sécurité de contenu. Le reste de l'app garde une CSP stricte qui n'autorise aucun script externe ; seule cette page ajoute le domaine de Plaid.
+
+---
+
+## Où vivent les secrets
+
+C'est la partie que je referais à l'identique.
+
+Le jeton d'accès Plaid ne repart jamais vers le navigateur. Avant d'entrer dans Neon, il est chiffré en AES-256-GCM avec une clé qui n'existe que dans les variables d'environnement Vercel (`TOKEN_ENCRYPTION_KEY`). Quelqu'un qui lit la base seule n'en tire rien.
+
+```ts
+export function encryptToken(plain: string): string {
+  const iv = randomBytes(12);
+  const cipher = createCipheriv("aes-256-gcm", getKey(), iv, { authTagLength: 16 });
+  const encrypted = Buffer.concat([cipher.update(plain, "utf8"), cipher.final()]);
+  const tag = cipher.getAuthTag();
+  return [iv, tag, encrypted].map((b) => b.toString("base64")).join(".");
+}
+```
+
+Conséquence à retenir : cette clé ne doit plus changer une fois une banque reliée, sinon les jetons enregistrés deviennent illisibles.
+
+Les autres règles s'appliquent à toutes les routes. Les erreurs renvoyées au navigateur sont génériques, et l'objet d'erreur brut n'est jamais journalisé, parce qu'il peut contenir des détails Plaid. Les requêtes SQL sont paramétrées et filtrées par `user_id`.
+
+L'échange du jeton public demande aussi un peu d'ordre. Le serveur vérifie la configuration du chiffrement avant d'appeler Plaid. Si l'enregistrement échoue quand même, ou si le compte dépasse le plafond de dix banques actives, la connexion est révoquée tout de suite chez Plaid (`/item/remove`). Sinon, il resterait un accès facturable dont l'app n'a plus le jeton.
+
+---
+
+## Synchro : curseur, webhook et cron
+
+Pour les transactions, j'utilise `/transactions/sync` avec un curseur. Une synchro part de quatre endroits :
+
+- le bouton Importer, limité à une synchro manuelle toutes les 60 secondes ;
+- le webhook Plaid, quand une banque a du nouveau ;
+- un cron Vercel chaque matin, en filet de sécurité ;
+- l'ajout d'une banque, qui lance la première synchro.
+
+Les choix dans la fonction de synchro :
+
+- Le curseur n'est sauvegardé qu'une fois toutes les pages traitées. Les écritures sont des upserts, donc relancer une synchro ne crée pas de doublons.
+- Si Plaid répond `TRANSACTIONS_SYNC_MUTATION_DURING_PAGINATION`, on repart du curseur sauvegardé, jusqu'à trois tentatives.
+- Plaid compte une sortie d'argent en positif. J'inverse le signe à l'entrée : dans la base, le code et l'interface, un montant négatif veut dire que l'argent sort.
+- Les comptes de placement n'ont pas de transactions dans `/transactions/sync`. Leur solde vient de `/investments/holdings/get`.
+- Chaque synchro enregistre le solde du jour de chaque compte, à l'heure de Montréal, pour la courbe du patrimoine.
+
+Le webhook n'a pas de session utilisateur, il doit donc prouver qu'il vient de Plaid. La route vérifie le JWT de l'en-tête `Plaid-Verification` : signature ES256 avec une clé publique de Plaid non expirée, émission il y a moins de cinq minutes, et empreinte SHA-256 du corps identique à celle annoncée. Sinon, 401. Un même corps reçu deux fois en cinq minutes n'est traité qu'une fois.
+
+Les avertissements comme `PENDING_EXPIRATION` ou `USER_PERMISSION_REVOKED` sont notés sur la banque et affichent une bannière « À reconnecter ». Une connexion bancaire peut décrocher à tout moment ; ce parcours se prévoit dès le départ.
+
+---
+
+## Les particularités canadiennes
+
+Les montants sont en dollars canadiens et l'interface est entièrement en français du Québec. Plaid fournit une catégorie par transaction, mais elle ne suffit pas toujours. Le code contient des règles pour les marchands mal rangés, comme Couche-Tard classé en restaurant alors que c'est mon essence.
+
+Les virements Interac demandent aussi leurs règles. Ils viennent de personnes différentes, donc l'app ne les prend pas pour une paye, et un virement Interac ne paie jamais une carte. Un virement entre deux de mes comptes apparaît deux fois, en sortie et en entrée : l'app repère ces paires pour ne pas les compter comme dépense ni comme revenu.
+
+Pour la reconnexion, je passe seulement par la connexion à la banque. L'étape de choix des comptes a planté chez Plaid avec une `INTERNAL_SERVER_ERROR` pendant une reconnexion à la Banque Nationale. Elle reste offerte à part, pour ajouter un CELI ou un REER.
+
+Il y a enfin la Loi 25. La suppression de compte révoque chaque banque chez Plaid, puis efface les données du compte en une transaction. Si une révocation échoue, rien n'est effacé et on peut réessayer. L'import de relevés CSV ou PDF se fait sur l'appareil, et aucune donnée ne part vers un service d'IA.
+
+---
+
+## Avant de choisir l'API Plaid au Canada : ce qu'un fondateur devrait savoir
+
+**Une connexion active a un coût.** Mon code révoque toute connexion qu'il ne peut pas enregistrer. Pour les tarifs et la liste des institutions canadiennes couvertes, fiez-vous à la documentation officielle de Plaid : je n'avance aucun chiffre ici.
+
+**Le bac à sable ne règle pas tout.** `PLAID_ENV=sandbox` suffit pour développer. La production utilise un autre secret, et l'usage multi-utilisateur se fait valider par Plaid, avec une politique de confidentialité publiée.
+
+**Tous les produits ne sont pas activés par défaut.** Prévoyez un repli quand un produit, comme les placements, n'est pas disponible.
+
+**Le webhook ne remplace pas le cron.** Le webhook donne la réactivité, le cron rattrape ce qui a été manqué. Avec des upserts et un curseur, les deux peuvent passer sur la même banque sans dégât.
+
+**Ouvrir l'app à d'autres comptes demande du travail hors Plaid.** Ma liste avant d'y arriver : un rôle Postgres limité aux tables utiles, la RLS en défense en profondeur, des identifiants Google à mon nom pour l'écran de consentement, et des plafonds par compte (déjà en place).
+
+---
+
+## Pour la suite
+
+Vous pouvez voir l'interface sur la démo publique : [ai-budget-buddy-brown.vercel.app](https://ai-budget-buddy-brown.vercel.app).
+
+Vous construisez une app de finances personnelles au Canada et vous hésitez sur Plaid ? Écrivez-moi avec votre cas, je vous dirai ce que je garderais de cette architecture. Et si la gestion des clés API côté serveur vous intéresse, j'en parle aussi dans [mon retour sur l'intégration des LLM en production](/fr/blog/ia-integrer-llm-dans-mes-projets).
