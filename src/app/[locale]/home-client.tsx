@@ -33,7 +33,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-export type LatestPost = { slug: string; title: string; summary: string; publishedAt: string };
+export type LatestPost = { slug: string; title: string; summary: string; publishedAt: string; image: string | null };
 
 export default function HomeClient({ locale, latestPosts }: { locale: string; latestPosts: LatestPost[] }) {
     const t = useI18n();
@@ -462,15 +462,28 @@ export default function HomeClient({ locale, latestPosts }: { locale: string; la
                             <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-2 rounded-xl"><BookOpen size={24} /></span>
                             {locale === 'fr' ? 'Derniers articles' : 'Latest articles'}
                         </h2>
-                        <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <ul className="flex flex-col gap-4">
                             {latestPosts.map((post) => (
                                 <li key={post.slug}>
                                     <Link
                                         href={`/${locale}/blog/${post.slug}`}
-                                        className="group flex h-full flex-col rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-700/50 p-5 hover:-translate-y-0.5 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all"
+                                        className="group flex flex-col sm:flex-row gap-4 sm:gap-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-700/50 p-3 sm:p-4 hover:-translate-y-0.5 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all"
                                     >
-                                        <span className="font-bold text-slate-800 dark:text-white leading-snug mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">{post.title}</span>
-                                        <span className="text-sm text-slate-500 dark:text-slate-400 line-clamp-3">{post.summary}</span>
+                                        {post.image && (
+                                            <div className="relative shrink-0 w-full sm:w-48 aspect-[1200/630] overflow-hidden rounded-xl border border-slate-200/70 dark:border-slate-700/50 bg-slate-200 dark:bg-slate-800">
+                                                <Image
+                                                    src={post.image}
+                                                    alt=""
+                                                    fill
+                                                    sizes="(min-width: 640px) 192px, 100vw"
+                                                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                                />
+                                            </div>
+                                        )}
+                                        <div className="flex flex-col justify-center min-w-0">
+                                            <span className="font-bold text-slate-800 dark:text-white leading-snug mb-1.5 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">{post.title}</span>
+                                            <span className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">{post.summary}</span>
+                                        </div>
                                     </Link>
                                 </li>
                             ))}
