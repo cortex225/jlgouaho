@@ -134,6 +134,11 @@ export default async function Blog({ params }: { params: Params }) {
     relatedArticles: isFrench ? "À lire ensuite" : "Read next",
     updated: isFrench ? "Mis à jour le" : "Updated",
     tags: isFrench ? "Sujets" : "Topics",
+    ctaTitle: isFrench ? "Un projet semblable dans votre entreprise ?" : "A similar project in your business?",
+    ctaText: isFrench
+      ? "J'aide les PME et les équipes à automatiser leurs processus et à intégrer l'IA. Un appel de 15 minutes suffit pour voir si je peux vous aider."
+      : "I help small businesses and teams automate their processes and put AI to work. A 15-minute call is enough to see if I can help.",
+    ctaButton: isFrench ? "Voir mes services" : "See my services",
   };
 
   const blogPostingJsonLd = {
@@ -275,6 +280,23 @@ export default async function Blog({ params }: { params: Params }) {
                   </div>
                 )}
               </div>
+
+              <aside
+                aria-label={labels.ctaTitle}
+                className={`mt-8 ${cardClass} p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4`}
+              >
+                <div>
+                  <p className="text-lg font-bold text-slate-900 dark:text-white mb-1">{labels.ctaTitle}</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{labels.ctaText}</p>
+                </div>
+                <a
+                  href={data.businessUrl}
+                  className="shrink-0 inline-flex items-center justify-center gap-2 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm px-5 py-3 transition-colors"
+                >
+                  {labels.ctaButton}
+                  <ArrowRight size={16} />
+                </a>
+              </aside>
 
               {/* Author (mobile only, the sidebar handles desktop) */}
               <div className="mt-8 lg:hidden">

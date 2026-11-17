@@ -5,8 +5,11 @@ const translations: Translations = {
   hello: "Hello",
   seo: {
     tagline:
-      "Full-Stack Developer (.NET, Vue.js, Azure) based in Quebec, Canada. Cloud, DevOps and automation specialist. I help companies cut cloud costs and ship faster.",
+      "Full-stack developer in Quebec, Canada, focused on applied AI: AI agents, automation (n8n, Copilot Studio) and LLM integration, on .NET, Next.js and Azure.",
     keywords: [
+      "AI Developer Canada",
+      "AI Agents",
+      "n8n Automation",
       "Full-Stack Developer Quebec",
       "Full-Stack Developer Montreal",
       ".NET Developer Canada",
@@ -20,9 +23,9 @@ const translations: Translations = {
       "jlgouaho",
     ],
     homeTitle:
-      "Jean-Luc Gouaho: full-stack developer in Quebec",
+      "Jean-Luc Gouaho: full-stack AI developer in Quebec",
     homeDescription:
-      "Full-stack developer in Quebec: .NET, Next.js, Azure and AI. {years}+ years of experience, Azure costs cut by 78%, founder of RecruitEasy.ca.",
+      "Full-stack AI developer in Quebec: AI agents, automation, LLMs in production, .NET, Next.js and Azure. {years}+ years of experience, founder of RecruitEasy.ca.",
     projectsTitle: "Full-stack projects: SaaS, AI and cloud",
     projectsDescription:
       "Live projects: RecruitEasy, AgentOS, PlayerConnect, LeadMapper, Budget Buddy and client sites. Stack: Next.js, .NET, Azure, PostgreSQL.",
@@ -32,7 +35,7 @@ const translations: Translations = {
   },
   hero: {
     greeting: "Hi, I'm",
-    title: "Full-Stack Developer | Automation & Cloud Specialist",
+    title: "Full-Stack AI Developer | Agents, Automation & Azure",
     status: "Open to Work",
     techStack: "Tech Stack",
   },
@@ -42,6 +45,7 @@ const translations: Translations = {
     blog: "Blog",
     resume: "Resume (PDF)",
     contact: "Contact",
+    services: "Services",
   },
   highlights: {
     title: "At a glance",
@@ -102,7 +106,7 @@ const translations: Translations = {
         {
           question: "What kind of role are you looking for?",
           answer:
-            "I'm open to full-time or contract roles as a Full-Stack Developer, Cloud Engineer or DevOps Developer, remote or hybrid from Quebec, Canada. My preferred stacks are .NET, Vue.js, Next.js and Azure, but I pick up new tech quickly.",
+            "I'm open to full-time or contract roles as an AI-focused full-stack developer: AI agents, process automation, LLM integration and cloud applications on Azure. Remote or hybrid from Quebec, Canada. My preferred stacks are .NET, Next.js, TypeScript and Azure.",
         },
         {
           question: "What are your core technologies?",
@@ -117,7 +121,7 @@ const translations: Translations = {
         {
           question: "Are you available for freelance projects?",
           answer:
-            "Yes. I take on full-stack development, Azure cost optimization, business process automation and SaaS application work. I usually reply within 24 hours.",
+            "Yes, through JL Digital Services: websites and online stores, process automation (n8n, Make, APIs), custom tools and Azure cost optimization. My services and booking are on business.jlgouaho.com. I usually reply within 24 hours.",
         },
         {
           question: "Where are you based and what languages do you work in?",
@@ -127,7 +131,7 @@ const translations: Translations = {
         {
           question: "How can I reach you?",
           answer:
-            "Email me at jlgouaho@gmail.com, connect on LinkedIn (linkedin.com/in/jlgouaho), or use the contact form on the site. I typically reply within 24 business hours.",
+            "Email me at jlgouaho@gmail.com, connect on LinkedIn (linkedin.com/in/jlgouaho), or book a 15-minute call on business.jlgouaho.com. I typically reply within 24 business hours.",
         },
       ],
     },
@@ -159,7 +163,7 @@ const translations: Translations = {
     about: {
       title: "About me",
       description:
-        "Full-Stack Developer with solid experience in .NET, Vue.js, and Azure, and a strong appetite for cloud computing, DevOps, and automation. Focused on application performance and scalability, I have contributed to solutions that reduce cloud costs and improve deployment efficiency.\n\nI am currently preparing for the Microsoft AZ-900 and AI-900 certifications.",
+        "Full-stack developer focused on applied AI. I build agents and automations that serve the business: a Copilot Studio assistant and n8n workflows at Evnia, AI matching and privacy-first local models in RecruitEasy, and LLMs shipped to production in my own apps.\n\nMy foundation: .NET, Next.js, TypeScript and Azure, with constant attention to cost and reliability (Azure costs cut by 78% at Royal Broker). I'm currently preparing a Microsoft AI certification on Azure.",
     },
     work: {
       title: "Work experience",
@@ -316,7 +320,7 @@ const translations: Translations = {
       },
       instaHR: {
         description:
-          "A SaaS CRM for human resources management when I started working at Royal Broker.",
+          "HR SaaS built at Royal Broker: contracts, payroll and the employee lifecycle, on .NET and SQL Server.",
         overview:
           "InstaHR streamlines the recruitment process by leveraging machine learning to analyze resumes, job descriptions, and match candidates efficiently.",
         features: `

@@ -168,7 +168,7 @@ export default function HomeClient({ locale, latestPosts }: { locale: string; la
                         </div>
 
                         {/* Site navigation */}
-                        <nav aria-label={locale === 'fr' ? 'Navigation principale' : 'Main navigation'} className="grid grid-cols-3 gap-2 mb-6">
+                        <nav aria-label={locale === 'fr' ? 'Navigation principale' : 'Main navigation'} className="grid grid-cols-2 gap-2 mb-6">
                             <Link href={`/${locale}/projects`} className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/50 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-900/30 dark:hover:text-indigo-300 transition-colors">
                                 <Code size={14} /> {t('nav.projects')}
                             </Link>
@@ -177,6 +177,9 @@ export default function HomeClient({ locale, latestPosts }: { locale: string; la
                             </Link>
                             <a href="/MyResume.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/50 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-900/30 dark:hover:text-indigo-300 transition-colors">
                                 <FileText size={14} /> {t('nav.resume')}
+                            </a>
+                            <a href={DATA.businessUrl} className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/50 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-900/30 dark:hover:text-indigo-300 transition-colors">
+                                <Briefcase size={14} /> {t('nav.services')}
                             </a>
                         </nav>
                         {/* CV Download Button */}
@@ -587,6 +590,7 @@ export default function HomeClient({ locale, latestPosts }: { locale: string; la
                         <nav aria-label={locale === 'fr' ? 'Pied de page' : 'Footer'} className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-semibold text-slate-500 dark:text-slate-400">
                             <Link href={`/${locale}/projects`} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t('nav.projects')}</Link>
                             <Link href={`/${locale}/blog`} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t('nav.blog')}</Link>
+                            <a href={DATA.businessUrl} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t('nav.services')}</a>
                             <a href={`mailto:${DATA.contact.email}`} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t('nav.contact')}</a>
                             <Link href={`/${locale === 'fr' ? 'en' : 'fr'}`} hrefLang={locale === 'fr' ? 'en' : 'fr'} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{locale === 'fr' ? 'English' : 'Français'}</Link>
                         </nav>

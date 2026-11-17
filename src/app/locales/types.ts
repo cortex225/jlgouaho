@@ -22,6 +22,7 @@ export type Translations = {
     blog: string;
     resume: string;
     contact: string;
+    services: string;
   };
   highlights: {
     title: string;

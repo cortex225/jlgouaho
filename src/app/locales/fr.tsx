@@ -5,8 +5,11 @@ const translations: Translations = {
   hello: "Bonjour",
   seo: {
     tagline:
-      "Développeur Full-Stack .NET, Vue.js & Azure basé au Québec, spécialiste cloud, DevOps et automatisation. J'aide les entreprises à réduire leurs coûts cloud et à livrer plus vite.",
+      "Développeur full-stack au Québec, spécialisé en IA appliquée : agents IA, automatisation (n8n, Copilot Studio) et intégration de LLM, sur .NET, Next.js et Azure.",
     keywords: [
+      "Développeur IA Québec",
+      "Agents IA",
+      "Automatisation n8n",
       "Développeur Full-Stack Québec",
       "Développeur Full-Stack Montréal",
       "Développeur .NET Canada",
@@ -20,9 +23,9 @@ const translations: Translations = {
       "jlgouaho",
     ],
     homeTitle:
-      "Jean-Luc Gouaho : développeur full-stack au Québec",
+      "Jean-Luc Gouaho : développeur full-stack IA au Québec",
     homeDescription:
-      "Développeur full-stack au Québec : .NET, Next.js, Azure et IA. {years}+ ans d'expérience, coûts Azure réduits de 78 %, fondateur de RecruitEasy.ca.",
+      "Développeur full-stack IA au Québec : agents IA, automatisation, LLM en production, .NET, Next.js et Azure. {years}+ ans d'expérience, fondateur de RecruitEasy.ca.",
     projectsTitle: "Projets full-stack : SaaS, IA et cloud",
     projectsDescription:
       "Projets en ligne : RecruitEasy, AgentOS, PlayerConnect, LeadMapper, Budget Buddy et sites clients. Stack : Next.js, .NET, Azure, PostgreSQL.",
@@ -32,7 +35,7 @@ const translations: Translations = {
   },
   hero: {
     greeting: "Bonjour, je suis",
-    title: "Développeur Full-Stack | Spécialiste en Cloud & Automatisation",
+    title: "Développeur full-stack IA | Agents, automatisation et Azure",
     status: "À l'écoute d'opportunités",
     techStack: "Stack technique",
   },
@@ -42,6 +45,7 @@ const translations: Translations = {
     blog: "Blogue",
     resume: "CV (PDF)",
     contact: "Contact",
+    services: "Services",
   },
   highlights: {
     title: "En bref",
@@ -102,7 +106,7 @@ const translations: Translations = {
         {
           question: "Quel type de poste recherchez-vous ?",
           answer:
-            "Je suis ouvert à un poste full-time ou contrat comme Développeur Full-Stack, Ingénieur Cloud ou Développeur DevOps, en télétravail ou hybride depuis le Québec (Canada). J'ai une préférence pour les stacks .NET / Vue.js / Next.js / Azure, mais je m'adapte rapidement.",
+            "Je suis ouvert à un poste à temps plein ou contractuel de développeur full-stack orienté IA : agents IA, automatisation de processus, intégration de LLM et applications cloud sur Azure. En télétravail ou en hybride depuis le Québec (Canada). Mes stacks de prédilection : .NET, Next.js, TypeScript et Azure.",
         },
         {
           question: "Quelles sont vos technologies principales ?",
@@ -117,7 +121,7 @@ const translations: Translations = {
         {
           question: "Êtes-vous disponible pour des projets freelance ?",
           answer:
-            "Oui. J'accepte les missions de développement full-stack, d'optimisation cloud Azure, d'automatisation de processus métier et de développement d'applications SaaS. Je réponds en général sous 24 h.",
+            "Oui, sous JL Digital Services : sites et boutiques en ligne, automatisation de processus (n8n, Make, API), outils sur mesure et optimisation des coûts Azure. Mes services et la prise de rendez-vous sont sur business.jlgouaho.com. Je réponds en général sous 24 h.",
         },
         {
           question: "Où êtes-vous basé et dans quelles langues travaillez-vous ?",
@@ -127,7 +131,7 @@ const translations: Translations = {
         {
           question: "Comment puis-je vous contacter ?",
           answer:
-            "Par courriel à jlgouaho@gmail.com, sur LinkedIn (linkedin.com/in/jlgouaho) ou via le formulaire du site. Je réponds en général en moins de 24 h ouvrées.",
+            "Par courriel à jlgouaho@gmail.com, sur LinkedIn (linkedin.com/in/jlgouaho), ou en réservant un appel de 15 minutes sur business.jlgouaho.com. Je réponds en général en moins de 24 h ouvrées.",
         },
       ],
     },
@@ -159,7 +163,7 @@ const translations: Translations = {
     about: {
       title: "À propos de moi",
       description:
-        "Développeur Full-Stack avec une solide expérience en .NET, Vue.js et Azure, et une forte appétence pour le cloud computing, DevOps et l'automatisation. Attentif aux performances et à la scalabilité des applications, j'ai contribué à des solutions permettant de réduire les coûts cloud et d'améliorer l'efficacité des déploiements.\n\nJe prépare actuellement les certifications Microsoft AZ-900 et AI-900.",
+        "Développeur full-stack orienté IA appliquée. Je conçois des agents et des automatisations qui servent le métier : assistant Copilot Studio et workflows n8n chez Evnia, matching IA et modèles locaux pour la confidentialité dans RecruitEasy, LLM intégrés en production dans mes applications.\n\nMon socle : .NET, Next.js, TypeScript et Azure, avec une attention constante aux coûts et à la fiabilité (coûts Azure réduits de 78 % chez Royal Broker). Je prépare actuellement une certification Microsoft en IA sur Azure.",
     },
     work: {
       title: "Expérience professionnelle",
@@ -284,7 +288,7 @@ const translations: Translations = {
       badge: "Mes projets",
       instaHR: {
         description:
-          "Un CRM SaaS pour la gestion des ressources humaines lorsque j'ai commencé à travailler chez Royal Broker.",
+          "SaaS RH conçu chez Royal Broker : contrats, paie et cycle de vie des employés, en .NET et SQL Server.",
         overview:
           "InstaHR est une plateforme de gestion des ressources humaines qui permet aux entreprises de centraliser le recrutement, la gestion des employés et l’administration RH dans un espace unique. Son objectif est de simplifier les processus RH grâce à une interface intuitive et des fonctionnalités automatisées.",
         features: `

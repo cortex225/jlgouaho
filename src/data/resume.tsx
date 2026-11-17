@@ -278,13 +278,6 @@ export function getData(locale: "en" | "fr" = "fr") {
     ],
     certifications: [
       {
-        name: "Microsoft AZ-900",
-        logoUrl: "/certifications/microsoft-900.png",
-        href: "https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/",
-        date: null,
-        description: t.sections.certifications.inProgress,
-      },
-      {
         name: "Microsoft AI-900",
         logoUrl: "/certifications/AI-900.png",
         href: "https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-fundamentals/",
@@ -299,7 +292,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         degree: "DEC in Computer Science",
         description: t.sections.education.description,
         logoUrl: "/cegep.png",
-        end: "Mai 2024",
+        end: locale === "fr" ? "Mai 2024" : "May 2024",
       },
     ],
     projects: [
@@ -792,9 +785,9 @@ export function getData(locale: "en" | "fr" = "fr") {
           "Google Wallet API",
         ],
         images: [
-          "/projects/virtualCardPro/CleanShot 2026-02-20 at 12.13.07@2x.png",
-          "/projects/virtualCardPro/CleanShot 2026-02-20 at 12.13.21@2x.png",
-          "/projects/virtualCardPro/CleanShot 2026-02-20 at 12.13.44@2x.png",
+          "/projects/virtualCardPro/carte-virtuelle-1.png",
+          "/projects/virtualCardPro/carte-virtuelle-2.png",
+          "/projects/virtualCardPro/carte-virtuelle-3.png",
         ],
         links: [
           {
@@ -821,10 +814,10 @@ export function getData(locale: "en" | "fr" = "fr") {
       },
     },
     currently: {
-      certifications: ["Microsoft AZ-900", "Microsoft AI-900"],
+      certifications: ["Microsoft AI-900"],
       building: {
-        fr: "Automatisation d'applications low-code chez Evnia",
-        en: "Low-code application automation at Evnia",
+        fr: "Agents IA et automatisations chez Evnia, et RecruitEasy",
+        en: "AI agents and automations at Evnia, and RecruitEasy",
       },
       reading: "Clean Architecture · System Design Interview",
     },
