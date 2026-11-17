@@ -244,6 +244,14 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Decorative glows and blurred shapes reach past the right edge on phones.
+   clip (not hidden) stops horizontal scrolling without breaking position: sticky. */
+html,
+body {
+  overflow-x: clip;
+}
+
+
 :focus-visible {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
@@ -341,6 +349,14 @@ html {
   filter: blur(30px);
   animation: glow-breathe 7s ease-in-out infinite;
   pointer-events: none;
+}
+
+/* On phones the card is full width: a horizontal -40px inset made the page
+   wider than the screen, so the glow only bleeds vertically there. */
+@media (max-width: 1023px) {
+  .hero-glow::after {
+    inset: -40px 0;
+  }
 }
 @keyframes glow-breathe {
   0%, 100% { opacity: 0.6; transform: scale(1); }
