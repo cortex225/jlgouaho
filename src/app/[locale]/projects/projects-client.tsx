@@ -83,7 +83,7 @@ export default function ProjectsClient({ params: { locale } }: { params: { local
     const toggleTech = React.useCallback((tech: string) => toggleCategory(tech), []);
 
     return (
-        <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 font-sans relative selection:bg-indigo-100 selection:text-indigo-900">
+        <main className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 font-sans relative selection:bg-indigo-100 selection:text-indigo-900">
 
             <div className="fixed inset-0 animated-bg z-0 pointer-events-none"></div>
 
@@ -183,17 +183,8 @@ export default function ProjectsClient({ params: { locale } }: { params: { local
                     {filteredProjects.map((project, i) => (
                         <article
                             key={project.title}
-                            role="button"
-                            tabIndex={0}
                             aria-labelledby={`project-card-${i}`}
-                            onClick={() => setSelectedProject(project)}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter' || e.key === ' ') {
-                                    e.preventDefault();
-                                    setSelectedProject(project);
-                                }
-                            }}
-                            className="group bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-white dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300 flex flex-col h-full animate-in fade-in zoom-in duration-500 fill-mode-both cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                            className="relative focus-within:ring-2 focus-within:ring-indigo-500 group bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-white dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300 flex flex-col h-full animate-in fade-in zoom-in duration-500 fill-mode-both cursor-pointer"
                             style={{ animationDelay: `${Math.min(i, 8) * 80}ms` }}
                         >
 
@@ -227,11 +218,16 @@ export default function ProjectsClient({ params: { locale } }: { params: { local
                             )}
 
                             <div className="flex justify-between items-start mb-4">
-                                <h3 id={`project-card-${i}`} className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{project.title}</h3>
+                                <h2 id={`project-card-${i}`} className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                    {/* The button covers the whole card (after:inset-0) so the card stays clickable without nesting links inside a button. */}
+                                    <button type="button" onClick={() => setSelectedProject(project)} className="text-left after:absolute after:inset-0 after:rounded-[2rem] focus:outline-none">
+                                        {project.title}
+                                    </button>
+                                </h2>
                                 <div className="flex gap-2">
                                     {project.links.map((link, k) => (
                                         <div key={k} onClick={(e) => e.stopPropagation()} className="contents">
-                                            <a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} : ${link.type}`} className="p-2 bg-slate-50 dark:bg-slate-800 rounded-full text-slate-400 hover:bg-indigo-100 hover:text-indigo-600 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-400 transition-colors">
+                                            <a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} : ${link.type}`} className="relative z-10 p-2 bg-slate-50 dark:bg-slate-800 rounded-full text-slate-400 hover:bg-indigo-100 hover:text-indigo-600 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-400 transition-colors">
                                                 {link.type.includes('Github') ? <Github size={16} /> : <ExternalLink size={16} />}
                                             </a>
                                         </div>
@@ -277,6 +273,6 @@ export default function ProjectsClient({ params: { locale } }: { params: { local
                 />
 
             </div>
-        </div>
+        </main>
     );
 }

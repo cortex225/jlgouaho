@@ -117,7 +117,7 @@ export default async function BlogPage({ params: { locale } }: { params: { local
   );
 
   return (
-    <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 font-sans relative selection:bg-indigo-100 selection:text-indigo-900">
+    <main className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 font-sans relative selection:bg-indigo-100 selection:text-indigo-900">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }}
@@ -244,6 +244,6 @@ export default async function BlogPage({ params: { locale } }: { params: { local
           <AuthorCard locale={locale} />
         </div>
       </div>
-    </div>
+    </main>
   );
 }

@@ -186,7 +186,7 @@ export default async function Blog({ params }: { params: Params }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 font-sans relative selection:bg-indigo-100 selection:text-indigo-900">
+      <main className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 font-sans relative selection:bg-indigo-100 selection:text-indigo-900">
         <div className="fixed inset-0 animated-bg z-0 pointer-events-none" />
 
         <div className="w-full max-w-7xl mx-auto p-4 pb-24 md:p-8 md:pb-24 lg:p-12 lg:pb-24 relative z-10">
@@ -363,7 +363,7 @@ export default async function Blog({ params }: { params: Params }) {
             </aside>
           </div>
         </div>
-      </div>
+      </main>
     </>
   );
 }
