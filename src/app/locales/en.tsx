@@ -498,18 +498,17 @@ const translations: Translations = {
       },
       budgetBuddy: {
         description:
-          "A personal finance management app that helps users track expenses, set budgets, and achieve financial goals.",
+          "A budgeting app built around one question: how much can I actually spend until my next paycheck?",
         overview:
-          "Budget Buddy is a personal finance application. It lets users track expenses, create budgets, and review analytics to build better financial habits.",
+          "Budget Buddy links bank accounts through Plaid, then shows money available until payday, planned vs actual spending, card debt and savings goals. Each paycheck comes with an ordered plan: bills, envelopes, card repayment, then free spending.",
         features: `
           <ul class="list-disc pl-4 space-y-1">
-            <li>Expense tracking with category classification</li>
-            <li>Monthly budget creation and monitoring</li>
-            <li>Visual analytics with charts and graphs</li>
-            <li>Recurring transaction management</li>
-            <li>Financial goal setting and progress tracking</li>
-            <li>Export reports in PDF/CSV formats</li>
-            <li>Multi-currency support</li>
+            <li>Bank accounts linked and synced through Plaid</li>
+            <li>Money actually available until the next paycheck, and per day</li>
+            <li>Planned vs actual, by category</li>
+            <li>A spending plan for each paycheck</li>
+            <li>Card debt and interest tracking</li>
+            <li>Savings goals, cash flow and net worth</li>
           </ul>
         `,
         challenges: `

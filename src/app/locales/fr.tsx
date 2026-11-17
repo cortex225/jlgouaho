@@ -498,18 +498,17 @@ const translations: Translations = {
       },
       budgetBuddy: {
         description:
-          "Une application de gestion de finances personnelles qui aide les utilisateurs à suivre leurs dépenses, définir des budgets et atteindre leurs objectifs financiers.",
+          "Une application de budget qui répond à une question : combien je peux vraiment dépenser jusqu'à la prochaine paye.",
         overview:
-          "Budget Buddy est une application de finances personnelles. Elle permet de suivre ses dépenses, de créer des budgets et de consulter des analyses pour adopter de meilleures habitudes financières.",
+          "Budget Buddy relie les comptes bancaires par Plaid, puis montre l'argent disponible jusqu'à la paye, le prévu par rapport au réel, la dette de carte et les objectifs d'épargne. Chaque paye vient avec un plan dans l'ordre : factures, enveloppes, remboursement de la carte, puis dépenses libres.",
         features: `
           <ul class="list-disc pl-4 space-y-1">
-            <li>Suivi des dépenses avec classification par catégorie</li>
-            <li>Création et suivi de budgets mensuels</li>
-            <li>Analyses visuelles avec graphiques</li>
-            <li>Gestion des transactions récurrentes</li>
-            <li>Définition d'objectifs financiers et suivi de progression</li>
-            <li>Export de rapports en formats PDF/CSV</li>
-            <li>Support multi-devises</li>
+            <li>Comptes bancaires reliés par Plaid et synchronisés</li>
+            <li>Montant vraiment disponible jusqu'à la prochaine paye, et par jour</li>
+            <li>Prévu par rapport au réel, par catégorie</li>
+            <li>Plan de répartition de chaque paye</li>
+            <li>Suivi de la dette de carte et des intérêts</li>
+            <li>Objectifs d'épargne, cashflow et patrimoine net</li>
           </ul>
         `,
         challenges: `
