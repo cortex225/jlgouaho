@@ -583,39 +583,77 @@ const translations: Translations = {
         conclusion:
           "Ce projet client m'a permis de mettre en pratique mes compétences en design UI/UX pour créer une présence web professionnelle qui répond aux besoins spécifiques d'une clinique vétérinaire. La satisfaction du client confirme l'importance d'écouter et comprendre les besoins métier.",
       },
-      maCiv: {
+      agentOs: {
         description:
-          "Un site vitrine immersif développé en HTML et CSS pur pour promouvoir la richesse culturelle, historique et touristique de la Côte d'Ivoire.",
+          "Un tableau de bord où un solopreneur travaille avec une équipe de 6 agents IA spécialisés, organisés par projet.",
         overview:
-          "Ma Civ est un projet personnel né de mon désir de célébrer mes racines. Il s'agit d'une plateforme numérique accueillante et colorée conçue pour faire découvrir la beauté de la Côte d'Ivoire. Le site met en lumière les incontournables du pays à travers différentes sections : la gastronomie locale, l'histoire, la nature et la culture.",
+          "AgentOS fait collaborer un solopreneur avec six agents IA (communauté, tech, stratégie, support, vente, direction artistique). Chaque projet a son contexte et sa base de connaissances, injectés dans les prompts des agents concernés. Les appels passent par OpenRouter, ou directement par OpenAI et Gemini avec sa propre clé.",
         features: `
           <ul class="list-disc pl-4 space-y-1">
-            <li><strong>Gastronomie :</strong> Mise en valeur des plats typiques ivoiriens tels que l'Alloco, le Garba et le Foutou.</li>
-            <li><strong>Nature & Parcs :</strong> Focus sur la riche biodiversité, notamment le Parc National de Taï.</li>
-            <li><strong>Histoire & Patrimoine :</strong> Présentation des monuments emblématiques comme la Basilique.</li>
-            <li><strong>Art & Culture :</strong> Exploration des masques ancestraux et de la vibrante scène musicale ivoirienne.</li>
+            <li>6 agents avec chacun sa persona et ses suggestions de questions</li>
+            <li>Workspaces avec contexte injecté dans le prompt système</li>
+            <li>Historique isolé par projet et par agent</li>
+            <li>Base de connaissances (directives, liens, fichiers) assignable par agent</li>
+            <li>Council : la même question posée à plusieurs agents en parallèle</li>
+            <li>Palette de commandes, mentions @, commandes /, réponses en streaming</li>
           </ul>
         `,
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">Conception responsive sans framework</h5>
+              <h5 class="font-medium">Des appels LLM fiables</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
-                <span class="font-semibold">Problème :</span> Créer un design immersif et structuré sans utiliser d'outils comme Bootstrap ou Tailwind.<br>
-                <span class="font-semibold">Solution :</span> Utilisation avancée de CSS Grid et Flexbox avec une attention particulière portée aux media queries pour assurer une bonne lisibilité sur mobile.
+                <span class="font-semibold">Problème :</span> Les fournisseurs renvoient des erreurs 429 et 5xx sous charge.<br>
+                <span class="font-semibold">Solution :</span> Nouvelles tentatives avec backoff exponentiel (1, 2, 4 puis 8 s) avant d'abandonner.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">Optimisation des médias visuels</h5>
+              <h5 class="font-medium">Le bon contexte pour chaque agent</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
-                <span class="font-semibold">Problème :</span> Présenter des images haute résolution du patrimoine sans ralentir le temps de chargement.<br>
-                <span class="font-semibold">Solution :</span> Optimisation et redimensionnement manuel des assets visuels pour garantir une navigation fluide tout en gardant des couleurs vibrantes.
+                <span class="font-semibold">Problème :</span> Envoyer toute la base de connaissances à chaque agent coûte cher et brouille les réponses.<br>
+                <span class="font-semibold">Solution :</span> Le prompt système est construit à chaque appel : persona, contexte du projet et seulement les éléments assignés à cet agent.
               </p>
             </div>
           </div>
         `,
         conclusion:
-          "Ma Civ est un véritable projet passion qui fait office d'ambassadeur digital pour la Côte d'Ivoire. Développer ce site m'a permis de consolider mes fondamentaux en développement web (HTML/CSS) tout en partageant fièrement ma culture.",
+          "AgentOS m'a servi à travailler l'orchestration de plusieurs modèles, le streaming SSE et la gestion du contexte dans une interface dense.",
+      },
+      maCiv: {
+        description:
+          "Un site immersif pour découvrir la Côte d'Ivoire : une carte 3D du pays sert de fil rouge à un voyage en cinq étapes régionales.",
+        overview:
+          "Akwaba est la refonte de Ma Civ, un site que j'avais commencé en HTML et CSS pour faire découvrir la Côte d'Ivoire, mes racines. Le parcours suit cinq régions, d'Abidjan à l'Ouest : à chaque chapitre, la carte 3D zoome sur la région visitée, puis viennent une carte postale plein écran, les incontournables, des blocs thématiques et les fêtes.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Carte 3D de la Côte d'Ivoire qui zoome sur chaque région</li>
+            <li>Cinq étapes : Abidjan, l'Est, le Centre, le Nord, l'Ouest</li>
+            <li>Gastronomie, mode, musique, nouchi et festivals</li>
+            <li>Visionneuse plein écran pour toutes les photos</li>
+            <li>Calendrier des saisons et des fêtes, itinéraires de 7 et 12 jours</li>
+            <li>Animations liées au scroll avec GSAP et défilement fluide avec Lenis</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">Une carte 3D comme fil rouge</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Garder le visiteur orienté sur une longue page.<br>
+                <span class="font-semibold">Solution :</span> Une carte du pays en Three.js qui zoome et allume la région de chaque chapitre ; son contour est généré à partir des données Natural Earth.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">Beaucoup de photos, une page rapide</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Des dizaines de photos plein écran sur une seule page.<br>
+                <span class="font-semibold">Solution :</span> Un script qui régénère des versions WebP optimisées de toutes les photos.
+              </p>
+            </div>
+          </div>
+        `,
+        conclusion:
+          "Akwaba m'a permis de reprendre un de mes premiers projets avec des outils de motion design (Three.js, GSAP, Lenis) et de le structurer comme un vrai parcours.",
       },
       virtualCardPro: {
         description:

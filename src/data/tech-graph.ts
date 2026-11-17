@@ -28,6 +28,8 @@ const ALIAS: Record<string, string> = {
   "Gemini 2.5": "Gemini",
   "Tailwind CSS": "TailwindCSS",
   "Cloudflare FLUX": "Workers AI",
+  "Neon Postgres": "PostgreSQL",
+  "Vercel Functions": "Vercel",
 };
 
 /** Using the key implies real, hands-on use of every value. */
@@ -65,6 +67,11 @@ const IMPLIES: Record<string, string[]> = {
   Upstash: ["Redis"],
   Vite: ["JavaScript"],
   "Chart.js": ["JavaScript"],
+  GSAP: ["JavaScript"],
+  "Three.js": ["JavaScript"],
+  Lenis: ["JavaScript"],
+  Leaflet: ["JavaScript"],
+  "Better Auth": ["TypeScript"],
   HTML: [],
   CSS: [],
 };
@@ -79,6 +86,8 @@ export const CATEGORY: Record<string, TechCategory> = {
   TailwindCSS: "library", "Shadcn UI": "library", Bootstrap: "library", PrimeVue: "library", "Framer Motion": "library",
   "Lucide React": "library", "Chart.js": "library", Drizzle: "library", Prisma: "library", "React Navigation": "library",
   "react-native-svg": "library", "Expo Camera": "library", "Expo Haptics": "library", i18n: "library", JWT: "library", WebSockets: "library",
+  "Three.js": "library", GSAP: "library", Lenis: "library", Leaflet: "library", "Better Auth": "library", Pusher: "service",
+  Plaid: "service", OpenRouter: "service", "Google Places API": "service",
   OpenAI: "service", Gemini: "service", Stripe: "service", "Zoho API": "service", "Google Maps API": "service", "Google Wallet API": "service", vCard: "service",
 };
 

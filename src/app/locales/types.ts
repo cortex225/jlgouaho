@@ -217,6 +217,13 @@ export type Translations = {
         challenges: string;
         conclusion: string;
       };
+      agentOs: {
+        description: string;
+        overview: string;
+        features: string;
+        challenges: string;
+        conclusion: string;
+      };
       maCiv: {
         description: string;
         overview: string;

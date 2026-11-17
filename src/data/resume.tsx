@@ -382,7 +382,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         features: t.sections.projects.magicSearch.features,
         challenges: t.sections.projects.magicSearch.challenges,
         conclusion: t.sections.projects.magicSearch.conclusion,
-        href: "https://magic-search-psi.vercel.app",
+        href: "https://magic-search.jlgouaho.com",
         dates: "Jan 2024 - Feb 2024",
         active: true,
         technologies: [
@@ -403,7 +403,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         links: [
           {
             type: "Website",
-            href: "https://magic-search-psi.vercel.app",
+            href: "https://magic-search.jlgouaho.com",
             icon: <Icons.globe className="size-3" />,
           },
           {
@@ -500,7 +500,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         features: t.sections.projects.playerConnect.features,
         challenges: t.sections.projects.playerConnect.challenges,
         conclusion: t.sections.projects.playerConnect.conclusion,
-        href: "https://player-connect.vercel.app",
+        href: "https://player-connect.jlgouaho.com",
         dates: "April 2023 - September 2023",
         active: true,
         technologies: [
@@ -524,7 +524,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         links: [
           {
             type: "Website",
-            href: "https://player-connect.vercel.app",
+            href: "https://player-connect.jlgouaho.com",
             icon: <Icons.globe className="size-3" />,
           },
           {
@@ -541,7 +541,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         features: t.sections.projects.leadMapper.features,
         challenges: t.sections.projects.leadMapper.challenges,
         conclusion: t.sections.projects.leadMapper.conclusion,
-        href: "https://lead-mapper.vercel.app/",
+        href: "https://lead-mapper.jlgouaho.com",
         dates: "Dec 2024 - Jan 2025",
         active: true,
         technologies: [
@@ -562,7 +562,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         links: [
           {
             type: "Website",
-            href: "https://lead-mapper.vercel.app",
+            href: "https://lead-mapper.jlgouaho.com",
             icon: <Icons.globe className="size-3" />,
           },
           {
@@ -571,6 +571,32 @@ export function getData(locale: "en" | "fr" = "fr") {
             icon: <Icons.github className="h-4 w-4" />,
           },
         ],
+      },
+      {
+        title: "AgentOS",
+        description: t.sections.projects.agentOs.description,
+        overview: t.sections.projects.agentOs.overview,
+        features: t.sections.projects.agentOs.features,
+        challenges: t.sections.projects.agentOs.challenges,
+        conclusion: t.sections.projects.agentOs.conclusion,
+        href: "#",
+        dates: "2026",
+        active: true,
+        technologies: [
+          "React 19",
+          "TypeScript",
+          "Vite",
+          "TailwindCSS",
+          "Zustand",
+          "Express",
+          "OpenRouter",
+        ],
+        images: [
+          "/projects/agent-os/chat-agent.jpg",
+          "/projects/agent-os/conclusion-equipe.jpg",
+          "/projects/agent-os/mobile.jpg",
+        ],
+        links: [],
       },
       {
         title: "Portfolio",
@@ -616,7 +642,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         features: t.sections.projects.budgetBuddy.features,
         challenges: t.sections.projects.budgetBuddy.challenges,
         conclusion: t.sections.projects.budgetBuddy.conclusion,
-        href: "https://ai-budget-buddy-brown.vercel.app",
+        href: "https://budget-buddy.jlgouaho.com",
         dates: "Aug 2023 - Nov 2023",
         active: true,
         technologies: [
@@ -639,7 +665,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         links: [
           {
             type: "Website",
-            href: "https://ai-budget-buddy-brown.vercel.app",
+            href: "https://budget-buddy.jlgouaho.com",
             icon: <Icons.globe className="size-3" />,
           },
         ],
@@ -651,7 +677,7 @@ export function getData(locale: "en" | "fr" = "fr") {
         features: t.sections.projects.hvd.features,
         challenges: t.sections.projects.hvd.challenges,
         conclusion: t.sections.projects.hvd.conclusion,
-        href: "https://hvd-beta.vercel.app/",
+        href: "https://hvd.jlgouaho.com",
         dates: "2024",
         active: true,
         technologies: [
@@ -670,34 +696,36 @@ export function getData(locale: "en" | "fr" = "fr") {
         links: [
           {
             type: "Website",
-            href: "https://hvd-beta.vercel.app/",
+            href: "https://hvd.jlgouaho.com",
             icon: <Icons.globe className="size-3" />,
           },
         ],
       },
       {
-        title: "Ma Civ",
+        title: "Akwaba",
         description: t.sections.projects.maCiv.description,
         overview: t.sections.projects.maCiv.overview,
         features: t.sections.projects.maCiv.features,
         challenges: t.sections.projects.maCiv.challenges,
         conclusion: t.sections.projects.maCiv.conclusion,
-        href: "https://ma-civ.vercel.app/",
-        dates: "2022 - 2023",
+        href: "https://akwaba.jlgouaho.com",
+        dates: "2019 - 2026",
         active: true,
-        technologies: ["HTML", "CSS", "JavaScript"],
-        images: ["/projects/ma-civ/img1.png", "/projects/ma-civ/img2.png"],
-        video:
-          "https://pub-c0874d8393bb493ea002a55cbc71d1ab.r2.dev/portfolio/maciv_landing.mp4",
+        technologies: ["JavaScript", "Vite", "Three.js", "GSAP", "Lenis"],
+        images: [
+          "/projects/ma-civ/accueil.jpg",
+          "/projects/ma-civ/abidjan.jpg",
+          "/projects/ma-civ/grand-bassam.jpg",
+        ],
         links: [
           {
             type: "Github",
-            href: "https://github.com/cortex225/ma-civ",
+            href: "https://github.com/cortex225/PWF",
             icon: <Icons.github className="h-4 w-4" />,
           },
           {
             type: "Website",
-            href: "https://ma-civ.vercel.app/",
+            href: "https://akwaba.jlgouaho.com",
             icon: <Icons.globe className="size-3" />,
           },
         ],
