@@ -15,6 +15,7 @@ export default async function Page({ params: { locale } }: { params: { locale: s
     title: p.metadata.title,
     summary: p.metadata.summary,
     publishedAt: p.metadata.publishedAt,
+    image: p.metadata.image ?? null,
   }));
 
   const profilePageJsonLd = {
