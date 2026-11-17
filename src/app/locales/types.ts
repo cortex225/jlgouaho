@@ -108,31 +108,53 @@ export type Translations = {
     };
     work: {
       title: string;
-      tractionDK: {
-        description: string;
+      recruitEasy: {
+        title: string;
+        company: string;
+        location: string;
         start: string;
         end: string;
+        description: string;
       };
       evnia: {
-        description: string;
+        title: string;
+        company: string;
+        location: string;
         start: string;
         end: string;
-        company: string;
+        description: string;
+      };
+      tractionDK: {
         title: string;
+        company: string;
+        location: string;
+        start: string;
+        end: string;
+        description: string;
       };
       royalBroker: {
-        description: string;
+        title: string;
+        company: string;
+        location: string;
         start: string;
         end: string;
+        description: string;
       };
       royalBrokerInternship: {
         title: string;
-        description: string;
+        company: string;
+        location: string;
         start: string;
         end: string;
         badge: string;
+        description: string;
       };
       rogers: {
+        title: string;
+        company: string;
+        location: string;
+        start: string;
+        end: string;
         description: string;
       };
     };

@@ -162,63 +162,96 @@ const translations: Translations = {
         "Full-Stack Developer with solid experience in .NET, Vue.js, and Azure, and a strong appetite for cloud computing, DevOps, and automation. Focused on application performance and scalability, I have contributed to solutions that reduce cloud costs and improve deployment efficiency.\n\nI am currently preparing for the Microsoft AZ-900 and AI-900 certifications.",
     },
     work: {
-      title: "Professional Experience",
-      tractionDK: {
+      title: "Work experience",
+      recruitEasy: {
+        title: "Founder and full-stack developer",
+        company: "RecruitEasy.ca",
+        location: "Remote",
+        start: "January 2026",
+        end: "Present",
         description: `
           <ul class="list-disc pl-4 space-y-1">
-            <li><strong>Development and optimization</strong> of a <strong>SaaS CRM</strong> for car dealers in <strong>Groovy</strong>.</li>
-            <li><strong>Improved customer communications</strong> (chat, calls) and UI redesign <strong>(Bootstrap, Vanilla JavaScript)</strong>.</li>
-            <li><strong>Implementation of Agile processes</strong> and <strong>CI/CD with Git</strong> and integration of <strong>DevOps</strong> best practices.</li>
-            <li><strong>Critical bug fixes</strong> and application performance improvements.</li>
+            <li><strong>Founder and developer of RecruitEasy.ca</strong>, an applicant tracking system (ATS) for small and mid-sized businesses with built-in generative AI.</li>
+            <li><strong>Designed and shipped the whole product solo</strong>: infrastructure, <strong>.NET / C#</strong> backend, <strong>Next.js</strong> frontend in TypeScript, <strong>Stripe</strong> billing, multi-tenant data model.</li>
+            <li><strong>AI matching</strong>: LLM-based candidate evaluation (function calling, RAG, embeddings) with a score explained per criterion. The recruiter makes the decision.</li>
+            <li><strong>Privacy</strong>: open-source models run locally so sensitive HR data never goes through external APIs.</li>
+            <li><strong>One-click posting to 50+ job boards</strong>, a hiring pipeline per job and automated emails.</li>
+            <li><strong>Automated prospecting</strong>: an <strong>n8n</strong> agent that enriches profiles, segments leads and drafts personalized emails.</li>
+            <li><strong>Deployed on Azure</strong> with CI/CD, monitoring and cost-optimized resource allocation.</li>
           </ul>
         `,
-        start: "August 2024",
-        end: "January 2025",
       },
       evnia: {
-        description: `
-          <ul class="list-disc pl-4 space-y-1">
-            <li><strong>Low-code application development</strong>: Improving and customizing the application with <strong>Caspio</strong> using <strong>JavaScript, HTML, CSS</strong>, and <strong>REST API</strong> integration to optimize <strong>Power Automate</strong> features for automation.</li>
-            <li><strong>Collaboration and problem solving</strong>: Working as a team to analyze needs, identify and implement solutions.</li>
-            <li><strong>Sustainable strategy</strong>: Proposing ideas and getting involved in defining social and environmental goals aimed at reducing the company's impact.</li>
-          </ul>
-        `,
+        title: "Automation and API integration developer",
+        company: "Evnia, eco-taxation consulting firm",
+        location: "Mirabel, QC · Hybrid",
         start: "March 2025",
         end: "Present",
-        company: "Evnia, eco-taxation consulting firm",
-        title: "Application Developer",
+        description: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Systems integration</strong>: reliable REST APIs and webhooks (pagination, retries with backoff, idempotency, error handling) that sync CRM, ERP and low-code tools in real time, with about <strong>35% less manual reconciliation</strong>.</li>
+            <li><strong>Automation</strong>: <strong>n8n</strong> and <strong>Power Automate</strong> workflows for the project management team, including an invoicing module that generates invoices, computes multi-province taxes and tracks payments.</li>
+            <li><strong>AI assistant for the team</strong>: a development support agent built with <strong>Microsoft Copilot Studio</strong>, connected to Caspio through <strong>MCP</strong>, to Monday.com and to n8n, with persistent memory in Dataverse.</li>
+            <li><strong>AI workshops</strong>: prepared and ran internal workshops to help non-technical teams use generative AI day to day.</li>
+            <li><strong>Sole developer on the team</strong>, working with management, compliance and accounting to turn their needs into solutions that are easy to maintain.</li>
+          </ul>
+        `,
+      },
+      tractionDK: {
+        title: "Full-stack developer",
+        company: "Traction DK inc.",
+        location: "Remote",
+        start: "August 2024",
+        end: "January 2025",
+        description: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>SaaS backend</strong>: optimized the core modules of a <strong>B2B SaaS CRM</strong> for car dealerships (<strong>Java, Groovy</strong>), reducing critical technical debt and speeding up processing.</li>
+            <li><strong>Frontend and payments</strong>: modernized the customer communication tools (chat and calls) in JavaScript, HTML/CSS and Bootstrap, and built <strong>Stripe</strong> payment integrations.</li>
+            <li><strong>DevOps and agile delivery</strong>: <strong>CI/CD</strong> pipelines and Git practices to ship more often without downtime.</li>
+            <li><strong>Fixed critical bugs</strong> and improved application performance.</li>
+          </ul>
+        `,
       },
       royalBroker: {
-        description: `
-          <ul class="list-disc pl-4 space-y-1">
-            <li><strong>Lead developer of InstaHR CRM</strong>, platform for managing contracts, employees, and payments.</li>
-            <li><strong>Cloud migration to Azure</strong>, reducing costs from $600 to $135/month and accelerating deployments by 60%.</li>
-            <li><strong>Recruitment automation</strong>: creation of an <strong>ATS</strong> filtering <strong>4000+ resumes in seconds</strong> via Python script.</li>
-            <li><strong>Integration of automated follow-ups</strong> (email, WhatsApp) to increase candidate response rate.</li>
-            <li><strong>Cross-department collaboration</strong> (HR, accounting, management) to align solution with business needs.</li>
-          </ul>
-        `,
+        title: ".NET developer and IT project manager",
+        company: "Royal Broker Solutions",
+        location: "Granby, QC · On site",
         start: "August 2022",
         end: "August 2024",
-      },
-      royalBrokerInternship: {
-        title: "Full-Stack Developer Intern",
         description: `
           <ul class="list-disc pl-4 space-y-1">
-            <li>Development of credit value estimation websites using PHP and WordPress.</li>
-            <li>Hired following the internship due to demonstrated performance.</li>
+            <li><strong>Promoted from intern to IT project lead in 4 months.</strong></li>
+            <li><strong>InstaHR</strong>: designed and launched an internal full-stack HR SaaS (<strong>.NET / C# / MSSQL</strong>) handling contracts, payroll and the employee lifecycle, with Stripe integration.</li>
+            <li><strong>Migration to Microsoft Azure</strong>: cloud costs down from <strong>$600 to $135 per month</strong> and CI/CD deployments 60% faster.</li>
+            <li><strong>Python ATS</strong> that parses and filters <strong>4,000+ resumes</strong>, with automated WhatsApp and email follow-ups.</li>
+            <li><strong>Product roadmap</strong> run with HR, finance and management, from the need to the feature in production.</li>
           </ul>
         `,
-        start: "August 2022",
-        end: "May 2024",
-        badge: "Internship",
       },
-      rogers: {
+      royalBrokerInternship: {
+        title: "Web development intern",
+        company: "Royal Broker Solutions",
+        location: "Granby, QC · Hybrid",
+        start: "April 2022",
+        end: "August 2022",
+        badge: "Internship",
         description: `
           <ul class="list-disc pl-4 space-y-1">
-            <li><strong>Customer needs analysis</strong> and proposal of adapted solutions.</li>
-            <li><strong>Development of communication and negotiation skills.</strong></li>
-            <li><strong>Optimization of commercial strategies</strong> to achieve objectives.</li>
+            <li><strong>Built microcredit estimation websites</strong> in PHP and WordPress.</li>
+            <li>The internship ended with an <strong>immediate job offer</strong> as lead developer.</li>
+          </ul>
+        `,
+      },
+      rogers: {
+        title: "Sales specialist",
+        company: "Rogers Communications",
+        location: "Granby, QC",
+        start: "November 2021",
+        end: "April 2022",
+        description: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Analyzed customer needs</strong> to propose tailored solutions.</li>
+            <li>Built <strong>negotiation and interpersonal skills</strong> that I now use with project stakeholders.</li>
           </ul>
         `,
       },

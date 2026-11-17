@@ -163,62 +163,95 @@ const translations: Translations = {
     },
     work: {
       title: "Expérience professionnelle",
-      tractionDK: {
+      recruitEasy: {
+        title: "Fondateur et développeur full-stack",
+        company: "RecruitEasy.ca",
+        location: "À distance",
+        start: "Janvier 2026",
+        end: "Présent",
         description: `
           <ul class="list-disc pl-4 space-y-1">
-            <li><strong>Développement et optimisation </strong>d'un <strong>CRM SaaS</strong> pour concessionnaires automobiles en <strong>Groovy</strong>.</li>
-            <li><strong>Amélioration des communications clients </strong>(chat, appels) et refonte de l'interface utilisateur <strong>(Bootstrap, JavaScript natif)</strong>.</li>
-            <li><strong>Mise en place de processus Agile </strong>et <strong>CI/CD avec Git</strong> et intégration des bonnes pratiques <strong>DevOps</strong>.</li>
-            <li><strong>Correction de bugs critiques </strong>et amélioration des performances applicatives.</li>
+            <li><strong>Fondateur et développeur de RecruitEasy.ca</strong>, un logiciel de recrutement (ATS) pour les PME qui intègre l'IA générative.</li>
+            <li><strong>Tout le produit conçu et mis en production seul</strong> : infrastructure, backend <strong>.NET / C#</strong>, frontend <strong>Next.js</strong> en TypeScript, facturation <strong>Stripe</strong>, modèle de données multi-locataires.</li>
+            <li><strong>Matching IA</strong> : évaluation des candidatures par LLM (function calling, RAG, embeddings) avec un score expliqué par critère. La décision reste au recruteur.</li>
+            <li><strong>Confidentialité</strong> : modèles open source exécutés en local pour que les données RH sensibles ne passent pas par des API externes.</li>
+            <li><strong>Diffusion des offres sur plus de 50 sites d'emploi</strong> en un clic, pipeline de recrutement par offre et courriels automatisés.</li>
+            <li><strong>Prospection automatisée</strong> : agent <strong>n8n</strong> qui enrichit des profils, segmente les prospects et rédige des courriels personnalisés.</li>
+            <li><strong>Déploiement sur Azure</strong> avec CI/CD, surveillance et allocation des ressources optimisée en coûts.</li>
           </ul>
         `,
-        start: "Août 2024",
-        end: "Janvier 2025",
       },
       evnia: {
-        description: `
-          <ul class="list-disc pl-4 space-y-1">
-            <li><strong>Développement d'applications low-code</strong> : Amélioration et personnalisation de l'application avec <strong>Caspio</strong> en utilisant <strong>JavaScript, HTML, CSS</strong> et l'intégration d'<strong>API REST</strong> pour optimiser les fonctionnalités de <strong>Power Automate</strong> pour l'automatisation.</li>
-            <li><strong>Collaboration et résolution de problèmes</strong> : Travail en équipe pour analyser les besoins, identifier et mettre en œuvre des solutions.</li>
-            <li><strong>Stratégie durable</strong> : Proposition d'idées et implication dans la définition d'objectifs sociaux et environnementaux visant à réduire l'impact de l'entreprise.</li>
-          </ul>
-        `,
+        title: "Développeur en automatisation et intégration d'API",
+        company: "Evnia, firme-conseil en écofiscalité",
+        location: "Mirabel, QC · Hybride",
         start: "Mars 2025",
         end: "Présent",
-        company: "Evnia, firme-conseil en écofiscalité",
-        title: "Développeur d'applications",
+        description: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Intégration de systèmes</strong> : API REST et webhooks fiables (pagination, reprises avec backoff, idempotence, gestion d'erreurs) qui synchronisent en temps réel CRM, ERP et outils low-code, avec environ <strong>35 % de rapprochement manuel en moins</strong>.</li>
+            <li><strong>Automatisation</strong> : workflows <strong>n8n</strong> et <strong>Power Automate</strong> pour l'équipe de gestion de projet, dont un module de facturation qui génère les factures, calcule les taxes de plusieurs provinces et suit les paiements.</li>
+            <li><strong>Assistant IA pour l'équipe</strong> : agent de soutien au développement conçu avec <strong>Microsoft Copilot Studio</strong>, relié à Caspio par <strong>MCP</strong>, à Monday.com et à n8n, avec une mémoire persistante dans Dataverse.</li>
+            <li><strong>Ateliers IA</strong> : préparation et animation d'ateliers internes pour aider les équipes non techniques à utiliser l'IA générative au quotidien.</li>
+            <li><strong>Seul développeur de l'équipe</strong>, je travaille avec la direction, la conformité et la comptabilité pour transformer leurs besoins en solutions simples à maintenir.</li>
+          </ul>
+        `,
+      },
+      tractionDK: {
+        title: "Développeur full-stack",
+        company: "Traction DK inc.",
+        location: "À distance",
+        start: "Août 2024",
+        end: "Janvier 2025",
+        description: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Backend SaaS</strong> : optimisation des modules principaux d'un <strong>CRM SaaS B2B</strong> pour concessionnaires automobiles (<strong>Java, Groovy</strong>), avec réduction d'une dette technique critique et des temps de traitement plus rapides.</li>
+            <li><strong>Frontend et paiements</strong> : modernisation de l'interface des outils de communication client (chat et appels) en JavaScript, HTML/CSS et Bootstrap, et intégrations de paiement <strong>Stripe</strong>.</li>
+            <li><strong>DevOps et livraison agile</strong> : pipelines <strong>CI/CD</strong> et bonnes pratiques Git pour livrer plus souvent, sans interruption de service.</li>
+            <li><strong>Correction de bugs critiques</strong> et amélioration des performances de l'application.</li>
+          </ul>
+        `,
       },
       royalBroker: {
-        description: `
-          <ul class="list-disc pl-4 space-y-1">
-            <li><strong>Lead développeur du CRM InstaHR</strong>, plateforme de gestion des contrats, employés et paiements.</li>
-            <li><strong>Migration cloud sur Azure</strong>, réduisant les coûts de 600$ à 135$/mois et accélérant les déploiements de 60%.</li>
-            <li><strong>Automatisation du recrutement</strong> : création d'un <strong>ATS</strong> filtrant <strong>4000+ CV en quelques secondes</strong> via un script Python.</li>
-            <li><strong>Intégration de relances automatisées</strong> (email, WhatsApp) pour augmenter le taux de réponse des candidats.</li>
-            <li><strong>Collaboration interservices</strong> (RH, comptabilité, direction) pour aligner la solution aux besoins métiers.</li>
-          </ul>
-        `,
+        title: "Développeur .NET et gestionnaire de projets TI",
+        company: "Royal Broker Solutions",
+        location: "Granby, QC · Sur site",
         start: "Août 2022",
         end: "Août 2024",
-      },
-      royalBrokerInternship: {
-        title: "Développeur Full-Stack Stagiaire",
         description: `
           <ul class="list-disc pl-4 space-y-1">
-            <li><strong>Développement de sites d'estimation de valeur-crédit</strong> en PHP et WordPress.</li>
-            <li><strong>Embauché</strong> à la suite du stage grâce aux performances démontrées.</li>
+            <li><strong>Promu de stagiaire à chef de projet informatique en 4 mois.</strong></li>
+            <li><strong>InstaHR</strong> : conception et mise en service d'une solution SaaS RH interne full-stack (<strong>.NET / C# / MSSQL</strong>) qui gère les contrats, la paie et le cycle de vie des employés, avec intégration Stripe.</li>
+            <li><strong>Migration vers Microsoft Azure</strong> : coûts cloud passés de <strong>600 $ à 135 $ par mois</strong> et déploiements CI/CD accélérés de 60 %.</li>
+            <li><strong>ATS en Python</strong> capable d'analyser et de filtrer plus de <strong>4 000 CV</strong>, avec relances automatisées par WhatsApp et courriel.</li>
+            <li><strong>Feuille de route produit</strong> pilotée avec les équipes RH, finances et direction, du besoin jusqu'à la fonctionnalité en production.</li>
           </ul>
         `,
-        start: "Août 2022",
-        end: "Mai 2024",
-        badge: "Stage",
       },
-      rogers: {
+      royalBrokerInternship: {
+        title: "Stagiaire en développement web",
+        company: "Royal Broker Solutions",
+        location: "Granby, QC · Hybride",
+        start: "Avril 2022",
+        end: "Août 2022",
+        badge: "Stage",
         description: `
           <ul class="list-disc pl-4 space-y-1">
-            <li><strong>Analyse des besoins clients </strong>et proposition de solutions adaptées.</li>
-            <li><strong>Développement de compétences en communication et négociation.</strong></li>
-            <li><strong>Optimisation des stratégies commerciales </strong>pour atteindre les objectifs.</li>
+            <li><strong>Développement de sites d'estimation de microcrédit</strong> en PHP et WordPress.</li>
+            <li>Stage conclu par une <strong>offre d'embauche immédiate</strong> comme développeur principal.</li>
+          </ul>
+        `,
+      },
+      rogers: {
+        title: "Spécialiste des ventes",
+        company: "Rogers Communications",
+        location: "Granby, QC",
+        start: "Novembre 2021",
+        end: "Avril 2022",
+        description: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Analyse des besoins des clients</strong> pour proposer des solutions adaptées.</li>
+            <li>Compétences en <strong>négociation et relations interpersonnelles</strong>, utiles aujourd'hui pour travailler avec les parties prenantes d'un projet.</li>
           </ul>
         `,
       },
