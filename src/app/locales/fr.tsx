@@ -585,39 +585,82 @@ const translations: Translations = {
       },
       agentOs: {
         description:
-          "Un tableau de bord où un solopreneur travaille avec une équipe de 6 agents IA spécialisés, organisés par projet.",
+          "Un tableau de bord où un solopreneur pilote 6 agents IA spécialisés, avec un routeur de modèles qui tient un budget mensuel.",
         overview:
-          "AgentOS fait collaborer un solopreneur avec six agents IA (communauté, tech, stratégie, support, vente, direction artistique). Chaque projet a son contexte et sa base de connaissances, injectés dans les prompts des agents concernés. Les appels passent par OpenRouter, ou directement par OpenAI et Gemini avec sa propre clé.",
+          "AgentOS fait travailler un solopreneur avec six agents IA (communauté, tech, stratégie, support, vente, direction artistique), organisés par projet. Le front React parle à un serveur Express qui sert de passerelle unique vers OpenRouter, OpenAI et Gemini : il choisit le modèle, diffuse la réponse en streaming SSE et comptabilise le coût de chaque appel. Les clés API ne quittent jamais le serveur.",
         features: `
           <ul class="list-disc pl-4 space-y-1">
-            <li>6 agents avec chacun sa persona et ses suggestions de questions</li>
-            <li>Workspaces avec contexte injecté dans le prompt système</li>
-            <li>Historique isolé par projet et par agent</li>
-            <li>Base de connaissances (directives, liens, fichiers) assignable par agent</li>
-            <li>Council : la même question posée à plusieurs agents en parallèle</li>
-            <li>Palette de commandes, mentions @, commandes /, réponses en streaming</li>
+            <li>Routeur de modèles côté serveur : niveaux de qualité, modèles de repli, et une requête marquée sensible n'est jamais envoyée à un modèle gratuit</li>
+            <li>Budget mensuel en dollars tenu dans un registre : mode dégradé à 80 %, modèles payants coupés au plafond, coût calculé à partir de l'usage réel renvoyé par le fournisseur</li>
+            <li>Logique de routage écrite en fonctions pures (plan, route, budget, settle) et couverte par des tests unitaires</li>
+            <li>Prompt système construit à chaque appel : persona, contexte du projet et base de connaissances filtrée par agent, bornée à environ 1 500 tokens</li>
+            <li>Cache de prompt (cache_control) sur la partie stable du prompt système pour réduire le coût des appels répétés</li>
+            <li>Serveurs MCP activables par agent, Council (une question à plusieurs agents en parallèle), palette de commandes, mentions @ et commandes /</li>
+            <li>État Zustand persisté avec schéma versionné et migrations (version 10)</li>
           </ul>
         `,
         challenges: `
           <div class="space-y-4">
             <div class="space-y-1">
-              <h5 class="font-medium">Des appels LLM fiables</h5>
+              <h5 class="font-medium">Tenir un budget sans casser l'expérience</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
-                <span class="font-semibold">Problème :</span> Les fournisseurs renvoient des erreurs 429 et 5xx sous charge.<br>
-                <span class="font-semibold">Solution :</span> Nouvelles tentatives avec backoff exponentiel (1, 2, 4 puis 8 s) avant d'abandonner.
+                <span class="font-semibold">Problème :</span> Les modèles payants peuvent coûter cher si on laisse tourner des agents et des tâches planifiées.<br>
+                <span class="font-semibold">Solution :</span> Chaque réponse est réglée au coût réel dans un registre mensuel ; à 80 % du plafond le routeur passe en mode dégradé, et au plafond il refuse les modèles payants avec une erreur 402 claire.
               </p>
             </div>
             <div class="space-y-1">
-              <h5 class="font-medium">Le bon contexte pour chaque agent</h5>
+              <h5 class="font-medium">Un contexte utile sans exploser les tokens</h5>
               <p class="text-neutral-600 dark:text-neutral-400">
-                <span class="font-semibold">Problème :</span> Envoyer toute la base de connaissances à chaque agent coûte cher et brouille les réponses.<br>
-                <span class="font-semibold">Solution :</span> Le prompt système est construit à chaque appel : persona, contexte du projet et seulement les éléments assignés à cet agent.
+                <span class="font-semibold">Problème :</span> Injecter toute la base de connaissances dans chaque prompt coûte cher et brouille les réponses.<br>
+                <span class="font-semibold">Solution :</span> Seuls les éléments assignés à l'agent sont retenus, triés par récence, tronqués au-delà de 2 000 caractères et coupés à un budget global ; le prompt stable est mis en cache.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">Des appels fiables</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Les fournisseurs renvoient des 429 et des 5xx sous charge.<br>
+                <span class="font-semibold">Solution :</span> Nouvelles tentatives avec backoff exponentiel (1, 2, 4 puis 8 s) et modèles de repli définis par le routeur.
               </p>
             </div>
           </div>
         `,
         conclusion:
-          "AgentOS m'a servi à travailler l'orchestration de plusieurs modèles, le streaming SSE et la gestion du contexte dans une interface dense.",
+          "AgentOS montre ce que je fais quand je construis un produit IA : une passerelle serveur qui garde les clés, choisit le modèle et maîtrise la facture, et une logique métier testable séparée de l'interface.",
+      },
+      marieAntoine: {
+        description:
+          "Le site de Marie-Antoine Aka, cheffe privée et créatrice à Montréal : son portfolio, sa maison Art de recevoir et son studio Artizan.",
+        overview:
+          "Site vitrine réalisé pour une cliente qui réunit trois activités : son portfolio personnel, Art de recevoir (cheffe privée, tables et réceptions) et Artizan (photographie, vidéo et direction artistique). Le site est en Vite, React et React Router, prérendu en HTML statique : le build produit onze pages complètes, servies depuis le CDN sans aucun serveur.",
+        features: `
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Onze pages prérendues en HTML statique, indexables sans JavaScript</li>
+            <li>Titre, description, image de partage et données structurées JSON-LD par page</li>
+            <li>Polices auto-hébergées et figées : le build ne fait aucun appel réseau</li>
+            <li>Trois univers visuels distincts sur un même site, animés avec GSAP</li>
+            <li>Sitemap et fichier llms.txt pour le référencement</li>
+          </ul>
+        `,
+        challenges: `
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <h5 class="font-medium">Un site rapide et bien référencé sans serveur</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Le contenu ne change pas, mais chaque page doit être indexée avec ses propres métadonnées.<br>
+                <span class="font-semibold">Solution :</span> Un script de prérendu exécute le rendu serveur de chaque route au build et écrit une page HTML complète, avec son head et ses données structurées.
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h5 class="font-medium">Un déploiement qui ne casse pas</h5>
+              <p class="text-neutral-600 dark:text-neutral-400">
+                <span class="font-semibold">Problème :</span> Le projet Vercel avait été créé avec le preset Next.js, qui échouait sur un dépôt Vite.<br>
+                <span class="font-semibold">Solution :</span> vercel.json fixe explicitement le framework, les commandes et le dossier de sortie, qui priment sur le tableau de bord.
+              </p>
+            </div>
+          </div>
+        `,
+        conclusion:
+          "Un projet client où la contrainte était simple : un site rapide, beau et bien référencé, sans serveur à maintenir.",
       },
       maCiv: {
         description:
