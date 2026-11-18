@@ -442,7 +442,6 @@ export function getData(locale: "en" | "fr" = "fr") {
           "Stripe",
         ],
         images: [
-          "/projects/recruit-ease/landing2.gif",
           "/projects/recruit-ease/landing3.png",
           "/projects/recruit-ease/img1.png",
           "/projects/recruit-ease/img2.png",
